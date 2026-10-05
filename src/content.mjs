@@ -5,11 +5,36 @@
 // В строках можно использовать HTML (<br>, &nbsp;, <span class="mark">).
 
 export const site = {
-  // адрес на GitHub Pages; поменяйте, если подключите свой домен
+  // Адрес сайта. От него строятся все ссылки, canonical, sitemap, robots.txt, llms.txt.
   url: 'https://keshtoim.github.io/Pelotrum/',
+
   name: 'pelotrum',
   telegram: 'username',          // без @
-  email: 'hello@pelotrum.dev'
+  email: 'hello@pelotrum.dev',
+
+  // ---------- на будущее: раскомментировать, когда понадобится ----------
+
+  // Свой домен.
+  //   1) купить домен и у регистратора добавить DNS-записи для GitHub Pages:
+  //        A     @    185.199.108.153
+  //        A     @    185.199.109.153
+  //        A     @    185.199.110.153
+  //        A     @    185.199.111.153
+  //        CNAME www  keshtoim.github.io
+  //   2) раскомментировать domain и поменять url выше на 'https://pelotrum.ru/'
+  //   3) GitHub → Settings → Pages → Custom domain: pelotrum.ru, затем включить Enforce HTTPS
+  // В корне домена robots.txt и llms.txt начнут работать для ботов.
+  // domain: 'pelotrum.ru',
+
+  // Подтверждение прав в поисковиках: значение content из выданного мета-тега.
+  //   Google Search Console → «HTML-тег», Яндекс Вебмастер → «Мета-тег».
+  // verification: {
+  //   google: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  //   yandex: 'xxxxxxxxxxxxxxxx'
+  // },
+
+  // Яндекс Метрика: номер счётчика (metrika.yandex.ru → «Добавить счётчик»).
+  // metrika: 12345678,
 };
 
 export const content = {

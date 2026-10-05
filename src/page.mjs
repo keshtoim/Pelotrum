@@ -19,6 +19,19 @@ const icons = {
 // тема ставится до отрисовки, чтобы не было вспышки
 const themeScript = `<script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t})()</script>`;
 
+// Мета-теги подтверждения прав — выводятся, только если заданы в site.verification
+const verification = () => {
+  const v = site.verification || {};
+  return [
+    v.google && `<meta name="google-site-verification" content="${esc(v.google)}">`,
+    v.yandex && `<meta name="yandex-verification" content="${esc(v.yandex)}">`
+  ].filter(Boolean).map((s) => s + '\n').join('');
+};
+
+// Яндекс Метрика — выводится, только если задан site.metrika
+const metrika = () => site.metrika ? `<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(${Number(site.metrika)},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/${Number(site.metrika)}" style="position:absolute;left:-9999px" alt=""></div></noscript>` : '';
+
 function head({ lang, t, assets, path, title, description, noindex }) {
   const url = site.url + path;
   const fonts = lang === 'ru'
@@ -46,7 +59,8 @@ ${Object.entries(LANGS).map(([l, p]) => `<link rel="alternate" hreflang="${l}" h
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${BASE}favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${BASE}apple-touch-icon.png">
-${themeScript}
+${verification()}${themeScript}
+${metrika()}
 ${fonts.map((f) => `<link rel="preload" href="${BASE}${assets.fonts[f]}" as="font" type="font/woff2" crossorigin>`).join('\n')}
 <link rel="stylesheet" href="${BASE}${assets.css}">
 <script defer src="${BASE}${assets.js}"></script>

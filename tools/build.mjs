@@ -117,6 +117,8 @@ ${ru.services.items.map((s) => `- ${s.name} — ${plain(s.price)}, ${s.term}: ${
 - Email: ${site.email}
 `);
 write('.nojekyll', '');
+// свой домен (site.domain в src/content.mjs) — GitHub Pages берёт его из файла CNAME
+if (site.domain) write('CNAME', site.domain + '\n');
 
 // --- отчёт ---
 const size = (rel) => (readFileSync(join(OUT, rel)).length / 1024).toFixed(1) + ' KB';
