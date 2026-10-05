@@ -1,52 +1,96 @@
-// Собирает один вариант дизайна в самодостаточный HTML-файл (стили и скрипты внутри,
-// без панели переключения вариантов).
+// Сборка сайта в папку _site (её и публикует GitHub Pages).
 //
-//   node tools/build.mjs        -> вариант f
-//   node tools/build.mjs a      -> вариант a
+//   node tools/build.mjs
 //
-// На выходе: dist/pelotrum-<v>.html — один файл, можно открыть в браузере или переслать.
+// Что делает:
+//   - рендерит статические страницы: / (RU), /en/ (EN), /404.html
+//   - склеивает и минифицирует CSS, кладёт CSS/JS/шрифты с хэшем в имени
+//     (после обновления браузер гарантированно возьмёт свежие файлы)
+//   - копирует src/static (иконки, превью) и создаёт robots.txt и sitemap.xml
+// Зависимостей нет, нужен только Node.js 18+.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync, copyFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { join, resolve, dirname, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { site, content } from '../src/content.mjs';
+import { renderHome, render404 } from '../src/page.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const read = (p) => readFileSync(join(root, p), 'utf8');
+const src = (...p) => join(root, 'src', ...p);
+const OUT = join(root, '_site');
 
-const SKINS = {
-  a: 'a-main', b: 'b-bento', c: 'c-terminal', d: 'd-editorial', e: 'e-soft', f: 'f-main-terminal'
+const hash = (buf) => createHash('sha256').update(buf).digest('hex').slice(0, 10);
+const write = (rel, data) => {
+  const file = join(OUT, rel);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, data);
 };
-const v = (process.argv[2] || 'f').toLowerCase();
-if (!SKINS[v]) throw new Error(`Неизвестный вариант "${v}". Есть: ${Object.keys(SKINS).join(', ')}`);
+const hashed = (name, buf) => `${basename(name, extname(name))}.${hash(buf)}${extname(name)}`;
 
-// CSS скина с подставленными @import (f импортирует a-main)
-function skinCss(name) {
-  return read(`css/skins/${name}.css`).replace(/@import url\('([^']+)\.css'\);/g, (_, dep) => skinCss(dep));
+rmSync(OUT, { recursive: true, force: true });
+
+// --- шрифты ---
+const fonts = {};
+for (const f of readdirSync(src('fonts')).filter((f) => f.endsWith('.woff2'))) {
+  const buf = readFileSync(src('fonts', f));
+  const name = `assets/fonts/${hashed(f, buf)}`;
+  write(name, buf);
+  fonts[basename(f, '.woff2')] = name;
 }
 
-const css = [
-  read('css/base.css'),
-  skinCss(SKINS[v])
-].join('\n\n');
+// --- CSS: шрифты + тема + база, пути к шрифтам — относительно assets/ ---
+const minifyCss = (css) => css
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{};,])\s*/g, '$1')
+  .replace(/:\s+/g, ':')
+  .replace(/;}/g, '}')
+  .trim();
 
-let html = read('index.html');
-const replaceOnce = (from, to) => {
-  const found = from instanceof RegExp ? from.test(html) : html.includes(from);
-  if (!found) throw new Error(`Не найдено в index.html: ${from}`);
-  html = html.replace(from, () => to);
-};
+let css = ['fonts.css', 'theme.css', 'base.css'].map((f) => readFileSync(src('styles', f), 'utf8')).join('\n');
+css = css.replace(/url\('\.\.\/fonts\/([^']+)\.woff2'\)/g, (_, n) => {
+  if (!fonts[n]) throw new Error(`Шрифт не найден: ${n}.woff2`);
+  return `url('${fonts[n].replace('assets/', '')}')`;
+});
+css = minifyCss(css);
+const cssName = `assets/${hashed('site.css', css)}`;
+write(cssName, css);
 
-// стили и выбор скина -> один <style>
-replaceOnce(/<link rel="stylesheet" href="css\/base\.css">[\s\S]*?<\/script>/, `<style>\n${css}\n</style>`);
-// панель вариантов
-replaceOnce(/<!-- =+ ПАНЕЛЬ ПРОТОТИПОВ[\s\S]*?<\/div>\s*/, '');
-// скрипты -> инлайн
-replaceOnce('<script src="js/i18n.js"></script>', `<script>\n${read('js/i18n.js')}\n</script>`);
-replaceOnce('<script src="js/main.js"></script>', `<script>\n${read('js/main.js')}\n</script>`);
-// стили панели прототипов в сборке не нужны
-html = html.replace(/\/\* -+ панель прототипов -+ \*\/[\s\S]*?(?=\/\* -+ адаптив)/, '');
+// --- JS ---
+const js = readFileSync(src('scripts', 'main.js'), 'utf8');
+const jsName = `assets/${hashed('main.js', js)}`;
+write(jsName, js);
 
-mkdirSync(join(root, 'dist'), { recursive: true });
-const out = join(root, 'dist', `pelotrum-${v}.html`);
-writeFileSync(out, html);
-console.log(`ok: ${out} (${(html.length / 1024).toFixed(0)} KB)`);
+// --- страницы ---
+const assets = { css: cssName, js: jsName, fonts, content };
+const tidy = (html) => html.replace(/\n\s*\n/g, '\n').replace(/\n\s+/g, '\n');
+write('index.html', tidy(renderHome('ru', assets)));
+write('en/index.html', tidy(renderHome('en', assets)));
+write('404.html', tidy(render404(assets)));
+
+// --- статика ---
+for (const f of readdirSync(src('static'))) copyFileSync(src('static', f), join(OUT, f));
+
+const pages = [['ru', ''], ['en', 'en/']];
+const today = new Date().toISOString().slice(0, 10);
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${pages.map(([, p]) => `  <url>
+    <loc>${site.url + p}</loc>
+    <lastmod>${today}</lastmod>
+${pages.map(([l, q]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${site.url + q}"/>`).join('\n')}
+  </url>`).join('\n')}
+</urlset>
+`);
+write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${site.url}sitemap.xml\n`);
+write('.nojekyll', '');
+
+// --- отчёт ---
+const size = (rel) => (readFileSync(join(OUT, rel)).length / 1024).toFixed(1) + ' KB';
+console.log(`Собрано в ${OUT}`);
+console.log(`  index.html     ${size('index.html')}`);
+console.log(`  en/index.html  ${size('en/index.html')}`);
+console.log(`  ${cssName}  ${size(cssName)}`);
+console.log(`  ${jsName}  ${size(jsName)}`);
+console.log(`  шрифтов: ${Object.keys(fonts).length}`);
