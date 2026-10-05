@@ -1,31 +1,14 @@
-// =====================================================================
-// HTML-шаблоны страниц.
-// Сборка (tools/build.mjs) вызывает renderHome('ru' | 'en') и render404()
-// и пишет результат в _site — на выходе готовый статический HTML,
-// контент виден без JavaScript (важно для поисковиков и скорости).
-// =====================================================================
-
 import { site } from './content.mjs';
 
-// Базовый путь сайта из site.url: '/Pelotrum/' на GitHub Pages, '/' на своём домене.
-// Все внутренние ссылки абсолютные от BASE — так они работают и с 404.html,
-// который GitHub отдаёт на любой глубине вложенности.
+// Ссылки абсолютные от BASE: GitHub Pages отдаёт 404.html на любой глубине вложенности,
+// относительные пути там бы сломались.
 const BASE = new URL(site.url).pathname;
-
-// Путь главной страницы каждого языка относительно BASE
 const LANGS = { ru: '', en: 'en/' };
 
-// ---------------------------------------------------------------------
-// Утилиты
-// ---------------------------------------------------------------------
-
-// Экранирование для атрибутов и текста. Уже готовые сущности (&nbsp;, &lt;) не трогаем.
+// Уже готовые сущности (&nbsp;, &lt;) из контента не экранируем повторно.
 const esc = (s) => String(s).replace(/&(?![a-z#0-9]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
-// HTML → обычный текст (для description, JSON-LD и т.п.)
 const strip = (s) => s.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
 
-// Инлайн-иконки: без отдельных запросов, цвет наследуется через currentColor
 const icons = {
   sun: '<svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
   moon: '<svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
@@ -33,15 +16,9 @@ const icons = {
   tg: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13 1.5 11.5c-1-.3-1.1-1 .2-1.5L20.6 2.8c.9-.3 1.6.2 1.3 1.5z"/></svg>'
 };
 
-// ---------------------------------------------------------------------
-// <head>
-// ---------------------------------------------------------------------
-
-// Тема ставится синхронно в <head>, до отрисовки — иначе страница мигнёт
-// тёмной темой у тех, кто выбрал светлую. Приоритет: сохранённый выбор → настройка ОС.
+// Тема выставляется синхронно до первой отрисовки, иначе страница мигнёт тёмной палитрой.
 const themeScript = `<script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t})()</script>`;
 
-// Мета-теги подтверждения прав — выводятся, только если заданы в site.verification
 const verification = () => {
   const v = site.verification || {};
   return [
@@ -50,14 +27,12 @@ const verification = () => {
   ].filter(Boolean).map((s) => s + '\n').join('');
 };
 
-// Яндекс Метрика — стандартный код счётчика, выводится, только если задан site.metrika
 const metrika = () => site.metrika ? `<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(${Number(site.metrika)},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true});</script>
 <noscript><div><img src="https://mc.yandex.ru/watch/${Number(site.metrika)}" style="position:absolute;left:-9999px" alt=""></div></noscript>` : '';
 
 function head({ lang, t, assets, path, title, description, noindex }) {
   const url = site.url + path;
-  // Предзагружаем только шрифты первого экрана (заголовок + текст) нужного алфавита;
-  // остальные подгрузятся по unicode-range, когда понадобятся
+  // Предзагружаем только шрифты первого экрана; остальные подтянутся по unicode-range.
   const fonts = lang === 'ru'
     ? ['unbounded-700-cyrillic', 'inter-cyrillic']
     : ['unbounded-700-latin', 'inter-latin'];
@@ -67,7 +42,7 @@ function head({ lang, t, assets, path, title, description, noindex }) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-${/* canonical и языковые версии; 404 вместо этого закрываем от индексации */ ''}${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">
+${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">
 ${Object.entries(LANGS).map(([l, p]) => `<link rel="alternate" hreflang="${l}" href="${site.url + p}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${site.url}">`}
 <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
@@ -92,10 +67,6 @@ ${fonts.map((f) => `<link rel="preload" href="${BASE}${assets.fonts[f]}" as="fon
 </head>`;
 }
 
-// ---------------------------------------------------------------------
-// Шапка и подвал (общие для всех страниц)
-// ---------------------------------------------------------------------
-
 function header(lang, t) {
   const other = lang === 'ru' ? 'en' : 'ru';
   const home = BASE + LANGS[lang];
@@ -109,7 +80,7 @@ function header(lang, t) {
       ${['work', 'services', 'benefits', 'blog', 'about', 'contact'].map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
     </nav>
     <div class="header__tools">
-      ${/* переключатель языка — обычная ссылка на другую версию страницы */ ''}<a class="tool lang-toggle" href="${BASE + LANGS[other]}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
+      <a class="tool lang-toggle" href="${BASE + LANGS[other]}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
         <span data-lang="ru">RU</span><span data-lang="en">EN</span>
       </a>
       <button class="tool theme-toggle" id="themeToggle" type="button" aria-label="${esc(t.a11y.theme)}">${icons.sun}${icons.moon}</button>
@@ -130,23 +101,17 @@ function footer(lang, t) {
 </footer>`;
 }
 
-// Подпись секции: «// 01 / Портфолио»
 const kicker = (n, label) => `<p class="kicker">${n} / ${label}</p>`;
 
-// ---------------------------------------------------------------------
-// Демо-чат с ботом (сейчас ОТКЛЮЧЁН — акцент сайта на вайбкодинге).
-// Чтобы вернуть: раскомментировать вызов chatDemo(t) в renderHome,
-// убрать класс hero__inner--solo и раскомментировать блок чата в src/scripts/main.js.
-// ---------------------------------------------------------------------
+// '<' в JSON внутри <script> экранируется, чтобы строка с </script> не закрыла тег раньше времени.
+const jsonScript = (type, id, data) => `<script type="${type}"${id ? ` id="${id}"` : ''}>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 
-// Одно сообщение чата; кнопки бота рисуются как inline-клавиатура Telegram
 const msgHtml = (m) => `<div class="msg msg--${m.from}"><div class="msg__bubble">${m.text}</div>${
   m.buttons ? `<div class="msg__kb">${m.buttons.map((b) => `<span>${b}</span>`).join('')}</div>` : ''}</div>`;
 
-// eslint-disable-next-line no-unused-vars
+// Демо-чат с ботом отключён, пока акцент сайта на вайбкодинге. Чтобы вернуть, вызвать chatDemo(t)
+// в hero, убрать класс hero__inner--solo и раскомментировать блок чата в src/scripts/main.js.
 function chatDemo(t) {
-  // Диалог сразу отрисован целиком (виден без JS), а JSON рядом — сценарий для анимации.
-  // '<' экранируется, чтобы строка с </script> в тексте не закрыла тег раньше времени.
   return `<div class="hero__demo">
         <span class="hand hand--demo" aria-hidden="true">${t.hero.note}</span>
         <div class="chat" role="img" aria-label="${esc(t.a11y.chat)}">
@@ -157,17 +122,13 @@ function chatDemo(t) {
           <div class="chat__body" id="chatBody">${t.chat.messages.map(msgHtml).join('')}</div>
           <div class="chat__input"><span>${t.chat.placeholder}</span>${icons.send}</div>
         </div>
-        <script type="application/json" id="chatData">${JSON.stringify(t.chat.messages).replace(/</g, '\\u003c')}</script>
+        ${jsonScript('application/json', 'chatData', t.chat.messages)}
       </div>`;
 }
 
-// ---------------------------------------------------------------------
-// Микроразметка Schema.org (JSON-LD): сайт, исполнитель и его услуги
-// ---------------------------------------------------------------------
-
 function jsonLd(lang, t) {
   const url = site.url + LANGS[lang];
-  const id = (s) => site.url + '#' + s;          // стабильные @id для связей внутри графа
+  const id = (s) => site.url + '#' + s;
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -194,8 +155,7 @@ function jsonLd(lang, t) {
           itemListElement: t.services.items.map((s) => ({
             '@type': 'Offer',
             itemOffered: { '@type': 'Service', name: s.name, description: strip(s.desc) },
-            // цену указываем, только если она числовая («от N»); «индивидуально» — без неё
-            ...(s.min ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: s.min, priceCurrency: s.currency } } : {})
+            ...(s.min && { priceSpecification: { '@type': 'PriceSpecification', minPrice: s.min, priceCurrency: s.currency } })
           }))
         }
       }
@@ -203,11 +163,6 @@ function jsonLd(lang, t) {
   };
 }
 
-// ---------------------------------------------------------------------
-// Секции главной страницы
-// ---------------------------------------------------------------------
-
-// Карточка проекта. Ссылка «Подробнее» есть, только если у проекта задан url.
 const workCard = (t) => (w, i) => `<article class="card work" data-cat="${w.cat}">
           <div class="work__cover work__cover--${i % 6}" aria-hidden="true"><span class="work__glyph">${w.glyph}</span></div>
           <div class="work__body">
@@ -219,7 +174,6 @@ const workCard = (t) => (w, i) => `<article class="card work" data-cat="${w.cat}
           </div>
         </article>`;
 
-// Карточка тарифа; «горячий» тариф выделен рамкой и стикером
 const priceCard = (p) => `<article class="card price${p.hot ? ' price--hot' : ''}">
           ${p.hot ? `<span class="sticker sticker--hot">${p.hot}</span>` : ''}
           <h3 class="price__name">${p.name}</h3>
@@ -230,15 +184,13 @@ const priceCard = (p) => `<article class="card price${p.hot ? ' price--hot' : ''
           <a href="#contact" class="btn ${p.hot ? 'btn--acc' : 'btn--ghost'} btn--block">${p.cta}</a>
         </article>`;
 
-// Карточка преимущества с порядковым номером
 const benefitCard = (b, i) => `<article class="card benefit">
           <span class="benefit__num" aria-hidden="true">0${i + 1}</span>
           <h3 class="benefit__title">${b.t}</h3>
           <p class="benefit__desc">${b.d}</p>
         </article>`;
 
-// Карточка статьи. Пока статей нет — это <article> без ссылки; дата в <time>
-// и время чтения выводятся, только когда заданы iso и min.
+// Пока у статьи нет url, карточка — <article> без ссылки; дата и время чтения выводятся, только когда заданы.
 const postCard = (t) => (p, i) => {
   const date = p.iso ? `<time datetime="${p.iso}">${p.date}</time>` : p.date;
   const tag = p.url ? 'a' : 'article';
@@ -252,14 +204,10 @@ const postCard = (t) => (p, i) => {
         </${tag}>`;
 };
 
-// ---------------------------------------------------------------------
-// Главная страница
-// ---------------------------------------------------------------------
-
 export function renderHome(lang, assets) {
   const t = assets.content[lang];
   const telegram = `https://t.me/${site.telegram}`;
-  // Бегущая строка: список дублируется, анимация сдвигает ленту ровно на половину — шов не виден
+  // Лента дублируется: анимация сдвигает её ровно на половину, и шов цикла не виден.
   const ticker = t.ticker.map((x) => `<span>${x}</span><i>✦</i>`).join('');
 
   return `<!doctype html>
@@ -270,7 +218,7 @@ ${head({ lang, t, assets, path: LANGS[lang], title: t.meta.title, description: t
 ${header(lang, t)}
 
 <main id="main">
-  ${/* ---------- первый экран ---------- */ ''}<section class="hero">
+  <section class="hero">
     <div class="container hero__inner hero__inner--solo">
       <div class="hero__text">
         <p class="kicker">${t.hero.kicker}</p>
@@ -284,19 +232,18 @@ ${header(lang, t)}
           ${t.hero.facts.map(([v, l]) => `<li><b>${v}</b><span>${l}</span></li>`).join('\n          ')}
         </ul>
       </div>
-      ${/* демо-чат отключён, см. chatDemo() выше:  ${chatDemo(t)} */ ''}
     </div>
   </section>
 
   <div class="ticker" aria-hidden="true"><div class="ticker__track">${ticker}${ticker}</div></div>
 
-  ${/* ---------- портфолио ---------- */ ''}<section class="section" id="work" aria-labelledby="work-title">
+  <section class="section" id="work" aria-labelledby="work-title">
     <div class="container">
       <div class="section__head">
         ${kicker('01', t.nav.work)}
         <h2 class="section__title" id="work-title">${t.work.title}</h2>
       </div>
-      ${/* фильтры: первая кнопка («Все») активна по умолчанию; логика — в main.js */ ''}<div class="filters" id="filters" role="group" aria-label="${esc(t.a11y.filters)}">
+      <div class="filters" id="filters" role="group" aria-label="${esc(t.a11y.filters)}">
         ${Object.entries(t.work.filters).map(([k, v], i) => `<button class="chip${i ? '' : ' is-active'}" type="button" data-filter="${k}" aria-pressed="${!i}">${v}</button>`).join('\n        ')}
       </div>
       <div class="grid grid--work" id="workGrid">
@@ -305,7 +252,7 @@ ${header(lang, t)}
     </div>
   </section>
 
-  ${/* ---------- услуги и цены ---------- */ ''}<section class="section section--alt" id="services" aria-labelledby="services-title">
+  <section class="section section--alt" id="services" aria-labelledby="services-title">
     <div class="container">
       <div class="section__head">
         ${kicker('02', t.nav.services)}
@@ -318,7 +265,7 @@ ${header(lang, t)}
     </div>
   </section>
 
-  ${/* ---------- преимущества ---------- */ ''}<section class="section" id="benefits" aria-labelledby="benefits-title">
+  <section class="section" id="benefits" aria-labelledby="benefits-title">
     <div class="container">
       <div class="section__head">
         ${kicker('03', t.nav.benefits)}
@@ -330,7 +277,7 @@ ${header(lang, t)}
     </div>
   </section>
 
-  ${/* ---------- блог (пока заглушки) ---------- */ ''}<section class="section section--alt" id="blog" aria-labelledby="blog-title">
+  <section class="section section--alt" id="blog" aria-labelledby="blog-title">
     <div class="container">
       <div class="section__head section__head--row">
         <div>
@@ -345,7 +292,7 @@ ${header(lang, t)}
     </div>
   </section>
 
-  ${/* ---------- обо мне ---------- */ ''}<section class="section" id="about" aria-labelledby="about-title">
+  <section class="section" id="about" aria-labelledby="about-title">
     <div class="container about">
       <div class="about__photo">
         <div class="photo-ph" aria-hidden="true"><span>p</span></div>
@@ -360,7 +307,7 @@ ${header(lang, t)}
     </div>
   </section>
 
-  ${/* ---------- контакты ---------- */ ''}<section class="section" id="contact" aria-labelledby="contact-title">
+  <section class="section" id="contact" aria-labelledby="contact-title">
     <div class="container">
       <div class="cta-box">
         <span class="sticker sticker--cta">${t.contact.sticker}</span>
@@ -377,16 +324,11 @@ ${header(lang, t)}
 </main>
 
 ${footer(lang, t)}
-${/* '<' в JSON экранируем — защита от преждевременного закрытия </script> */ ''}<script type="application/ld+json">${JSON.stringify(jsonLd(lang, t)).replace(/</g, '\\u003c')}</script>
+${jsonScript('application/ld+json', '', jsonLd(lang, t))}
 </body>
 </html>
 `;
 }
-
-// ---------------------------------------------------------------------
-// Страница 404. GitHub Pages отдаёт её на любой несуществующий адрес,
-// поэтому все пути в ней абсолютные. Текст на двух языках сразу.
-// ---------------------------------------------------------------------
 
 export function render404(assets) {
   const t = assets.content.ru;
