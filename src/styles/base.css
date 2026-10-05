@@ -175,7 +175,7 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 [data-theme="dark"] .theme-toggle .i-sun, :root:not([data-theme]) .theme-toggle .i-sun { display: block; }
 [data-theme="dark"] .theme-toggle .i-moon, :root:not([data-theme]) .theme-toggle .i-moon { display: none; }
 
-.burger { display: none; flex-direction: column; gap: 5px; }
+.burger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
 .burger span { display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px; transition: transform .3s var(--ease); }
 .menu-open .burger span:first-child { transform: translateY(3.5px) rotate(45deg); }
 .menu-open .burger span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
