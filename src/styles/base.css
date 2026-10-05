@@ -438,6 +438,9 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
   .grid--work, .grid--blog, .grid--benefits { grid-template-columns: 1fr; }
   .work__cover { aspect-ratio: 16 / 7; }
   .post__cover { aspect-ratio: 16 / 6; }
+  .about__photo { max-width: 200px; }
+  /* Справа от уменьшенного фото, иначе пометка вылезает за край экрана, а поверх фото не видна в тёмной теме (акцент на акценте). */
+  .hand--photo { right: auto; left: calc(100% + 16px); bottom: 45%; font-size: 24px; white-space: nowrap; }
   .section__head--row { flex-direction: column; align-items: flex-start; }
   .hero__title .mark { white-space: normal; }
   .hero__title::after { display: none; }   /* на узком экране курсор переносится на отдельную строку */
