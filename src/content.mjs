@@ -1,16 +1,25 @@
-// Весь контент сайта: тексты на двух языках, контакты и адрес сайта.
-// Чтобы поменять текст — правьте здесь и пересоберите (node tools/build.mjs).
+// =====================================================================
+// Контент сайта: настройки (site) и все тексты на двух языках (content).
+// Шаблоны (src/page.mjs) только раскладывают эти данные по разметке,
+// поэтому для правки текста достаточно этого файла + пересборки:
+//   node tools/build.mjs
 //
-// ВНИМАНИЕ: кейсы, цены, статьи и контакты пока заглушки — заменить на реальные.
-// В строках можно использовать HTML (<br>, &nbsp;, <span class="mark">).
+// В строках разрешён HTML: <br>, &nbsp;, <span class="mark"> (подсветка в заголовке).
+// Заглушки, которые нужно заменить: telegram, email, статьи блога.
+// =====================================================================
 
+// ---------------------------------------------------------------------
+// Настройки сайта. Используются в шаблонах, сборке, sitemap/robots/llms.
+// ---------------------------------------------------------------------
 export const site = {
-  // Адрес сайта. От него строятся все ссылки, canonical, sitemap, robots.txt, llms.txt.
+  // Абсолютный адрес сайта со слэшем в конце. Из него же берётся базовый
+  // путь (/Pelotrum/), поэтому при смене домена ссылки перестроятся сами.
   url: 'https://keshtoim.github.io/Pelotrum/',
 
   name: 'pelotrum',
-  telegram: 'username',          // без @
-  email: 'hello@pelotrum.com',
+  telegram: 'username',          // без @ (заглушка)
+  email: 'hello@pelotrum.com',   // заглушка
+  github: 'https://github.com/keshtoim',
 
   // ---------- на будущее: раскомментировать, когда понадобится ----------
 
@@ -37,33 +46,48 @@ export const site = {
   // metrika: 12345678,
 };
 
+// Ссылка на репозиторий проекта в портфолио
+const repo = (name) => `${site.github}/${name}`;
+
+// ---------------------------------------------------------------------
+// Тексты. Ключи у языков одинаковые — шаблон рендерит обе версии одной функцией.
+// ---------------------------------------------------------------------
 export const content = {
   ru: {
-    locale: 'ru_RU',
+    locale: 'ru_RU',                       // для og:locale
+
+    // <title>, meta description, превью в соцсетях
     meta: {
-      title: 'pelotrum — Telegram-боты и vibecode под задачу',
-      description: 'Разработка Telegram-ботов под ключ: воронки, магазины с оплатой, запись, AI-ассистенты. А также сайты, Mini Apps и автоматизации под вашу идею.'
+      title: 'pelotrum — vibecode: сайты, боты и приложения под вашу идею',
+      description: 'Вайбкодинг под ключ: быстро собираю сайты, Telegram-ботов, Android-приложения, браузерные расширения и автоматизации — от идеи до рабочего продукта.'
     },
+
+    // Подписи для скринридеров и служебные тексты (не видны на экране)
     a11y: {
       skip: 'Перейти к содержанию',
       theme: 'Сменить тему',
       menu: 'Меню',
       lang: 'English version',
       chat: 'Пример диалога с Telegram-ботом',
-      filters: 'Фильтр работ'
+      filters: 'Фильтр работ',
+      repo: 'Исходный код на GitHub'
     },
+
+    // Пункты меню; ключи совпадают с id секций на странице
     nav: { work: 'Портфолио', services: 'Услуги', benefits: 'Преимущества', blog: 'Блог', about: 'Обо мне', contact: 'Контакты', cta: 'Написать' },
 
+    // Первый экран
     hero: {
-      kicker: 'Telegram-боты · vibecode под задачу',
-      title: 'Делаю ботов, которые <span class="mark">работают</span> за&nbsp;вас',
-      sub: 'Разработка Telegram-ботов под ключ — от простой воронки до магазина с оплатой и админкой. А если нужен не бот — соберу сайт, скрипт или сервис под вашу идею.',
-      cta1: 'Обсудить проект',
+      kicker: 'vibecode · от идеи до рабочего продукта',
+      title: 'Превращаю идею в&nbsp;<span class="mark">рабочий</span> продукт',
+      sub: 'Вайбкодинг под ключ: сайты, Telegram-боты, Android-приложения, браузерные расширения и автоматизации. Первая рабочая версия — за дни, дальше доводка до продакшена.',
+      cta1: 'Обсудить идею',
       cta2: 'Смотреть работы',
-      facts: [['от 3 дней', 'до первой версии'], ['24/7', 'бот не спит'], ['под ключ', 'от идеи до сервера']],
-      note: 'живой пример ↓'
+      facts: [['от 3 дней', 'до прототипа'], ['любой стек', 'веб, боты, Android'], ['под ключ', 'от идеи до релиза']],
+      note: 'живой пример ↓'               // рукописная пометка над демо-чатом (сейчас чат выключен)
     },
 
+    // Демо-чат. Сейчас не выводится (см. chatDemo в src/page.mjs), данные оставлены на будущее.
     chat: {
       status: 'бот',
       placeholder: 'Сообщение',
@@ -77,71 +101,116 @@ export const content = {
       ]
     },
 
-    ticker: ['Telegram Bot API', 'aiogram', 'Mini Apps', 'Telegram Stars', 'ЮKassa', 'AI-ассистенты', 'Webhooks', 'PostgreSQL', 'Docker', 'vibecode'],
+    // Бегущая строка под первым экраном (технологии из реальных проектов)
+    ticker: ['vibecode', 'Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Manifest V3', 'Claude API', 'SQLite', 'Docker', 'GitHub Actions'],
 
+    // Портфолио. cat — ключ фильтра, glyph — надпись на обложке,
+    // url — ссылка «Подробнее» (нет url — нет ссылки)
     work: {
       title: 'Что уже сделано',
-      filters: { all: 'Все', bot: 'Боты', miniapp: 'Mini Apps', web: 'Сайты', auto: 'Автоматизация' },
+      filters: { all: 'Все', bot: 'Боты', app: 'Приложения', ext: 'Расширения', web: 'Сайты' },
       more: 'Подробнее',
       items: [
-        { cat: 'bot', tag: 'Бот', glyph: '/menu', title: 'Бот-магазин для кофейни', desc: 'Каталог, корзина и оплата прямо в чате. Заказы падают бариста в рабочий чат.', time: '14 дней' },
-        { cat: 'bot', tag: 'Бот', glyph: '/book', title: 'Запись в барбершоп', desc: 'Свободные слоты, напоминания клиентам, синхронизация с Google Calendar.', time: '7 дней' },
-        { cat: 'miniapp', tag: 'Mini App', glyph: '◐ app', title: 'Mini App для фитнес-клуба', desc: 'Абонементы, расписание и бронирование тренировок без отдельного приложения.', time: '3 недели' },
-        { cat: 'auto', tag: 'Автоматизация', glyph: '$ watch', title: 'Мониторинг цен конкурентов', desc: 'Парсер раз в час проверяет цены и присылает алерты в Telegram.', time: '5 дней' },
-        { cat: 'bot', tag: 'Бот', glyph: 'AI', title: 'AI-ассистент поддержки', desc: 'Отвечает по базе знаний компании и зовёт человека, когда не уверен.', time: '10 дней' },
-        { cat: 'web', tag: 'Сайт', glyph: '&lt;/&gt;', title: 'Лендинг под запуск курса', desc: 'Vibecode за выходные: страница, форма заявки, заявки летят в бота.', time: '3 дня' }
+        {
+          cat: 'bot', tag: 'Бот', glyph: '/today',
+          title: 'Расписание занятий в Telegram',
+          desc: 'Расписание и замены учебной группы прямо в чате. Данные берутся из официальных файлов, бот сам присылает новые замены и замечает опечатки в них.',
+          stack: 'Python · aiogram · openpyxl'
+        },
+        {
+          cat: 'app', tag: 'Android', glyph: '✓ 7/7',
+          title: 'Flowbit — трекер привычек',
+          desc: 'Офлайн-приложение: гибкие привычки, таймеры, напоминания с кнопкой «Выполнено» в шторке, виджеты на рабочий стол и аналитика с тепловой картой.',
+          stack: 'Kotlin · Jetpack Compose · Room',
+          url: repo('Flowbit')
+        },
+        {
+          cat: 'bot', tag: 'Бот · AI', glyph: 'SWOT',
+          title: 'AI-аналитик для инвесторов',
+          desc: 'Собирает новости и котировки MOEX по компании и через Claude делает разбор: SWOT, PESTEL, 5 сил Портера, мультипликаторы, обзор сектора.',
+          stack: 'Python · Claude API · SQLite · Docker',
+          url: repo('analysis_for_invest_bot')
+        },
+        {
+          cat: 'bot', tag: 'Бот', glyph: '28d',
+          title: 'Become Butter — бот саморазвития',
+          desc: '28-дневная программа с ежедневными микрозаданиями по расписанию и геймификацией: баллы и статусы от «сливок» до «золота».',
+          stack: 'Python · aiogram · APScheduler',
+          url: repo('become_butter_bot')
+        },
+        {
+          cat: 'ext', tag: 'Расширение', glyph: '12:34',
+          title: 'Site Blocker — расширение для браузера',
+          desc: 'Блокирует отвлекающие сайты и ставит дневные лимиты, в том числе общие на группу сайтов. Снять блокировку сгоряча нельзя — только через 5 минут ожидания.',
+          stack: 'JavaScript · Manifest V3',
+          url: repo('site_blocker_extension')
+        },
+        {
+          cat: 'web', tag: 'Сайт', glyph: '~/pelotrum',
+          title: 'Этот сайт',
+          desc: 'Двуязычный статический сайт со светлой и тёмной темой: своя сборка без зависимостей, микроразметка и автодеплой на GitHub Pages.',
+          stack: 'HTML · CSS · JS · Node.js',
+          url: repo('Pelotrum')
+        }
       ]
     },
 
+    // Услуги. min/currency — числовая цена для микроразметки Schema.org
     services: {
       title: 'Услуги и цены',
       note: '* Цены ориентировочные. Точную стоимость назову после короткого созвона или переписки — бесплатно.',
       items: [
-        { name: 'Бот-старт', price: 'от 15 000 ₽', min: 15000, currency: 'RUB', term: 'от 3 дней', desc: 'Для заявок, визиток и простых воронок.', features: ['Меню, кнопки, сценарии', 'Заявки в чат или Google Sheets', 'Рассылки по базе', 'Деплой на сервер', '2 недели поддержки'], cta: 'Обсудить' },
-        { name: 'Бот-бизнес', price: 'от 40 000 ₽', min: 40000, currency: 'RUB', term: 'от 2 недель', desc: 'Полноценный продукт внутри Telegram.', features: ['Каталог, запись или воронка', 'Оплата: ЮKassa, Telegram Stars', 'Админ-панель', 'База данных и аналитика', 'AI-функции по желанию'], cta: 'Обсудить', hot: 'популярно' },
-        { name: 'Vibecode', price: 'индивидуально', term: 'по задаче', desc: '«Хочу штуку, которая…» — соберу.', features: ['Сайты и лендинги', 'Telegram Mini Apps', 'Парсеры и автоматизации', 'Интеграции с API', 'Прототип за пару дней'], cta: 'Рассказать идею' }
+        { name: 'Прототип', price: 'от 15 000 ₽', min: 15000, currency: 'RUB', term: 'от 3 дней', desc: 'Быстро проверить идею на рабочей версии.', features: ['Сайт, бот или веб-приложение', 'Рабочий функционал, а не макет', 'Деплой и ссылка, которой можно делиться', 'Исходный код остаётся у вас', '2 недели правок'], cta: 'Обсудить' },
+        { name: 'Продукт', price: 'от 40 000 ₽', min: 40000, currency: 'RUB', term: 'от 2 недель', desc: 'Полноценное решение под ваш процесс.', features: ['Сайт, бот, Android-приложение или расширение', 'Оплата, админка, база данных', 'Интеграции с API и AI', 'Тесты и автодеплой', 'Поддержка после запуска'], cta: 'Обсудить', hot: 'популярно' },
+        { name: 'Доработка', price: 'индивидуально', term: 'по задаче', desc: 'Проект уже есть — доведу до ума.', features: ['Новые функции', 'Рефакторинг и оптимизация', 'Docker, сервер, CI/CD', 'Исправление багов', 'Консультация по стеку'], cta: 'Рассказать о проекте' }
       ]
     },
 
+    // Преимущества (номер карточки подставляется шаблоном)
     benefits: {
       title: 'Почему со мной удобно',
       items: [
-        { t: 'Быстро', d: 'Первая рабочая версия — за дни, а не месяцы. Показываю прогресс по ходу, а не в конце.' },
-        { t: 'Под ключ', d: 'Код, сервер, домен, вебхуки, оплата. Вы получаете готового бота, а не архив с файлами.' },
+        { t: 'Быстро', d: 'Вайбкодинг с AI: первая рабочая версия за дни, а не месяцы. Прогресс видно по ходу, а не в конце.' },
+        { t: 'Под ключ', d: 'Код, сервер, домен, деплой. Вы получаете работающий продукт, а не архив с файлами.' },
         { t: 'Понятно', d: 'Без технического жаргона. Фиксирую задачу, срок и цену до старта работ.' },
         { t: 'Не пропадаю', d: 'Поддержка после запуска, правки и развитие проекта — на связи в Telegram.' }
       ]
     },
 
+    // Блог: обезличенные заглушки. iso — дата для <time datetime>, min — время чтения;
+    // пока статей нет, оба поля пустые и не выводятся
     blog: {
-      title: 'Пишу о ботах и не только',
+      title: 'Пишу о разработке и не только',
       all: 'Все статьи',
       min: 'мин',
       items: [
-        { date: '12 сен 2026', iso: '2026-09-12', min: 6, tag: 'Цены', title: 'Сколько стоит Telegram-бот в 2026 году', desc: 'Из чего складывается цена и где можно сэкономить без потери качества.' },
-        { date: '28 авг 2026', iso: '2026-08-28', min: 4, tag: 'Оплата', title: 'Stars или ЮKassa: чем принимать оплату в боте', desc: 'Сравниваю комиссии, удобство для клиента и подводные камни.' },
-        { date: '10 авг 2026', iso: '2026-08-10', min: 5, tag: 'Vibecode', title: 'Что такое vibecode и когда он подходит', desc: 'Быстрые прототипы с AI: где это работает, а где лучше не рисковать.' }
+        { date: 'Скоро', tag: 'Тема', title: 'Название статьи', desc: 'Краткое описание: о чём статья и чем она будет полезна.' },
+        { date: 'Скоро', tag: 'Тема', title: 'Название статьи', desc: 'Краткое описание: о чём статья и чем она будет полезна.' },
+        { date: 'Скоро', tag: 'Тема', title: 'Название статьи', desc: 'Краткое описание: о чём статья и чем она будет полезна.' }
       ]
     },
 
+    // Обо мне: абзацы и стек технологий
     about: {
       title: 'Привет! Я — тот, кто за pelotrum',
       p: [
-        'Разработчик. Делаю Telegram-ботов и небольшие сервисы, которые экономят людям часы рутины. Люблю, когда идея за пару дней превращается в штуку, которой реально пользуются.',
+        'Разработчик и вайбкодер. Собираю сайты, Telegram-ботов, Android-приложения и браузерные расширения — быстро, с помощью AI, но с нормальным кодом под капотом.',
         'Работаю напрямую, без посредников и менеджеров — вы общаетесь с тем, кто пишет код.'
       ],
-      stack: ['Python', 'aiogram', 'Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker', 'Mini Apps', 'LLM API'],
+      stack: ['Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Node.js', 'SQLite', 'Docker', 'Claude API'],
       photo: 'тут будет фото'
     },
 
+    // Блок контактов
     contact: {
       sticker: 'ответ в течение дня',
       title: 'Есть идея? Напишите.',
-      sub: 'Расскажите, что нужно автоматизировать или сделать — предложу решение, срок и цену.'
+      sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.'
     },
 
-    footer: { made: 'боты и vibecode', top: 'Наверх' },
+    footer: { made: 'vibecode', top: 'Наверх' },
 
+    // Страница 404 (одна на оба языка, английский текст берётся из en)
     notFound: {
       title: 'Страница не найдена — pelotrum',
       code: 'command not found',
@@ -153,8 +222,8 @@ export const content = {
   en: {
     locale: 'en_US',
     meta: {
-      title: 'pelotrum — Telegram bots and vibecode on demand',
-      description: 'Turnkey Telegram bot development: funnels, shops with payments, booking, AI assistants. Plus websites, Mini Apps and automations built around your idea.'
+      title: 'pelotrum — vibecode: websites, bots and apps built around your idea',
+      description: 'Turnkey vibecoding: websites, Telegram bots, Android apps, browser extensions and automations, built fast — from idea to a working product.'
     },
     a11y: {
       skip: 'Skip to content',
@@ -162,17 +231,18 @@ export const content = {
       menu: 'Menu',
       lang: 'Русская версия',
       chat: 'Sample conversation with a Telegram bot',
-      filters: 'Filter work'
+      filters: 'Filter work',
+      repo: 'Source code on GitHub'
     },
     nav: { work: 'Work', services: 'Services', benefits: 'Benefits', blog: 'Blog', about: 'About', contact: 'Contact', cta: 'Get in touch' },
 
     hero: {
-      kicker: 'Telegram bots · vibecode on demand',
-      title: 'I build bots that <span class="mark">do the work</span> for&nbsp;you',
-      sub: 'Turnkey Telegram bot development — from a simple funnel to a full shop with payments and an admin panel. Need something other than a bot? I’ll build a site, script or service around your idea.',
-      cta1: 'Discuss a project',
+      kicker: 'vibecode · from idea to working product',
+      title: 'I turn ideas into <span class="mark">working</span> products',
+      sub: 'Turnkey vibecoding: websites, Telegram bots, Android apps, browser extensions and automations. A working first version in days, then polished for production.',
+      cta1: 'Discuss your idea',
       cta2: 'See the work',
-      facts: [['3+ days', 'to the first version'], ['24/7', 'bots never sleep'], ['turnkey', 'idea to server']],
+      facts: [['3+ days', 'to a prototype'], ['any stack', 'web, bots, Android'], ['turnkey', 'idea to release']],
       note: 'live demo ↓'
     },
 
@@ -189,19 +259,54 @@ export const content = {
       ]
     },
 
-    ticker: ['Telegram Bot API', 'aiogram', 'Mini Apps', 'Telegram Stars', 'Stripe', 'AI assistants', 'Webhooks', 'PostgreSQL', 'Docker', 'vibecode'],
+    ticker: ['vibecode', 'Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Manifest V3', 'Claude API', 'SQLite', 'Docker', 'GitHub Actions'],
 
     work: {
       title: 'Selected work',
-      filters: { all: 'All', bot: 'Bots', miniapp: 'Mini Apps', web: 'Websites', auto: 'Automation' },
+      filters: { all: 'All', bot: 'Bots', app: 'Apps', ext: 'Extensions', web: 'Websites' },
       more: 'Details',
       items: [
-        { cat: 'bot', tag: 'Bot', glyph: '/menu', title: 'Coffee shop ordering bot', desc: 'Catalog, cart and in-chat payments. Orders go straight to the baristas’ work chat.', time: '14 days' },
-        { cat: 'bot', tag: 'Bot', glyph: '/book', title: 'Barbershop booking', desc: 'Free slots, client reminders and Google Calendar sync.', time: '7 days' },
-        { cat: 'miniapp', tag: 'Mini App', glyph: '◐ app', title: 'Fitness club Mini App', desc: 'Memberships, schedule and class booking — no separate app needed.', time: '3 weeks' },
-        { cat: 'auto', tag: 'Automation', glyph: '$ watch', title: 'Competitor price monitor', desc: 'An hourly scraper checks prices and sends alerts to Telegram.', time: '5 days' },
-        { cat: 'bot', tag: 'Bot', glyph: 'AI', title: 'AI support assistant', desc: 'Answers from the company knowledge base and hands off to a human when unsure.', time: '10 days' },
-        { cat: 'web', tag: 'Website', glyph: '&lt;/&gt;', title: 'Course launch landing', desc: 'Vibecoded over a weekend: page, signup form, leads go to a bot.', time: '3 days' }
+        {
+          cat: 'bot', tag: 'Bot', glyph: '/today',
+          title: 'Class schedule in Telegram',
+          desc: 'A study group’s timetable and substitutions right in the chat. Data comes from the official files; the bot pushes new substitutions and spots typos in them.',
+          stack: 'Python · aiogram · openpyxl'
+        },
+        {
+          cat: 'app', tag: 'Android', glyph: '✓ 7/7',
+          title: 'Flowbit — habit tracker',
+          desc: 'An offline app: flexible habits, timers, reminders with a “Done” button in the notification, home-screen widgets and analytics with a yearly heatmap.',
+          stack: 'Kotlin · Jetpack Compose · Room',
+          url: repo('Flowbit')
+        },
+        {
+          cat: 'bot', tag: 'Bot · AI', glyph: 'SWOT',
+          title: 'AI analyst for investors',
+          desc: 'Collects news and MOEX quotes for a company and uses Claude to produce SWOT, PESTEL, Porter’s five forces, multiples or a sector overview.',
+          stack: 'Python · Claude API · SQLite · Docker',
+          url: repo('analysis_for_invest_bot')
+        },
+        {
+          cat: 'bot', tag: 'Bot', glyph: '28d',
+          title: 'Become Butter — self-improvement bot',
+          desc: 'A 28-day program with scheduled daily micro-tasks and gamification: points and statuses from “raw cream” to “solid gold”.',
+          stack: 'Python · aiogram · APScheduler',
+          url: repo('become_butter_bot')
+        },
+        {
+          cat: 'ext', tag: 'Extension', glyph: '12:34',
+          title: 'Site Blocker — browser extension',
+          desc: 'Blocks distracting sites and sets daily time limits, including shared limits for groups of sites. Unblocking takes a 5-minute wait, so no impulse unlocks.',
+          stack: 'JavaScript · Manifest V3',
+          url: repo('site_blocker_extension')
+        },
+        {
+          cat: 'web', tag: 'Website', glyph: '~/pelotrum',
+          title: 'This website',
+          desc: 'A bilingual static site with light and dark themes: a zero-dependency build, structured data and auto-deploy to GitHub Pages.',
+          stack: 'HTML · CSS · JS · Node.js',
+          url: repo('Pelotrum')
+        }
       ]
     },
 
@@ -209,50 +314,50 @@ export const content = {
       title: 'Services & pricing',
       note: '* Prices are approximate. I’ll give an exact quote after a short call or chat — free of charge.',
       items: [
-        { name: 'Bot Start', price: 'from $200', min: 200, currency: 'USD', term: '3+ days', desc: 'For leads, business cards and simple funnels.', features: ['Menus, buttons, flows', 'Leads to a chat or Google Sheets', 'Broadcasts to your audience', 'Server deployment', '2 weeks of support'], cta: 'Discuss' },
-        { name: 'Bot Business', price: 'from $500', min: 500, currency: 'USD', term: '2+ weeks', desc: 'A full product inside Telegram.', features: ['Catalog, booking or funnel', 'Payments: Stripe, Telegram Stars', 'Admin panel', 'Database & analytics', 'Optional AI features'], cta: 'Discuss', hot: 'popular' },
-        { name: 'Vibecode', price: 'custom', term: 'per task', desc: '“I want a thing that…” — I’ll build it.', features: ['Websites & landings', 'Telegram Mini Apps', 'Scrapers & automations', 'API integrations', 'Prototype in a couple of days'], cta: 'Pitch your idea' }
+        { name: 'Prototype', price: 'from $200', min: 200, currency: 'USD', term: '3+ days', desc: 'Test your idea with a working version.', features: ['Website, bot or web app', 'Real functionality, not a mockup', 'Deployed, with a shareable link', 'You own the source code', '2 weeks of tweaks'], cta: 'Discuss' },
+        { name: 'Product', price: 'from $500', min: 500, currency: 'USD', term: '2+ weeks', desc: 'A complete solution for your workflow.', features: ['Website, bot, Android app or extension', 'Payments, admin panel, database', 'API and AI integrations', 'Tests and auto-deploy', 'Support after launch'], cta: 'Discuss', hot: 'popular' },
+        { name: 'Upgrade', price: 'custom', term: 'per task', desc: 'Already have a project? I’ll polish it.', features: ['New features', 'Refactoring and optimization', 'Docker, server, CI/CD', 'Bug fixes', 'Stack consulting'], cta: 'Tell me about it' }
       ]
     },
 
     benefits: {
       title: 'Why it’s easy to work with me',
       items: [
-        { t: 'Fast', d: 'A working first version in days, not months. You see progress along the way, not just at the end.' },
-        { t: 'Turnkey', d: 'Code, server, domain, webhooks, payments. You get a running bot, not a zip of files.' },
+        { t: 'Fast', d: 'AI-assisted vibecoding: a working first version in days, not months. You see progress along the way.' },
+        { t: 'Turnkey', d: 'Code, server, domain, deployment. You get a working product, not a zip of files.' },
         { t: 'Clear', d: 'No tech jargon. Scope, timeline and price are fixed before work starts.' },
         { t: 'Reliable', d: 'Support after launch, tweaks and further development — always reachable on Telegram.' }
       ]
     },
 
     blog: {
-      title: 'Notes on bots and beyond',
+      title: 'Notes on development and beyond',
       all: 'All posts',
       min: 'min',
       items: [
-        { date: 'Sep 12, 2026', iso: '2026-09-12', min: 6, tag: 'Pricing', title: 'How much does a Telegram bot cost in 2026', desc: 'What drives the price and where you can save without losing quality.' },
-        { date: 'Aug 28, 2026', iso: '2026-08-28', min: 4, tag: 'Payments', title: 'Stars vs Stripe: taking payments in a bot', desc: 'Comparing fees, client convenience and the hidden pitfalls.' },
-        { date: 'Aug 10, 2026', iso: '2026-08-10', min: 5, tag: 'Vibecode', title: 'What vibecode is and when it fits', desc: 'Fast AI-assisted prototypes: where they shine and where to stay careful.' }
+        { date: 'Coming soon', tag: 'Topic', title: 'Post title', desc: 'Short summary: what the post is about and why it’s useful.' },
+        { date: 'Coming soon', tag: 'Topic', title: 'Post title', desc: 'Short summary: what the post is about and why it’s useful.' },
+        { date: 'Coming soon', tag: 'Topic', title: 'Post title', desc: 'Short summary: what the post is about and why it’s useful.' }
       ]
     },
 
     about: {
       title: 'Hi! I’m the one behind pelotrum',
       p: [
-        'Developer. I build Telegram bots and small services that save people hours of routine. I love it when an idea turns into something people actually use within a couple of days.',
+        'Developer and vibecoder. I build websites, Telegram bots, Android apps and browser extensions — fast, with AI, but with solid code under the hood.',
         'I work directly, no middlemen or managers — you talk to the person who writes the code.'
       ],
-      stack: ['Python', 'aiogram', 'Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker', 'Mini Apps', 'LLM API'],
+      stack: ['Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Node.js', 'SQLite', 'Docker', 'Claude API'],
       photo: 'photo goes here'
     },
 
     contact: {
       sticker: 'reply within a day',
       title: 'Got an idea? Drop me a line.',
-      sub: 'Tell me what you want to automate or build — I’ll suggest a solution, timeline and price.'
+      sub: 'Tell me what you want to build or automate — I’ll suggest a solution, timeline and price.'
     },
 
-    footer: { made: 'bots & vibecode', top: 'Back to top' },
+    footer: { made: 'vibecode', top: 'Back to top' },
 
     notFound: {
       title: 'Page not found — pelotrum',

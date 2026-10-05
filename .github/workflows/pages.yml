@@ -6,18 +6,21 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:            # кнопка «Run workflow» для ручного запуска
 
+# Минимальные права: читать код, публиковать Pages, получать OIDC-токен для деплоя
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Если пуши идут подряд — старый незавершённый деплой отменяется, публикуется последний
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  # Сборка: Node без зависимостей → папка _site → артефакт для Pages
   build:
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +34,7 @@ jobs:
         with:
           path: _site
 
+  # Публикация собранного артефакта; ссылка на сайт появится в окружении github-pages
   deploy:
     needs: build
     runs-on: ubuntu-latest

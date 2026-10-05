@@ -1,19 +1,32 @@
-// pelotrum — поведение страницы. Весь контент уже есть в HTML,
-// скрипт только добавляет интерактив: тема, меню, фильтр работ, анимация чата.
+// =====================================================================
+// pelotrum — поведение страницы.
+// Весь контент уже есть в HTML, скрипт только добавляет интерактив:
+// тема, мобильное меню, граница шапки, фильтр работ, пауза анимаций.
+// Подключается с defer: DOM к моменту запуска уже разобран.
+// Без транспиляции: простой синтаксис, который понимают все современные браузеры
+// (async/await есть только в отключённом блоке демо-чата).
+// =====================================================================
 (function () {
   'use strict';
 
+  // --- общие помощники ---
   var root = document.documentElement;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  // localStorage может бросать исключение (приватный режим, запрет cookies) —
+  // оборачиваем, чтобы сайт работал и без сохранения настроек
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
-  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   var canObserve = 'IntersectionObserver' in window;
 
-  /* ---------- тема ---------- */
+  /* ---------------------------------------------------------------
+     Тема. Начальное значение ставит инлайн-скрипт в <head> (без вспышки),
+     здесь — только переключение и запоминание выбора.
+     --------------------------------------------------------------- */
   var themeBtn = $('#themeToggle');
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {
@@ -23,7 +36,10 @@
     });
   }
 
-  /* ---------- мобильное меню ---------- */
+  /* ---------------------------------------------------------------
+     Мобильное меню (бургер). Состояние — класс на <body> + aria-expanded
+     для скринридеров. Закрывается по клику на пункт и по Esc.
+     --------------------------------------------------------------- */
   var burger = $('#burger');
   var nav = $('#nav');
   function setMenu(open) {
@@ -38,11 +54,13 @@
     });
   }
 
-  /* ---------- граница шапки при скролле ---------- */
+  /* ---------------------------------------------------------------
+     Граница под шапкой, когда страница прокручена.
+     Вместо обработчика scroll (срабатывает на каждый пиксель) следим
+     через IntersectionObserver за невидимой меткой у верхнего края.
+     --------------------------------------------------------------- */
   var header = $('.header');
-  var sentinel = $('#main');
-  if (header && sentinel && canObserve) {
-    // наблюдаем за верхом страницы вместо обработчика scroll
+  if (header && canObserve) {
     var mark = document.createElement('div');
     mark.style.cssText = 'position:absolute;top:8px;height:1px;width:1px;pointer-events:none';
     document.body.prepend(mark);
@@ -51,7 +69,10 @@
     }).observe(mark);
   }
 
-  /* ---------- фильтр портфолио ---------- */
+  /* ---------------------------------------------------------------
+     Фильтр портфолио. Карточки уже в HTML, просто скрываем лишние
+     атрибутом hidden; aria-pressed отражает активную кнопку.
+     --------------------------------------------------------------- */
   var filters = $('#filters');
   if (filters) {
     filters.addEventListener('click', function (e) {
@@ -69,7 +90,10 @@
     });
   }
 
-  /* ---------- бегущая строка: пауза, когда не видна ---------- */
+  /* ---------------------------------------------------------------
+     Бегущая строка: ставим CSS-анимацию на паузу, когда лента вне экрана,
+     чтобы не тратить ресурсы на невидимую отрисовку.
+     --------------------------------------------------------------- */
   var ticker = $('.ticker');
   if (ticker && canObserve) {
     new IntersectionObserver(function (entries) {
@@ -77,78 +101,89 @@
     }).observe(ticker);
   }
 
-  /* ---------- демо-чат ---------- */
+  /* ---------------------------------------------------------------
+     Демо-чат с ботом — ОТКЛЮЧЁН вместе с разметкой (см. chatDemo в src/page.mjs).
+     Чтобы вернуть: раскомментировать блок ниже и вызов chatDemo(t) в шаблоне.
+
+     Как работает: диалог уже отрисован в HTML; когда чат появляется на экране,
+     скрипт проигрывает сценарий из <script id="chatData"> по кругу.
+     Пока чат не виден (прокручен или вкладка скрыта) — таймеры «замораживаются».
+     При prefers-reduced-motion анимации нет, остаётся готовый диалог.
+     --------------------------------------------------------------- */
+  /*
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chatBody = $('#chatBody');
   var chatData = $('#chatData');
-  if (!chatBody || !chatData || reduceMotion) return; // без анимации остаётся готовый диалог из HTML
+  if (chatBody && chatData && !reduceMotion) {
+    var msgs;
+    try { msgs = JSON.parse(chatData.textContent); } catch (e) { msgs = null; }
 
-  var msgs;
-  try { msgs = JSON.parse(chatData.textContent); } catch (e) { return; }
+    var visible = false;   // чат на экране и вкладка активна
+    var running = false;   // цикл уже запущен
+    var wake = null;       // продолжить ожидание, когда чат снова станет виден
 
-  var visible = false;   // чат на экране и вкладка активна
-  var running = false;
-  var wake = null;       // продолжить цикл, когда чат снова станет видим
+    // Пузырь сообщения; у бота — опциональная inline-клавиатура
+    var bubble = function (m) {
+      var el = document.createElement('div');
+      el.className = 'msg msg--' + m.from;
+      el.innerHTML = '<div class="msg__bubble">' + m.text + '</div>' +
+        (m.buttons ? '<div class="msg__kb">' + m.buttons.map(function (b) { return '<span>' + b + '</span>'; }).join('') + '</div>' : '');
+      return el;
+    };
 
-  function bubble(m) {
-    var el = document.createElement('div');
-    el.className = 'msg msg--' + m.from;
-    el.innerHTML = '<div class="msg__bubble">' + m.text + '</div>' +
-      (m.buttons ? '<div class="msg__kb">' + m.buttons.map(function (b) { return '<span>' + b + '</span>'; }).join('') + '</div>' : '');
-    return el;
-  }
+    // Пауза, которая не завершается, пока чат не виден
+    var wait = function (ms) {
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          if (visible) resolve();
+          else wake = function () { wake = null; resolve(); };
+        }, ms);
+      });
+    };
 
-  // пауза, которая «замораживается», пока чат не виден
-  function wait(ms) {
-    return new Promise(function (resolve) {
-      setTimeout(function check() {
-        if (visible) resolve();
-        else wake = function () { wake = null; resolve(); };
-      }, ms);
-    });
-  }
-
-  async function play() {
-    running = true;
-    for (;;) {
-      // прошлый диалог стираем только перед первым новым сообщением,
-      // чтобы чат никогда не висел пустым
-      var fresh = true;
-      for (var i = 0; i < msgs.length; i++) {
-        var m = msgs[i];
-        if (m.from === 'bot') {
-          var typing = bubble({ from: 'bot', text: '<span class="typing"><i></i><i></i><i></i></span>' });
-          chatBody.appendChild(typing);
-          await wait(900);
-          typing.remove();
-        } else {
-          await wait(700);
+    // Бесконечный сценарий: «печатает…» → сообщение → пауза → заново
+    var play = async function () {
+      running = true;
+      for (;;) {
+        var fresh = true;  // прошлый диалог стираем только перед первым новым сообщением
+        for (var i = 0; i < msgs.length; i++) {
+          var m = msgs[i];
+          if (m.from === 'bot') {
+            var typing = bubble({ from: 'bot', text: '<span class="typing"><i></i><i></i><i></i></span>' });
+            chatBody.appendChild(typing);
+            await wait(900);
+            typing.remove();
+          } else {
+            await wait(700);
+          }
+          if (fresh) {
+            chatBody.textContent = '';
+            chatBody.classList.add('is-animated'); // анимация появления — только для новых сообщений
+            fresh = false;
+          }
+          chatBody.appendChild(bubble(m));
+          await wait(500);
         }
-        if (fresh) {
-          chatBody.textContent = '';
-          chatBody.classList.add('is-animated'); // анимация только для новых сообщений
-          fresh = false;
-        }
-        chatBody.appendChild(bubble(m));
-        await wait(500);
+        await wait(4500);
       }
-      await wait(4500);
+    };
+
+    var setVisible = function (v) {
+      visible = v && !document.hidden;
+      if (visible && wake) wake();
+      if (visible && !running && msgs) play();
+    };
+
+    if (canObserve) {
+      var onScreen = false;
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        setVisible(onScreen);
+      }, { threshold: 0.3 }).observe(chatBody);
+      document.addEventListener('visibilitychange', function () { setVisible(onScreen); });
+    } else {
+      setVisible(true);
     }
   }
-
-  function setVisible(v) {
-    visible = v && !document.hidden;
-    if (visible && wake) wake();
-    if (visible && !running) play();
-  }
-
-  if (canObserve) {
-    var onScreen = false;
-    new IntersectionObserver(function (entries) {
-      onScreen = entries[0].isIntersecting;
-      setVisible(onScreen);
-    }, { threshold: 0.3 }).observe(chatBody);
-    document.addEventListener('visibilitychange', function () { setVisible(onScreen); });
-  } else {
-    setVisible(true);
-  }
+  */
 })();

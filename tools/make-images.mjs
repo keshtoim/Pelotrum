@@ -13,11 +13,13 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { content } from '../src/content.mjs';
 
+// Пути: корень проекта, куда кладём PNG, и временная папка для HTML-шаблонов картинок
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'src', 'static');
 const tmp = join(tmpdir(), 'pelotrum-images');
 mkdirSync(tmp, { recursive: true });
 
+// Ищем установленный Chromium-браузер: переменная BROWSER → Edge → Chrome (Windows/Linux/macOS)
 const browser = [
   process.env.BROWSER,
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -27,6 +29,7 @@ const browser = [
 ].find((p) => p && existsSync(p));
 if (!browser) throw new Error('Не найден Edge/Chrome. Укажите путь в переменной BROWSER.');
 
+// Шрифты подключаем прямо из src/fonts по file:// — картинка рисуется тем же Unbounded/JetBrains Mono, что и сайт
 const fontsUrl = pathToFileURL(join(root, 'src', 'fonts')).href;
 const fontFaces = `
 @font-face{font-family:U;font-weight:700;src:url('${fontsUrl}/unbounded-700-cyrillic.woff2')}
@@ -34,6 +37,7 @@ const fontFaces = `
 @font-face{font-family:M;font-weight:400 700;src:url('${fontsUrl}/jetbrains-mono-cyrillic.woff2')}
 @font-face{font-family:M;font-weight:400 700;src:url('${fontsUrl}/jetbrains-mono-latin.woff2');unicode-range:U+0000-00FF}`;
 
+// Рендер HTML в PNG заданного размера через headless-браузер (--screenshot)
 function shot(name, html, w, h) {
   const file = join(tmp, name + '.html');
   writeFileSync(file, html);
@@ -48,6 +52,7 @@ function shot(name, html, w, h) {
   console.log('ok:', png);
 }
 
+// OG-превью 1200×630 для каждого языка: логотип, заголовок первого экрана, подпись
 for (const lang of ['ru', 'en']) {
   const t = content[lang];
   shot(`og-${lang}`, `<!doctype html><meta charset="utf-8"><style>${fontFaces}
@@ -66,6 +71,7 @@ for (const lang of ['ru', 'en']) {
     <div class="k">// ${t.hero.kicker}</div>`, 1200, 630);
 }
 
+// Иконка для iOS 180×180: буква «p» на акцентном фоне (без скруглений — iOS скругляет сам)
 shot('apple-touch-icon', `<!doctype html><meta charset="utf-8"><style>${fontFaces}
   *{margin:0}body{width:180px;height:180px;background:#c2d48c;display:grid;place-items:center;font:700 120px/1 U;color:#17180f}</style>
   <span style="margin-top:-14px">p</span>`, 180, 180);

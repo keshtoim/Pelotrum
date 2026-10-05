@@ -1,30 +1,42 @@
 /* =========================================================
    Тема pelotrum: шрифты, формы и две палитры.
    Тёплый графит / бумага + приглушённый шалфейный акцент.
+   Компоненты (base.css) используют только эти переменные.
    Без атрибута data-theme (нет JS) действует тёмная палитра.
    ========================================================= */
 
+/* ---------- общее для обеих тем ---------- */
 :root {
+  /* шрифты: акцидентный для заголовков, текстовый, моноширинный (UI) и рукописный.
+     После каждого — системный запасной, пока свой не загрузился */
   --f-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
   --f-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
   --f-hand: 'Caveat', 'Comic Sans MS', cursive;
+
+  /* скругления: карточки, мелкие элементы, кнопки */
   --r: 16px; --r-sm: 8px; --r-btn: 12px;
 
+  /* жёсткая тень кнопок; цвет --hard задаётся палитрой */
   --btn-shadow: 3px 3px 0 var(--hard);
   --btn-shadow-hover: 5px 5px 0 var(--hard);
 }
 
 /* ---------- тёмная (по умолчанию) ---------- */
 :root, :root[data-theme="dark"] {
-  color-scheme: dark;
+  color-scheme: dark;                         /* тёмные скроллбары и системные контролы */
+
+  /* поверхности и текст */
   --bg: #141517; --bg-alt: #18191c; --surf: #1d1f22; --surf-2: #24262a;
   --fg: #e8e6e0; --mut: #9a9b97; --line: rgba(232,230,224,.09); --line-2: rgba(232,230,224,.18);
-  --acc: #c2d48c; --on-acc: #17180f; --acc-text: #c2d48c;
-  --hard: #c2d48c;
-  --tg: #7fb3d9;
-  --grid-line: rgba(232,230,224,.05);
 
+  /* акцент: заливка, текст на заливке, акцент как цвет текста */
+  --acc: #c2d48c; --on-acc: #17180f; --acc-text: #c2d48c;
+  --hard: #c2d48c;                            /* цвет жёстких теней: в тёмной теме — акцент */
+  --tg: #7fb3d9;                              /* голубой Telegram для иконок чата */
+  --grid-line: rgba(232,230,224,.05);         /* фоновая сетка первого экрана */
+
+  /* обводки компонентов: в тёмной теме — акцентные или мягкие */
   --btn-acc-border: var(--acc);
   --chip-active-border: var(--acc);
   --sticker-border: var(--bg); --sticker-shadow: none;
@@ -35,9 +47,11 @@
   --ticker-border: var(--acc);
   --hot-border: var(--acc);
 
+  /* демо-чат (сейчас выключен) */
   --chat-bg: #181b1f; --chat-head: #1f2226; --chat-dot: rgba(232,230,224,.05);
   --bubble-bot: #262a2f; --bubble-user: #c2d48c; --bubble-user-fg: #17180f; --kb-bg: rgba(255,255,255,.06);
 
+  /* обложки работ (cv0–cv5) и статей (pc0–pc2) */
   --cv0: #1f231a; --cv1: #1a1f25; --cv2: #251e1c; --cv3: #1f1c25; --cv4: #22221a; --cv5: #1a2321;
   --pc0: linear-gradient(135deg, #c2d48c 0 50%, #24262a 50%);
   --pc1: repeating-linear-gradient(-45deg, #36505f 0 18px, #2e4552 18px 36px);
@@ -47,13 +61,18 @@
 /* ---------- светлая ---------- */
 :root[data-theme="light"] {
   color-scheme: light;
+
+  /* поверхности и текст: «бумага» и почти чёрные чернила */
   --bg: #f3f1ec; --bg-alt: #ebe8e1; --surf: #fbfaf7; --surf-2: #f0ede6;
   --fg: #1f2022; --mut: #616366; --line: rgba(31,32,34,.1); --line-2: rgba(31,32,34,.2);
+
+  /* акцент светлее для заливок, темнее для текста — ради контраста */
   --acc: #cbdb9b; --on-acc: #1f2022; --acc-text: #55652a;
-  --hard: #1f2022;
+  --hard: #1f2022;                            /* в светлой теме тени чёрные, как в зине */
   --tg: #2f7fb6;
   --grid-line: rgba(31,32,34,.06);
 
+  /* обводки: везде цвет текста — характерный «нарисованный» контур */
   --btn-acc-border: var(--fg);
   --chip-active-border: var(--fg);
   --sticker-border: var(--fg); --sticker-shadow: 2px 2px 0 var(--fg);
@@ -64,9 +83,11 @@
   --ticker-border: var(--fg);
   --hot-border: var(--fg);
 
+  /* демо-чат (сейчас выключен): светлый, как в Telegram */
   --chat-bg: #e4e9dc; --chat-head: #fbfaf7; --chat-dot: rgba(31,32,34,.07);
   --bubble-bot: #ffffff; --bubble-user: #d9e7b4; --bubble-user-fg: #1f2022; --kb-bg: rgba(255,255,255,.75);
 
+  /* пастельные обложки */
   --cv0: #e7edd3; --cv1: #dfe7ee; --cv2: #efe3dc; --cv3: #e6e1ee; --cv4: #ecebd6; --cv5: #dcebe6;
   --pc0: linear-gradient(135deg, #cbdb9b 0 50%, #1f2022 50%);
   --pc1: repeating-linear-gradient(-45deg, #b9d3e6 0 18px, #a9c6dc 18px 36px);
