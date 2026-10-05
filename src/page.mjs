@@ -92,6 +92,44 @@ const msgHtml = (m) => `<div class="msg msg--${m.from}"><div class="msg__bubble"
 
 const kicker = (n, label) => `<p class="kicker">${n} / ${label}</p>`;
 
+// Микроразметка Schema.org: сайт, исполнитель и его услуги
+function jsonLd(lang, t) {
+  const url = site.url + LANGS[lang];
+  const id = (s) => site.url + '#' + s;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite', '@id': id('website'),
+        url, name: site.name, inLanguage: lang,
+        description: strip(t.meta.description),
+        publisher: { '@id': id('business') }
+      },
+      {
+        '@type': 'ProfessionalService', '@id': id('business'),
+        name: site.name, url,
+        description: strip(t.meta.description),
+        image: site.url + `og-${lang}.png`,
+        logo: site.url + 'apple-touch-icon.png',
+        email: site.email,
+        sameAs: [`https://t.me/${site.telegram}`],
+        areaServed: 'Worldwide',
+        availableLanguage: ['ru', 'en'],
+        knowsAbout: t.ticker,
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: strip(t.services.title),
+          itemListElement: t.services.items.map((s) => ({
+            '@type': 'Offer',
+            itemOffered: { '@type': 'Service', name: s.name, description: strip(s.desc) },
+            ...(s.min ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: s.min, priceCurrency: s.currency } } : {})
+          }))
+        }
+      }
+    ]
+  };
+}
+
 export function renderHome(lang, assets) {
   const t = assets.content[lang];
   const telegram = `https://t.me/${site.telegram}`;
@@ -251,14 +289,7 @@ ${header(lang, t)}
 </main>
 
 ${footer(lang, t)}
-<script type="application/ld+json">${JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: site.name,
-    url: site.url + LANGS[lang],
-    inLanguage: lang,
-    description: strip(t.meta.description)
-  })}</script>
+<script type="application/ld+json">${JSON.stringify(jsonLd(lang, t)).replace(/</g, '\\u003c')}</script>
 </body>
 </html>
 `;

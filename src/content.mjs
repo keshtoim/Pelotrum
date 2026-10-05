@@ -72,8 +72,8 @@ export const content = {
       title: 'Услуги и цены',
       note: '* Цены ориентировочные. Точную стоимость назову после короткого созвона или переписки — бесплатно.',
       items: [
-        { name: 'Бот-старт', price: 'от 15 000 ₽', term: 'от 3 дней', desc: 'Для заявок, визиток и простых воронок.', features: ['Меню, кнопки, сценарии', 'Заявки в чат или Google Sheets', 'Рассылки по базе', 'Деплой на сервер', '2 недели поддержки'], cta: 'Обсудить' },
-        { name: 'Бот-бизнес', price: 'от 40 000 ₽', term: 'от 2 недель', desc: 'Полноценный продукт внутри Telegram.', features: ['Каталог, запись или воронка', 'Оплата: ЮKassa, Telegram Stars', 'Админ-панель', 'База данных и аналитика', 'AI-функции по желанию'], cta: 'Обсудить', hot: 'популярно' },
+        { name: 'Бот-старт', price: 'от 15 000 ₽', min: 15000, currency: 'RUB', term: 'от 3 дней', desc: 'Для заявок, визиток и простых воронок.', features: ['Меню, кнопки, сценарии', 'Заявки в чат или Google Sheets', 'Рассылки по базе', 'Деплой на сервер', '2 недели поддержки'], cta: 'Обсудить' },
+        { name: 'Бот-бизнес', price: 'от 40 000 ₽', min: 40000, currency: 'RUB', term: 'от 2 недель', desc: 'Полноценный продукт внутри Telegram.', features: ['Каталог, запись или воронка', 'Оплата: ЮKassa, Telegram Stars', 'Админ-панель', 'База данных и аналитика', 'AI-функции по желанию'], cta: 'Обсудить', hot: 'популярно' },
         { name: 'Vibecode', price: 'индивидуально', term: 'по задаче', desc: '«Хочу штуку, которая…» — соберу.', features: ['Сайты и лендинги', 'Telegram Mini Apps', 'Парсеры и автоматизации', 'Интеграции с API', 'Прототип за пару дней'], cta: 'Рассказать идею' }
       ]
     },
@@ -184,8 +184,8 @@ export const content = {
       title: 'Services & pricing',
       note: '* Prices are approximate. I’ll give an exact quote after a short call or chat — free of charge.',
       items: [
-        { name: 'Bot Start', price: 'from $200', term: '3+ days', desc: 'For leads, business cards and simple funnels.', features: ['Menus, buttons, flows', 'Leads to a chat or Google Sheets', 'Broadcasts to your audience', 'Server deployment', '2 weeks of support'], cta: 'Discuss' },
-        { name: 'Bot Business', price: 'from $500', term: '2+ weeks', desc: 'A full product inside Telegram.', features: ['Catalog, booking or funnel', 'Payments: Stripe, Telegram Stars', 'Admin panel', 'Database & analytics', 'Optional AI features'], cta: 'Discuss', hot: 'popular' },
+        { name: 'Bot Start', price: 'from $200', min: 200, currency: 'USD', term: '3+ days', desc: 'For leads, business cards and simple funnels.', features: ['Menus, buttons, flows', 'Leads to a chat or Google Sheets', 'Broadcasts to your audience', 'Server deployment', '2 weeks of support'], cta: 'Discuss' },
+        { name: 'Bot Business', price: 'from $500', min: 500, currency: 'USD', term: '2+ weeks', desc: 'A full product inside Telegram.', features: ['Catalog, booking or funnel', 'Payments: Stripe, Telegram Stars', 'Admin panel', 'Database & analytics', 'Optional AI features'], cta: 'Discuss', hot: 'popular' },
         { name: 'Vibecode', price: 'custom', term: 'per task', desc: '“I want a thing that…” — I’ll build it.', features: ['Websites & landings', 'Telegram Mini Apps', 'Scrapers & automations', 'API integrations', 'Prototype in a couple of days'], cta: 'Pitch your idea' }
       ]
     },

@@ -83,7 +83,39 @@ ${pages.map(([l, q]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="$
   </url>`).join('\n')}
 </urlset>
 `);
-write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${site.url}sitemap.xml\n`);
+// robots.txt: индексация открыта всем, включая ИИ-ботов (перечислены явно)
+const aiBots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot',
+  'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot-Extended'];
+write('robots.txt', [
+  'User-agent: *', 'Allow: /', '',
+  '# ИИ-ассистенты и поисковики: доступ разрешён',
+  ...aiBots.map((b) => `User-agent: ${b}`), 'Allow: /', '',
+  `Sitemap: ${site.url}sitemap.xml`, ''
+].join('\n'));
+
+// llms.txt: краткая справка о сайте для ИИ (формат llmstxt.org)
+const plain = (s) => s.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+const ru = content.ru;
+write('llms.txt', `# ${site.name}
+
+> ${plain(ru.meta.description)}
+
+Сайт-визитка разработчика: Telegram-боты под ключ и vibecode — быстрые сайты, Mini Apps и автоматизации под задачу заказчика. Работа напрямую, без посредников.
+
+## Страницы
+
+- [Главная (RU)](${site.url}): услуги, цены, портфолио, контакты
+- [English version](${site.url}en/): то же на английском
+
+## Услуги
+
+${ru.services.items.map((s) => `- ${s.name} — ${plain(s.price)}, ${s.term}: ${plain(s.desc)}`).join('\n')}
+
+## Контакты
+
+- Telegram: https://t.me/${site.telegram}
+- Email: ${site.email}
+`);
 write('.nojekyll', '');
 
 // --- отчёт ---
