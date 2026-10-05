@@ -10,7 +10,7 @@ export const site = {
 
   name: 'pelotrum',
   telegram: 'username',          // без @
-  email: 'hello@pelotrum.dev',
+  email: 'hello@pelotrum.com',
 
   // ---------- на будущее: раскомментировать, когда понадобится ----------
 
@@ -21,10 +21,10 @@ export const site = {
   //        A     @    185.199.110.153
   //        A     @    185.199.111.153
   //        CNAME www  keshtoim.github.io
-  //   2) раскомментировать domain и поменять url выше на 'https://pelotrum.ru/'
-  //   3) GitHub → Settings → Pages → Custom domain: pelotrum.ru, затем включить Enforce HTTPS
+  //   2) раскомментировать domain и поменять url выше на 'https://pelotrum.com/'
+  //   3) GitHub → Settings → Pages → Custom domain: pelotrum.com, затем включить Enforce HTTPS
   // В корне домена robots.txt и llms.txt начнут работать для ботов.
-  // domain: 'pelotrum.ru',
+  // domain: 'pelotrum.com',
 
   // Подтверждение прав в поисковиках: значение content из выданного мета-тега.
   //   Google Search Console → «HTML-тег», Яндекс Вебмастер → «Мета-тег».
