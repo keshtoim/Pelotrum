@@ -343,7 +343,7 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 .benefit { padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; }
 
 .benefit__num {
-  display: inline-grid; place-items: center; width: 44px; height: 40px;
+  display: inline-flex; align-items: center; align-self: flex-start; height: 40px; padding: 0 10px; white-space: nowrap;
   background: var(--acc); color: var(--on-acc); border-radius: 8px; transform: rotate(-4deg);
   font-family: var(--f-mono); font-size: 13px; font-weight: 600;
 }
