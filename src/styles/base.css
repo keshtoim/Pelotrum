@@ -436,6 +436,8 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 @media (max-width: 600px) {
   .header__cta { display: none; }
   .grid--work, .grid--blog, .grid--benefits { grid-template-columns: 1fr; }
+  .work__cover { aspect-ratio: 16 / 7; }
+  .post__cover { aspect-ratio: 16 / 6; }
   .section__head--row { flex-direction: column; align-items: flex-start; }
   .hero__title .mark { white-space: normal; }
   .hero__title::after { display: none; }   /* на узком экране курсор переносится на отдельную строку */
