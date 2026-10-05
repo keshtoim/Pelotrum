@@ -11,16 +11,11 @@
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
 
-  var canObserve = 'IntersectionObserver' in window;
-
-  var themeBtn = $('#themeToggle');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', function () {
-      var next = root.dataset.theme === 'light' ? 'dark' : 'light';
-      root.dataset.theme = next;
-      store.set('theme', next);
-    });
-  }
+  $('#themeToggle').addEventListener('click', function () {
+    var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    store.set('theme', next);
+  });
 
   var burger = $('#burger');
   var nav = $('#nav');
@@ -28,24 +23,20 @@
     document.body.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', String(open));
   }
-  if (burger && nav) {
-    burger.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); burger.focus(); }
-    });
-  }
+  burger.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); burger.focus(); }
+  });
 
   // Граница шапки при прокрутке: наблюдаем за меткой у верха страницы вместо обработчика scroll на каждый пиксель.
   var header = $('.header');
-  if (header && canObserve) {
-    var mark = document.createElement('div');
-    mark.style.cssText = 'position:absolute;top:8px;height:1px;width:1px;pointer-events:none';
-    document.body.prepend(mark);
-    new IntersectionObserver(function (entries) {
-      header.classList.toggle('is-scrolled', !entries[0].isIntersecting);
-    }).observe(mark);
-  }
+  var mark = document.createElement('div');
+  mark.style.cssText = 'position:absolute;top:8px;height:1px;width:1px;pointer-events:none';
+  document.body.prepend(mark);
+  new IntersectionObserver(function (entries) {
+    header.classList.toggle('is-scrolled', !entries[0].isIntersecting);
+  }).observe(mark);
 
   var filters = $('#filters');
   if (filters) {
@@ -66,7 +57,7 @@
 
   // Бегущая строка вне экрана ставится на паузу, чтобы не тратить ресурсы на невидимую анимацию.
   var ticker = $('.ticker');
-  if (ticker && canObserve) {
+  if (ticker) {
     new IntersectionObserver(function (entries) {
       ticker.classList.toggle('is-paused', !entries[0].isIntersecting);
     }).observe(ticker);
@@ -138,16 +129,12 @@
       if (visible && !running && msgs) play();
     };
 
-    if (canObserve) {
-      var onScreen = false;
-      new IntersectionObserver(function (entries) {
-        onScreen = entries[0].isIntersecting;
-        setVisible(onScreen);
-      }, { threshold: 0.3 }).observe(chatBody);
-      document.addEventListener('visibilitychange', function () { setVisible(onScreen); });
-    } else {
-      setVisible(true);
-    }
+    var onScreen = false;
+    new IntersectionObserver(function (entries) {
+      onScreen = entries[0].isIntersecting;
+      setVisible(onScreen);
+    }, { threshold: 0.3 }).observe(chatBody);
+    document.addEventListener('visibilitychange', function () { setVisible(onScreen); });
   }
   */
 })();
