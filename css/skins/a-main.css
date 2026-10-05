@@ -1,0 +1,102 @@
+/* =========================================================
+   A — MAIN (спокойный гибрид)
+   Структура gopiton, характер deploychan в деталях:
+   жёсткие тени, стикеры и рукописные пометки — только на ключевых элементах.
+   Палитра приглушённая: тёплый графит / бумага + шалфейный акцент.
+   ========================================================= */
+
+:root {
+  --f-display: 'Unbounded', system-ui, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --f-hand: 'Caveat', cursive;
+  --h-weight: 700; --h-track: -.035em; --h-lh: 1.06;
+  --r: 16px; --r-sm: 8px; --r-btn: 12px;
+  --bw: 2px; --bc: var(--line-2); --bc-acc: var(--fg);
+  --btn-shadow: 3px 3px 0 var(--hard);
+  --btn-shadow-hover: 5px 5px 0 var(--hard);
+  --card-shadow-hover: 6px 6px 0 var(--hard);
+  --hand-display: block;
+}
+
+:root[data-theme="light"] {
+  --bg: #f3f1ec; --bg-alt: #ebe8e1; --surf: #fbfaf7; --surf-2: #f0ede6;
+  --fg: #1f2022; --mut: #67696c; --line: rgba(31,32,34,.1); --line-2: rgba(31,32,34,.2);
+  --acc: #cbdb9b; --on-acc: #1f2022; --acc-text: #5b6b30;
+  --hard: #1f2022;
+  --tg: #3d8fc6;
+  /* светлый чат в стиле Telegram */
+  --chat-bg: #e4e9dc; --chat-head: #fbfaf7;
+  --chat-pattern: radial-gradient(rgba(31,32,34,.07) 1px, transparent 1px) 0 0 / 16px 16px;
+  --bubble-bot: #ffffff; --bubble-user: #d9e7b4; --bubble-user-fg: #1f2022; --kb-bg: rgba(255,255,255,.75);
+  --cv0: #e7edd3; --cv1: #dfe7ee; --cv2: #efe3dc; --cv3: #e6e1ee; --cv4: #ecebd6; --cv5: #dcebe6;
+  --pc0: linear-gradient(135deg, #cbdb9b 0 50%, #1f2022 50%);
+  --pc1: repeating-linear-gradient(-45deg, #b9d3e6 0 18px, #a9c6dc 18px 36px);
+  --pc2: radial-gradient(circle at 32% 50%, #cbdb9b 0 22%, transparent 23%), radial-gradient(circle at 68% 50%, #e6b9a6 0 22%, transparent 23%), #f0ede6;
+}
+
+:root[data-theme="dark"] {
+  --bg: #141517; --bg-alt: #18191c; --surf: #1d1f22; --surf-2: #24262a;
+  --fg: #e8e6e0; --mut: #9a9b97; --line: rgba(232,230,224,.09); --line-2: rgba(232,230,224,.18);
+  --acc: #c2d48c; --on-acc: #17180f; --acc-text: #c2d48c;
+  --hard: #c2d48c;
+  --tg: #7fb3d9;
+  --chat-bg: #181b1f; --chat-head: #1f2226;
+  --chat-pattern: radial-gradient(rgba(232,230,224,.05) 1px, transparent 1px) 0 0 / 16px 16px;
+  --bubble-bot: #262a2f; --bubble-user: #c2d48c; --bubble-user-fg: #17180f; --kb-bg: rgba(255,255,255,.06);
+  --cv0: #1f231a; --cv1: #1a1f25; --cv2: #251e1c; --cv3: #1f1c25; --cv4: #22221a; --cv5: #1a2321;
+  --pc0: linear-gradient(135deg, #c2d48c 0 50%, #24262a 50%);
+  --pc1: repeating-linear-gradient(-45deg, #36505f 0 18px, #2e4552 18px 36px);
+  --pc2: radial-gradient(circle at 32% 50%, #c2d48c 0 22%, transparent 23%), radial-gradient(circle at 68% 50%, #c99b88 0 22%, transparent 23%), #1d1f22;
+}
+
+/* --- чат: светлый в светлой теме, тёмный в тёмной --- */
+.chat { border: 2px solid var(--fg); box-shadow: 10px 10px 0 var(--hard); }
+:root[data-theme="dark"] .chat { border-color: var(--line-2); }
+.msg--bot .msg__bubble { box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+
+/* --- типографика --- */
+.hero__title { font-size: clamp(34px, 5.6vw, 70px); }
+.hero__title .mark {
+  display: inline-block; background: var(--acc); color: var(--on-acc);
+  padding: 0 .14em .06em; border-radius: 8px; transform: rotate(-1.5deg);
+}
+.section__title { font-size: clamp(26px, 3.8vw, 46px); max-width: 18ch; }
+.cta-box__title { font-size: clamp(30px, 5.2vw, 64px); }
+.kicker { color: var(--acc-text); }
+.facts b { font-size: 18px; }
+
+/* --- элементы --- */
+.btn--ghost { box-shadow: none; }
+.btn--ghost:hover { box-shadow: 3px 3px 0 var(--hard); border-color: var(--fg); }
+:root[data-theme="dark"] .btn--acc { --bc-acc: var(--acc); }
+
+.logo__mark { border: 2px solid var(--fg); transform: rotate(-6deg); font-weight: 700; }
+:root[data-theme="dark"] .logo__mark { border-color: var(--acc); }
+
+.ticker { --ticker-bg: var(--acc); --ticker-fg: var(--on-acc); --ticker-dot: var(--on-acc); border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg); }
+:root[data-theme="dark"] .ticker { border-color: var(--acc); }
+.ticker__track { font-size: 17px; }
+
+.chip.is-active { background: var(--acc); color: var(--on-acc); border-color: var(--fg); }
+:root[data-theme="dark"] .chip.is-active { border-color: var(--acc); }
+
+.work:hover, .price:hover, .benefit:hover, a.card:hover { border-color: var(--fg); }
+:root[data-theme="dark"] .work:hover, :root[data-theme="dark"] .price:hover,
+:root[data-theme="dark"] .benefit:hover, :root[data-theme="dark"] a.card:hover { border-color: var(--acc); }
+.work__glyph { color: var(--fg); }
+
+.sticker { border: 2px solid var(--fg); transform: rotate(4deg); box-shadow: 2px 2px 0 var(--fg); }
+:root[data-theme="dark"] .sticker { border-color: var(--bg); box-shadow: none; }
+
+.price--hot { --hot-border: var(--fg); border-width: 2px; box-shadow: 6px 6px 0 var(--hard); }
+:root[data-theme="dark"] .price--hot { --hot-border: var(--acc); }
+
+.benefit__num { display: inline-grid; place-items: center; width: 40px; height: 40px; background: var(--acc); color: var(--on-acc); border-radius: 8px; transform: rotate(-4deg); font-size: 13px; }
+
+.photo-ph { --photo-bg: var(--acc); --photo-fg: var(--on-acc); border: 2px solid var(--fg); box-shadow: 8px 8px 0 var(--hard); }
+
+.cta-box { --cta-bg: var(--fg); --cta-fg: var(--bg); --cta-mut: color-mix(in srgb, var(--bg) 65%, var(--fg)); --cta-line: color-mix(in srgb, var(--bg) 40%, transparent); border: 0; }
+.cta-box .btn--acc { box-shadow: 4px 4px 0 var(--bg); border-color: var(--acc); }
+.cta-box .btn--ghost:hover { border-color: var(--bg); box-shadow: 3px 3px 0 var(--bg); }
+.sticker--cta { transform: rotate(-5deg); border-color: var(--bg); box-shadow: none; }
