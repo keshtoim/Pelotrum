@@ -1,6 +1,6 @@
 // Запускается вручную после смены заголовка, цветов или шрифтов; PNG коммитятся, потому что в CI нет браузера.
 
-import { writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
+import { writeFileSync, readFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -28,6 +28,8 @@ const fontFaces = `
 @font-face{font-family:M;font-weight:400 700;src:url('${fontsUrl}/jetbrains-mono-cyrillic.woff2')}
 @font-face{font-family:M;font-weight:400 700;src:url('${fontsUrl}/jetbrains-mono-latin.woff2');unicode-range:U+0000-00FF}`;
 
+const logo = (w, h) => readFileSync(join(out, 'logo.svg'), 'utf8').replace(/width="\d+" height="\d+"/, `width="${w}" height="${h}"`);
+
 function shot(name, html, w, h) {
   const file = join(tmp, name + '.html');
   writeFileSync(file, html);
@@ -50,17 +52,16 @@ for (const lang of ['ru', 'en']) {
       background-image:linear-gradient(rgba(232,230,224,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(232,230,224,.05) 1px,transparent 1px);background-size:48px 48px;
       display:flex;flex-direction:column;justify-content:space-between}
     .top{display:flex;align-items:center;gap:16px;font:700 34px U}
-    .mk{width:56px;height:56px;display:grid;place-items:center;background:#c2d48c;color:#17180f;border:3px solid #c2d48c;border-radius:12px;transform:rotate(-6deg)}
     .top small{font:400 28px M;color:#9a9b97}
     h1{font:700 76px/1.08 U;letter-spacing:-.035em;max-width:16ch}
     .mark{display:inline-block;background:#c2d48c;color:#17180f;padding:0 .14em .06em;border-radius:10px;transform:rotate(-1.5deg)}
     .k{color:#c2d48c;font-size:26px}</style>
-    <div class="top"><span class="mk">p</span><span><small>~/</small>pelotrum</span></div>
+    <div class="top">${logo(52, 58)}<span><small>~/</small>pelotrum</span></div>
     <h1>${t.hero.title}</h1>
     <div class="k">// ${t.hero.kicker}</div>`, 1200, 630);
 }
 
 // Без скруглений: iOS скругляет иконку сам.
 shot('apple-touch-icon', `<!doctype html><meta charset="utf-8"><style>${fontFaces}
-  *{margin:0}body{width:180px;height:180px;background:#c2d48c;display:grid;place-items:center;font:700 120px/1 U;color:#17180f}</style>
-  <span style="margin-top:-14px">p</span>`, 180, 180);
+  *{margin:0}body{width:180px;height:180px;background:#141517;display:grid;place-items:center}</style>
+  ${logo(104, 115)}`, 180, 180);
