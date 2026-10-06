@@ -146,7 +146,6 @@ function jsonLd(lang, t) {
         description: strip(t.meta.description),
         image: site.url + `og-${lang}.png`,
         logo: site.url + 'apple-touch-icon.png',
-        email: site.email,
         sameAs: [`https://t.me/${site.telegram}`, site.github],
         areaServed: 'Worldwide',
         availableLanguage: ['ru', 'en'],
@@ -318,7 +317,6 @@ ${header(lang, t)}
         <p class="cta-box__sub">${t.contact.sub}</p>
         <div class="cta-box__links">
           <a href="${telegram}" class="btn btn--acc btn--lg" target="_blank" rel="noopener">${icons.tg} Telegram · @${site.telegram}</a>
-          <a href="mailto:${site.email}" class="btn btn--ghost btn--lg">${site.email}</a>
         </div>
       </div>
     </div>

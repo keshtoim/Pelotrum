@@ -4,7 +4,6 @@ export const site = {
 
   name: 'pelotrum',
   telegram: 'username',          // без @ (заглушка)
-  email: 'hello@pelotrum.com',   // заглушка
   github: 'https://github.com/keshtoim',
 
   // Оператор персональных данных и исполнитель услуг (самозанятый) — выводится в Политике и Условиях.

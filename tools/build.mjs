@@ -120,7 +120,6 @@ ${ru.services.items.map((s) => `- ${s.name} — ${plain(s.price)}, ${s.term}: ${
 ## Контакты
 
 - Telegram: https://t.me/${site.telegram}
-- Email: ${site.email}
 - GitHub: ${site.github}
 `);
 
