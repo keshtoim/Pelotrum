@@ -403,6 +403,17 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 .footer__copy { color: var(--mut); font-size: 14px; }
 .footer__copy::before { content: 'exit 0 · '; color: var(--acc-text); font-family: var(--f-mono); }
 
+.cursor-light, .cursor-glow {
+  position: fixed; left: 0; top: 0; z-index: 60;
+  border-radius: 50%; pointer-events: none;
+  mix-blend-mode: var(--glow-blend);
+  opacity: 0; transition: opacity .4s;
+  will-change: transform;
+}
+.cursor-light { width: 440px; height: 440px; margin: -220px 0 0 -220px; background: radial-gradient(circle, var(--glow-soft), transparent 70%); }
+.cursor-glow { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: radial-gradient(circle, var(--glow-core), transparent 70%); }
+.cursor-on .cursor-light, .cursor-on .cursor-glow { opacity: 1; }
+
 .footer__legal { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; }
 .footer__legal a { color: var(--mut); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-2); }
 .footer__legal a:hover { color: var(--fg); }

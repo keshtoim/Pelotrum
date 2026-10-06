@@ -63,6 +63,35 @@
     }).observe(ticker);
   }
 
+  // Свечение курсора только для мыши: на тач-экранах курсора нет, а при reduced motion эффект отвлекает.
+  if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var glow = document.createElement('div');
+    var light = document.createElement('div');
+    glow.className = 'cursor-glow';
+    light.className = 'cursor-light';
+    document.body.append(light, glow);
+
+    var x = 0, y = 0, gx = 0, gy = 0, lx = 0, ly = 0, frame = 0;
+    var move = function () {
+      // Ореол догоняет курсор медленнее ядра — получается короткий тусклый шлейф.
+      gx += (x - gx) * 0.35; gy += (y - gy) * 0.35;
+      lx += (x - lx) * 0.12; ly += (y - ly) * 0.12;
+      glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px)';
+      light.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
+      // Цикл останавливается, когда ореол догнал курсор, чтобы не крутить кадры впустую.
+      frame = Math.abs(x - lx) + Math.abs(y - ly) > 0.5 ? requestAnimationFrame(move) : 0;
+    };
+
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      if (!root.classList.contains('cursor-on')) { gx = lx = e.clientX; gy = ly = e.clientY; }
+      x = e.clientX; y = e.clientY;
+      root.classList.add('cursor-on');
+      if (!frame) frame = requestAnimationFrame(move);
+    }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function () { root.classList.remove('cursor-on'); });
+  }
+
   /*
   Демо-чат отключён вместе с разметкой (chatDemo в src/page.mjs).
   Диалог уже отрисован в HTML; скрипт проигрывает сценарий из #chatData по кругу,
