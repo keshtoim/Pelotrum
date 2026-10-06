@@ -82,7 +82,6 @@
 
     var pointer = { x: 0, y: 0 };
     var trail = [];
-    var hue = 0;
     var frame = 0;
 
     var draw = function () {
@@ -91,15 +90,15 @@
       trail.pop();
       trail.unshift({ x: head.x + (pointer.x - head.x) * 0.6, y: head.y + (pointer.y - head.y) * 0.6 });
 
-      hue = (hue + 2) % 360;
-      // Приглушённая радуга: насыщенность и светлота подобраны под тему, чтобы след не спорил с палитрой.
-      var color = root.dataset.theme === 'light' ? 'hsl(' + hue + ',60%,52%)' : 'hsl(' + hue + ',70%,68%)';
+      // --acc-text, а не --acc: светлая заливка акцента почти не видна на светлом фоне; цвет читается каждый кадр, чтобы следовать за сменой темы.
+      var color = getComputedStyle(root).getPropertyValue('--acc-text').trim();
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       ctx.beginPath();
       ctx.lineCap = ctx.lineJoin = 'round';
-      ctx.lineWidth = 6;
+      ctx.lineWidth = 5;
+      ctx.globalAlpha = 0.45;
       ctx.strokeStyle = ctx.shadowColor = color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 24;
       ctx.moveTo(trail[0].x, trail[0].y);
       for (var i = 1; i < trail.length - 1; i++) {
         ctx.quadraticCurveTo(trail[i].x, trail[i].y, (trail[i].x + trail[i + 1].x) / 2, (trail[i].y + trail[i + 1].y) / 2);
