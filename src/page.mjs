@@ -16,6 +16,10 @@ const icons = {
   tg: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13 1.5 11.5c-1-.3-1.1-1 .2-1.5L20.6 2.8c.9-.3 1.6.2 1.3 1.5z"/></svg>'
 };
 
+// Знак: контур медиатора, точка и мяч. Зазор вокруг мяча вырезан маской, а не закрашен фоном,
+// поэтому знак корректно лежит на любой подложке; id маски уникален, знак на странице дважды.
+const mark = (id) => `<svg class="logo__mark" viewBox="10 4 46 51" fill="currentColor" aria-hidden="true"><mask id="lm-${id}"><rect x="0" y="0" width="64" height="64" fill="#fff"/><circle cx="48" cy="12" r="8.5" fill="#000"/></mask><path d="M14 17C14 12 19 10 32 10C45 10 50 12 50 17C50 30 41 45 35 51C33.5 52.5 30.5 52.5 29 51C23 45 14 30 14 17Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" mask="url(#lm-${id})"/><circle cx="32" cy="23" r="4"/><circle cx="48" cy="12" r="6.5"/></svg>`;
+
 // Тема выставляется синхронно до первой отрисовки, иначе страница мигнёт тёмной палитрой.
 const themeScript = `<script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t})()</script>`;
 
@@ -74,7 +78,7 @@ function header(lang, t, path = '') {
   return `<header class="header">
   <div class="container header__inner">
     <a href="${home}" class="logo" aria-label="${site.name}">
-      <span class="logo__mark" aria-hidden="true">p</span>
+      ${mark('header')}
       <span class="logo__word">${site.name}</span>
     </a>
     <nav class="nav" id="nav" aria-label="${esc(t.a11y.menu)}">
@@ -95,7 +99,7 @@ function header(lang, t, path = '') {
 function footer(lang, t) {
   return `<footer class="footer">
   <div class="container footer__inner">
-    <a href="${BASE + LANGS[lang]}" class="logo logo--sm"><span class="logo__mark" aria-hidden="true">p</span><span class="logo__word">${site.name}</span></a>
+    <a href="${BASE + LANGS[lang]}" class="logo logo--sm">${mark('footer')}<span class="logo__word">${site.name}</span></a>
     <span class="footer__copy">© ${new Date().getFullYear()} ${site.name} · ${t.footer.made}</span>
     <nav class="footer__legal">${['privacy', 'terms'].map((k) => `<a href="${BASE + LANGS[lang]}${k}/">${t.footer[k]}</a>`).join('')}</nav>
     <a href="#top" class="link-arrow">${t.footer.top}</a>

@@ -138,18 +138,11 @@ a.card:hover, .work:hover, .benefit:hover, .price:hover {
 .header__inner { display: flex; align-items: center; gap: 24px; height: var(--header-h); }
 
 .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 700; }
-.logo__mark {
-  display: grid; place-items: center;
-  width: 34px; height: 34px;
-  background: var(--acc); color: var(--on-acc);
-  border: 2px solid var(--logo-border); border-radius: var(--r-sm);
-  font-size: 20px; line-height: 1;
-  transform: rotate(-6deg);
-}
+.logo__mark { width: 34px; height: 34px; flex-shrink: 0; color: var(--acc-text); }
 .logo__word { font-size: 19px; letter-spacing: -.02em; }
 .logo__word::before { content: '~/'; color: var(--mut); font-family: var(--f-mono); font-weight: 400; font-size: .85em; }
 .logo__word::after { content: '_'; color: var(--acc-text); animation: caret 1.1s steps(1) infinite; }
-.logo--sm .logo__mark { width: 28px; height: 28px; font-size: 16px; }
+.logo--sm .logo__mark { width: 28px; height: 28px; }
 .logo--sm .logo__word { font-size: 16px; }
 
 .nav { display: flex; gap: 4px; margin-left: auto; }

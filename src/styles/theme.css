@@ -27,7 +27,6 @@
   --chip-active-border: var(--acc);
   --sticker-border: var(--bg); --sticker-shadow: none;
   --card-hover-border: var(--acc);
-  --logo-border: var(--acc);
   --facts-border: var(--line-2);
   --chat-border: var(--line-2);
   --ticker-border: var(--acc);
@@ -57,7 +56,6 @@
   --chip-active-border: var(--fg);
   --sticker-border: var(--fg); --sticker-shadow: 2px 2px 0 var(--fg);
   --card-hover-border: var(--fg);
-  --logo-border: var(--fg);
   --facts-border: var(--fg);
   --chat-border: var(--fg);
   --ticker-border: var(--fg);
