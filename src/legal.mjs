@@ -115,30 +115,54 @@ export const legal = {
       title: 'Публичная оферта на оказание услуг',
       updated: updated.ru,
       sections: [
-        { h: '1. Предмет и порядок работы', blocks: [
-          `1.1. Исполнитель — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, e-mail: ${site.email} — оказывает услуги по разработке сайтов, Telegram-ботов, мобильных приложений, браузерных расширений и автоматизаций, а Заказчик принимает и оплачивает их на условиях этой Оферты.`,
-          '1.2. Работа ведётся по согласованному техническому заданию или брифу. Существенные изменения требований фиксируются письменно, в переписке.',
-          '1.3. Акцептом Оферты считается внесение Заказчиком предоплаты. С этого момента начинается работа.'
+        { h: '1. Общие положения и предмет', blocks: [
+          `1.1. Оферта — предложение ${name}, плательщика налога на профессиональный доход (самозанятого), ИНН ${inn}, e-mail: ${site.email} (далее — Исполнитель), заключить договор возмездного оказания услуг (гл. 39 ГК РФ) на изложенных ниже условиях с любым, кто отзовётся (п. 2 ст. 437 ГК РФ).`,
+          '1.2. Исполнитель оказывает услуги по разработке программного обеспечения: сайтов, Telegram-ботов, мобильных приложений, браузерных расширений и автоматизаций.',
+          '1.3. Состав работ, результат, срок и стоимость по каждому заказу определяются в Заказе — техническом задании или брифе, согласованном сторонами в переписке (e-mail, Telegram). Заказ является неотъемлемой частью договора. Существенные изменения требований также согласуются в переписке.',
+          '1.4. Цены на сайте носят справочный характер. Стоимость конкретной работы фиксируется в Заказе.'
         ] },
-        { h: '2. Оплата и передача прав', blocks: [
-          '2.1. Работа начинается после предоплаты в согласованном размере, по умолчанию 50% или 100%. На каждую оплату Исполнитель формирует чек в приложении «Мой налог».',
-          '2.2. Исключительные права на результат (исходный код, сборки, графику) переходят к Заказчику в полном объёме только после 100% оплаты.',
-          '2.3. Если Заказчик расторгает договор, Исполнитель удерживает оплату за объём работ, фактически выполненный на момент уведомления, остаток предоплаты возвращается.'
+        { h: '2. Акцепт и заключение договора', blocks: [
+          '2.1. Акцептом Оферты является оплата Заказчиком предоплаты по согласованному Заказу (п. 3 ст. 438 ГК РФ). С этого момента договор считается заключённым в письменной форме (п. 3 ст. 434 ГК РФ).',
+          '2.2. Исполнитель приступает к работе после поступления предоплаты.'
         ] },
-        { h: '3. Правки и приёмка', blocks: [
-          '3.1. В стоимость входит до 2 итераций правок в рамках технического задания, если в тарифе не указано иное.',
-          '3.2. Дополнительные правки и смена концепции оплачиваются отдельно — по договорённости или по почасовой ставке Исполнителя.',
-          '3.3. Заказчик принимает работу или присылает мотивированный письменный отказ в течение 3 рабочих дней после сдачи этапа. Если отказа нет, работа считается принятой в полном объёме и надлежащего качества.'
+        { h: '3. Стоимость и оплата', blocks: [
+          '3.1. Если Заказом не предусмотрено иное, предоплата составляет 50% или 100% стоимости Заказа, остаток оплачивается после приёмки результата.',
+          '3.2. На каждую оплату Исполнитель формирует чек в приложении «Мой налог» и передаёт его Заказчику (ст. 14 Федерального закона от 27.11.2018 № 422-ФЗ). Исполнитель применяет налог на профессиональный доход, НДС не облагается.',
+          '3.3. Работы сверх Заказа выполняются и оплачиваются только после отдельного согласования.'
         ] },
-        { h: '4. Ответственность сторон', blocks: [
-          '4.1. Исполнитель гарантирует соответствие результата техническому заданию, но не отвечает за рыночные факторы и коммерческие показатели Заказчика, а также за сбои сторонних сервисов: хостинга, Telegram, платёжных систем, API искусственного интеллекта.',
-          '4.2. За законность, достоверность и авторские права на материалы, переданные Заказчиком (тексты, логотипы, медиа), отвечает Заказчик.',
-          '4.3. Поддержка и сопровождение проекта после сдачи оказываются по отдельному соглашению, если они не входят в тариф.'
+        { h: '4. Сроки и коммуникация', blocks: [
+          '4.1. Сроки выполнения указываются в Заказе и соразмерно продлеваются, если Заказчик задерживает материалы, доступы или обратную связь.',
+          '4.2. Рабочее общение ведётся в согласованных каналах (e-mail, Telegram) в рабочие дни.',
+          '4.3. Исполнитель вправе использовать при разработке инструменты искусственного интеллекта и отвечает за результат.'
         ] },
-        { h: '5. Сроки и коммуникация', blocks: [
-          '5.1. Сроки соразмерно продлеваются, если Заказчик задерживает материалы, доступы или обратную связь.',
-          '5.2. Рабочее общение ведётся в согласованных каналах (e-mail, Telegram) в рабочие дни.',
-          `5.3. Персональные данные Заказчика обрабатываются в соответствии с ${privacyLink.ru}.`
+        { h: '5. Правки, сдача и приёмка', blocks: [
+          '5.1. В стоимость входит до 2 итераций правок в рамках Заказа, если в тарифе или Заказе не указано иное. Дополнительные правки и смена концепции оплачиваются отдельно.',
+          '5.2. Заказчик проверяет результат и в течение 3 рабочих дней после сдачи этапа принимает его или направляет мотивированный отказ в переписке. Если отказ не направлен, этап считается принятым.',
+          '5.3. Приёмка не лишает Заказчика-потребителя права предъявить требования в связи с недостатками результата в порядке и сроки, установленные законом.'
+        ] },
+        { h: '6. Права на результат', blocks: [
+          '6.1. Исключительное право на результат, созданный по Заказу (исходный код, сборки, графику), переходит к Заказчику в полном объёме с момента полной оплаты Заказа (ст. 1296 ГК РФ). До этого момента право принадлежит Исполнителю.',
+          '6.2. Сторонние библиотеки, сервисы и материалы используются на условиях их лицензий; права на них Заказчику не передаются.',
+          '6.3. Исполнитель вправе упоминать проект в портфолио без раскрытия конфиденциальной информации, если стороны не договорились иначе.'
+        ] },
+        { h: '7. Ответственность сторон', blocks: [
+          '7.1. За неисполнение или ненадлежащее исполнение обязательств стороны отвечают в соответствии с законодательством Российской Федерации.',
+          '7.2. Исполнитель гарантирует соответствие результата Заказу, но не отвечает за рыночные факторы и коммерческие показатели Заказчика, а также за сбои сторонних сервисов (хостинга, Telegram, платёжных систем, API искусственного интеллекта), не зависящие от Исполнителя.',
+          '7.3. За законность, достоверность и права на материалы, переданные Заказчиком (тексты, логотипы, медиа), отвечает Заказчик.',
+          '7.4. Поддержка и сопровождение после сдачи оказываются по отдельному соглашению, если они не входят в тариф.'
+        ] },
+        { h: '8. Отказ от договора', blocks: [
+          '8.1. Заказчик вправе отказаться от договора в любое время, оплатив Исполнителю фактически понесённые им расходы (п. 1 ст. 782 ГК РФ, ст. 32 Закона РФ «О защите прав потребителей»). Остаток предоплаты возвращается.',
+          '8.2. Исполнитель вправе отказаться от договора лишь при условии полного возмещения Заказчику убытков (п. 2 ст. 782 ГК РФ).'
+        ] },
+        { h: '9. Персональные данные и конфиденциальность', blocks: [
+          `9.1. Персональные данные Заказчика обрабатываются в соответствии с ${privacyLink.ru}. Стороны согласились, что данные, связанные с договором, хранятся в течение 3 лет после его исполнения для защиты прав сторон (ст. 196 ГК РФ), после чего уничтожаются.`,
+          '9.2. Стороны не раскрывают третьим лицам непубличную информацию, полученную друг от друга при исполнении договора.'
+        ] },
+        { h: '10. Заключительные положения', blocks: [
+          '10.1. Если Заказчик — потребитель, условия Оферты применяются в части, не противоречащей Закону РФ «О защите прав потребителей»; условия, ущемляющие его права, не применяются (ст. 16 этого закона).',
+          '10.2. Споры решаются переговорами, а при недостижении согласия — в суде в соответствии с законодательством Российской Федерации.',
+          '10.3. Исполнитель вправе изменять Оферту. К заключённым договорам применяется редакция, действовавшая на момент акцепта.'
         ] }
       ]
     },
@@ -146,30 +170,54 @@ export const legal = {
       title: 'Terms of Service',
       updated: updated.en,
       sections: [
-        { h: '1. Scope and workflow', blocks: [
-          `1.1. The Service Provider — ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email} — develops websites, Telegram bots, mobile apps, browser extensions and automations, and the Client accepts and pays for them under these Terms.`,
-          '1.2. Work follows an agreed specification or project brief. Any significant change in requirements is confirmed in writing in the conversation.',
-          '1.3. These Terms are accepted when the Client makes the advance payment. Work starts at that moment.'
+        { h: '1. General provisions and scope', blocks: [
+          `1.1. These Terms are a public offer (Article 437(2) of the Civil Code of the Russian Federation) by ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email} (the “Service Provider”), to conclude a paid services agreement (Chapter 39 of the Civil Code) on the terms below with anyone who accepts it.`,
+          '1.2. The Service Provider develops software: websites, Telegram bots, mobile apps, browser extensions and automations.',
+          '1.3. The scope, deliverables, timeline and price of each job are set out in an Order — a specification or brief agreed by the parties in correspondence (e-mail, Telegram). The Order forms an integral part of the agreement. Significant changes in requirements are also agreed in correspondence.',
+          '1.4. Prices on the website are for reference only. The price of each job is fixed in the Order.'
         ] },
-        { h: '2. Payment and intellectual property', blocks: [
-          '2.1. Work starts after an advance payment of the agreed amount, by default 50% or 100%. For each payment the Service Provider issues a receipt via the “My Tax” app.',
-          '2.2. Exclusive rights to the result (source code, builds, graphics) pass to the Client in full only after 100% payment.',
-          '2.3. If the Client terminates the agreement, the Service Provider retains payment for the work actually completed by the time of notice; the rest of the advance is refunded.'
+        { h: '2. Acceptance and conclusion', blocks: [
+          '2.1. These Terms are accepted when the Client makes the advance payment for an agreed Order (Article 438(3) of the Civil Code). From that moment the agreement is deemed concluded in writing (Article 434(3) of the Civil Code).',
+          '2.2. The Service Provider starts work after the advance payment is received.'
         ] },
-        { h: '3. Revisions and acceptance', blocks: [
-          '3.1. The price includes up to 2 rounds of revisions within the specification, unless the plan states otherwise.',
-          '3.2. Additional revisions or a change of concept are paid separately — as agreed or at the Service Provider’s hourly rate.',
-          '3.3. The Client accepts the work or sends a reasoned written rejection within 3 business days after a milestone is delivered. If no rejection is received, the work is deemed accepted in full and of proper quality.'
+        { h: '3. Price and payment', blocks: [
+          '3.1. Unless the Order states otherwise, the advance payment is 50% or 100% of the Order price, and the balance is paid after acceptance.',
+          '3.2. For each payment the Service Provider issues a receipt via the “My Tax” app and sends it to the Client (Article 14 of Federal Law No. 422-FZ of 27.11.2018). The Service Provider pays the professional income tax; VAT is not applicable.',
+          '3.3. Work beyond the Order is performed and paid only after separate agreement.'
         ] },
-        { h: '4. Liability', blocks: [
-          '4.1. The Service Provider guarantees that the result matches the specification but is not responsible for market factors or the Client’s business performance, nor for outages of third-party services: hosting, Telegram, payment systems, AI APIs.',
-          '4.2. The Client is responsible for the legality, accuracy and copyright of materials provided (texts, logos, media).',
-          '4.3. Support and maintenance after delivery are provided under a separate agreement, unless included in the plan.'
+        { h: '4. Timeline and communication', blocks: [
+          '4.1. Deadlines are set in the Order and are extended accordingly if the Client delays materials, access or feedback.',
+          '4.2. Work communication takes place in the agreed channels (e-mail, Telegram) on business days.',
+          '4.3. The Service Provider may use artificial intelligence tools and remains responsible for the result.'
         ] },
-        { h: '5. Timeline and communication', blocks: [
-          '5.1. Deadlines are extended accordingly if the Client delays materials, access or feedback.',
-          '5.2. Work communication takes place in the agreed channels (e-mail, Telegram) on business days.',
-          `5.3. The Client’s personal data is processed in accordance with the ${privacyLink.en}.`
+        { h: '5. Revisions, delivery and acceptance', blocks: [
+          '5.1. The price includes up to 2 rounds of revisions within the Order, unless the plan or Order states otherwise. Additional revisions or a change of concept are paid separately.',
+          '5.2. The Client reviews the result and, within 3 business days after a milestone is delivered, accepts it or sends a reasoned rejection in the correspondence. If no rejection is sent, the milestone is deemed accepted.',
+          '5.3. Acceptance does not deprive a Client who is a consumer of the right to raise claims regarding defects in the manner and within the periods established by law.'
+        ] },
+        { h: '6. Intellectual property', blocks: [
+          '6.1. The exclusive right to the result created under the Order (source code, builds, graphics) passes to the Client in full upon full payment of the Order (Article 1296 of the Civil Code). Until then it belongs to the Service Provider.',
+          '6.2. Third-party libraries, services and materials are used under their own licenses; rights to them are not transferred to the Client.',
+          '6.3. The Service Provider may mention the project in the portfolio without disclosing confidential information, unless agreed otherwise.'
+        ] },
+        { h: '7. Liability', blocks: [
+          '7.1. The parties are liable for non-performance or improper performance in accordance with the laws of the Russian Federation.',
+          '7.2. The Service Provider guarantees that the result matches the Order but is not responsible for market factors or the Client’s business performance, nor for outages of third-party services (hosting, Telegram, payment systems, AI APIs) beyond the Service Provider’s control.',
+          '7.3. The Client is responsible for the legality, accuracy and rights to materials provided (texts, logos, media).',
+          '7.4. Support and maintenance after delivery are provided under a separate agreement, unless included in the plan.'
+        ] },
+        { h: '8. Termination', blocks: [
+          '8.1. The Client may terminate the agreement at any time by paying the Service Provider’s actually incurred expenses (Article 782(1) of the Civil Code, Article 32 of the Consumer Protection Law). The rest of the advance is refunded.',
+          '8.2. The Service Provider may terminate the agreement only upon full compensation of the Client’s losses (Article 782(2) of the Civil Code).'
+        ] },
+        { h: '9. Personal data and confidentiality', blocks: [
+          `9.1. The Client’s personal data is processed in accordance with the ${privacyLink.en}. The parties agree that data related to the agreement is kept for 3 years after its performance to protect the parties’ rights (Article 196 of the Civil Code) and then destroyed.`,
+          '9.2. The parties do not disclose to third parties non-public information received from each other in performing the agreement.'
+        ] },
+        { h: '10. Final provisions', blocks: [
+          '10.1. If the Client is a consumer, these Terms apply to the extent they do not contradict the Russian Consumer Protection Law; terms infringing the consumer’s rights do not apply (Article 16 of that law).',
+          '10.2. Disputes are resolved through negotiation and, failing agreement, in court under the laws of the Russian Federation.',
+          '10.3. The Service Provider may amend these Terms. Concluded agreements are governed by the version in effect at the time of acceptance.'
         ] }
       ]
     }
