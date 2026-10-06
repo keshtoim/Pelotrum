@@ -7,6 +7,9 @@ export const site = {
   email: 'hello@pelotrum.com',   // заглушка
   github: 'https://github.com/keshtoim',
 
+  // Оператор персональных данных и исполнитель услуг (самозанятый) — выводится в Политике и Условиях.
+  legal: { name: '[ФИО]', inn: '[ИНН]' },
+
   // Заготовки на будущее: раскомментировать, когда понадобятся.
 
   // Свой домен.
@@ -168,7 +171,7 @@ export const content = {
       sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.'
     },
 
-    footer: { made: 'vibecode', top: 'Наверх' },
+    footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности' },
     notFound: {
       title: 'Страница не найдена — pelotrum',
       code: 'command not found',
@@ -315,7 +318,7 @@ export const content = {
       sub: 'Tell me what you want to build or automate — I’ll suggest a solution, timeline and price.'
     },
 
-    footer: { made: 'vibecode', top: 'Back to top' },
+    footer: { made: 'vibecode', top: 'Back to top', privacy: 'Privacy Policy' },
 
     notFound: {
       title: 'Page not found — pelotrum',

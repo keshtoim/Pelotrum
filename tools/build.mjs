@@ -3,7 +3,8 @@ import { createHash } from 'node:crypto';
 import { join, resolve, dirname, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, content } from '../src/content.mjs';
-import { renderHome, render404 } from '../src/page.mjs';
+import { renderHome, renderLegal, render404 } from '../src/page.mjs';
+import { legal } from '../src/legal.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const src = (...p) => join(root, 'src', ...p);
@@ -57,25 +58,30 @@ const js = readFileSync(src('scripts', 'main.js'), 'utf8')
 const jsName = `assets/${hashed('main.js', js)}`;
 write(jsName, js);
 
-const assets = { css: cssName, js: jsName, fonts, content };
+const assets = { css: cssName, js: jsName, fonts, content, legal };
 // Убираем отступы шаблонов, но не пробелы внутри строк, чтобы не склеить слова.
 const tidy = (html) => html.replace(/\n\s*\n/g, '\n').replace(/\n\s+/g, '\n');
 
 write('index.html', tidy(renderHome('ru', assets)));
 write('en/index.html', tidy(renderHome('en', assets)));
+for (const slug of Object.keys(legal)) {
+  write(`${slug}/index.html`, tidy(renderLegal('ru', slug, assets)));
+  write(`en/${slug}/index.html`, tidy(renderLegal('en', slug, assets)));
+}
 write('404.html', tidy(render404(assets)));
 
 for (const f of readdirSync(src('static'))) copyFileSync(src('static', f), join(OUT, f));
 
-const pages = [['ru', ''], ['en', 'en/']];
+const langs = [['ru', ''], ['en', 'en/']];
+const pages = ['', ...Object.keys(legal).map((slug) => slug + '/')];
 const today = new Date().toISOString().slice(0, 10);
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${pages.map(([, p]) => `  <url>
-    <loc>${site.url + p}</loc>
+${pages.flatMap((page) => langs.map(([, p]) => `  <url>
+    <loc>${site.url + p + page}</loc>
     <lastmod>${today}</lastmod>
-${pages.map(([l, q]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${site.url + q}"/>`).join('\n')}
-  </url>`).join('\n')}
+${langs.map(([l, q]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${site.url + q + page}"/>`).join('\n')}
+  </url>`)).join('\n')}
 </urlset>
 `);
 

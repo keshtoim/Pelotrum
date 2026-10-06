@@ -30,8 +30,8 @@ const verification = () => {
 const metrika = () => site.metrika ? `<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(${Number(site.metrika)},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true});</script>
 <noscript><div><img src="https://mc.yandex.ru/watch/${Number(site.metrika)}" style="position:absolute;left:-9999px" alt=""></div></noscript>` : '';
 
-function head({ lang, t, assets, path, title, description, noindex }) {
-  const url = site.url + path;
+function head({ lang, t, assets, page = '', title, description, noindex }) {
+  const url = site.url + LANGS[lang] + page;
   // Предзагружаем только шрифты первого экрана; остальные подтянутся по unicode-range.
   const fonts = lang === 'ru'
     ? ['unbounded-700-cyrillic', 'inter-cyrillic']
@@ -43,8 +43,8 @@ function head({ lang, t, assets, path, title, description, noindex }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">
-${Object.entries(LANGS).map(([l, p]) => `<link rel="alternate" hreflang="${l}" href="${site.url + p}">`).join('\n')}
-<link rel="alternate" hreflang="x-default" href="${site.url}">`}
+${Object.entries(LANGS).map(([l, p]) => `<link rel="alternate" hreflang="${l}" href="${site.url + p + page}">`).join('\n')}
+<link rel="alternate" hreflang="x-default" href="${site.url + page}">`}
 <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141517" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
@@ -67,7 +67,8 @@ ${fonts.map((f) => `<link rel="preload" href="${BASE}${assets.fonts[f]}" as="fon
 </head>`;
 }
 
-function header(lang, t) {
+// path — страница относительно корня языка: переключатель языка ведёт на неё же, а не на главную.
+function header(lang, t, path = '') {
   const other = lang === 'ru' ? 'en' : 'ru';
   const home = BASE + LANGS[lang];
   return `<header class="header">
@@ -80,7 +81,7 @@ function header(lang, t) {
       ${['work', 'services', 'benefits', 'blog', 'about', 'contact'].map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
     </nav>
     <div class="header__tools">
-      <a class="tool lang-toggle" href="${BASE + LANGS[other]}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
+      <a class="tool lang-toggle" href="${BASE + LANGS[other] + path}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
         <span data-lang="ru">RU</span><span data-lang="en">EN</span>
       </a>
       <button class="tool theme-toggle" id="themeToggle" type="button" aria-label="${esc(t.a11y.theme)}">${icons.sun}${icons.moon}</button>
@@ -96,6 +97,7 @@ function footer(lang, t) {
   <div class="container footer__inner">
     <a href="${BASE + LANGS[lang]}" class="logo logo--sm"><span class="logo__mark" aria-hidden="true">p</span><span class="logo__word">${site.name}</span></a>
     <span class="footer__copy">© ${new Date().getFullYear()} ${site.name} · ${t.footer.made}</span>
+    <nav class="footer__legal"><a href="${BASE + LANGS[lang]}privacy/">${t.footer.privacy}</a></nav>
     <a href="#top" class="link-arrow">${t.footer.top}</a>
   </div>
 </footer>`;
@@ -212,7 +214,7 @@ export function renderHome(lang, assets) {
 
   return `<!doctype html>
 <html lang="${lang}">
-${head({ lang, t, assets, path: LANGS[lang], title: t.meta.title, description: t.meta.description })}
+${head({ lang, t, assets, title: t.meta.title, description: t.meta.description })}
 <body id="top">
 <a class="skip" href="#main">${t.a11y.skip}</a>
 ${header(lang, t)}
@@ -330,12 +332,42 @@ ${jsonScript('application/ld+json', '', jsonLd(lang, t))}
 `;
 }
 
+export function renderLegal(lang, slug, assets) {
+  const t = assets.content[lang];
+  const doc = assets.legal[slug][lang];
+  const page = slug + '/';
+  // Пункты списков заканчиваются на «;», последний — на точку; состав пунктов зависит от настроек (например, Метрики).
+  const block = (b) => Array.isArray(b)
+    ? `<ul>${b.map((li, i) => `<li>${i === b.length - 1 ? li.replace(/;$/, '.') : li}</li>`).join('')}</ul>`
+    : `<p>${b}</p>`;
+  return `<!doctype html>
+<html lang="${lang}">
+${head({ lang, t, assets, page, title: `${doc.title} — ${site.name}`, description: doc.title })}
+<body id="top">
+<a class="skip" href="#main">${t.a11y.skip}</a>
+${header(lang, t, page)}
+<main id="main" class="legal">
+  <div class="container legal__inner">
+    <h1 class="section__title">${doc.title}</h1>
+    <p class="legal__updated">${doc.updated}</p>
+    ${doc.sections.map((s) => `<section>
+      <h2>${s.h}</h2>
+      ${s.blocks.map(block).join('\n      ')}
+    </section>`).join('\n    ')}
+  </div>
+</main>
+${footer(lang, t)}
+</body>
+</html>
+`;
+}
+
 export function render404(assets) {
   const t = assets.content.ru;
   const e = assets.content.en;
   return `<!doctype html>
 <html lang="ru">
-${head({ lang: 'ru', t, assets, path: '404.html', title: t.notFound.title, description: t.notFound.text, noindex: true })}
+${head({ lang: 'ru', t, assets, page: '404.html', title: t.notFound.title, description: t.notFound.text, noindex: true })}
 <body id="top">
 ${header('ru', t)}
 <main id="main" class="nf">
