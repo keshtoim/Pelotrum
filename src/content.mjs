@@ -171,7 +171,7 @@ export const content = {
       sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.'
     },
 
-    footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности', terms: 'Условия оказания услуг' },
+    footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности', terms: 'Публичная оферта' },
     notFound: {
       title: 'Страница не найдена — pelotrum',
       code: 'command not found',
