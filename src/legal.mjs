@@ -9,56 +9,42 @@ const privacyLink = { ru: `<a href="${base}privacy/">Политикой конф
 export const legal = {
   privacy: {
     ru: {
-      title: 'Политика конфиденциальности',
+      title: 'Политика в отношении обработки персональных данных',
       updated: updated.ru,
       sections: [
         { h: '1. Общие положения', blocks: [
-          `Политика определяет порядок обработки персональных данных посетителей сайта ${site.url} (далее — Сайт) и лиц, обращающихся за услугами, в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».`,
-          `Оператор персональных данных — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, e-mail: ${site.email} (далее — Оператор).`,
-          'Пользуясь Сайтом или обращаясь к Оператору, вы подтверждаете, что ознакомились с Политикой.'
+          `1.1. Политика описывает, как я обрабатываю и защищаю персональные данные посетителей сайта ${site.url} и людей, которые обращаются ко мне за услугами.`,
+          `1.2. Оператор персональных данных — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, e-mail: ${site.email}.`,
+          '1.3. Данные нужны для обратной связи, консультаций, обсуждения и выполнения проектов.',
+          '1.4. Когда вы пишете мне в Telegram или на e-mail, вы соглашаетесь с этой Политикой. Если вы с ней не согласны, не передавайте мне свои данные и прекратите пользоваться сайтом.'
         ] },
-        { h: '2. Какие данные обрабатываются', blocks: [
-          'Сайт не содержит форм, не требует регистрации и не использует cookie для отслеживания. Обрабатываются:',
+        { h: '2. Какие данные я собираю', blocks: [
+          '2.1. Только то, что нужно для общения и работы сайта:',
           [
-            'данные, которые вы передаёте сами, когда пишете в Telegram или на e-mail: имя или никнейм, контакт для связи, описание задачи и другие сведения, которые вы решите сообщить;',
-            'технические данные запроса (IP-адрес, тип браузера, время обращения), которые хостинг-провайдер GitHub Pages фиксирует в журналах сервера; Оператор к этим журналам доступа не имеет;',
-            'выбранная тема оформления, которая хранится только в вашем браузере (localStorage) и Оператору не передаётся.',
-            ...(site.metrika ? ['обезличенные данные о посещениях, собираемые сервисом Яндекс Метрика с помощью cookie: IP-адрес, сведения об устройстве и браузере, просмотренные страницы.'] : [])
+            'контактные данные, которые вы сами указали при обращении: имя, e-mail, аккаунты в мессенджерах;',
+            'технические данные: IP-адрес, сведения о браузере и устройстве, которые хостинг GitHub Pages фиксирует в журналах сервера;',
+            ...(site.metrika ? ['обезличенные данные о поведении на сайте: cookies, клики, прокрутка, время на странице — через Яндекс Метрику.'] : [])
           ]
         ] },
-        { h: '3. Цели и правовые основания', blocks: [
+        { h: '3. Зачем я обрабатываю данные', blocks: [
+          '3.1. Данные используются только для:',
           [
-            'ответ на обращение, обсуждение и оценка задачи — на основании вашего согласия, выраженного отправкой сообщения (п. 1 ч. 1 ст. 6 152-ФЗ);',
-            'заключение и исполнение договора оказания услуг, формирование чека в приложении «Мой налог» — на основании договора, стороной которого вы являетесь (п. 5 ч. 1 ст. 6 152-ФЗ);',
-            ...(site.metrika ? ['анализ посещаемости и улучшение Сайта — на основании вашего согласия.'] : [])
+            'связи с вами: обсуждения проекта, подготовки предложения и договорённостей;',
+            ...(site.metrika ? ['анализа посещаемости, чтобы улучшать интерфейс и скорость сайта.'] : [])
           ],
-          'Оператор не принимает решений, порождающих для вас юридические последствия, на основании исключительно автоматизированной обработки.'
+          '3.2. Обработка ведётся в соответствии с Федеральным законом № 152-ФЗ «О персональных данных».'
         ] },
         { h: '4. Передача третьим лицам', blocks: [
-          'Оператор не продаёт и не передаёт ваши данные третьим лицам, за исключением случаев, предусмотренных законом. Данные проходят через сервисы, которые вы выбираете для связи, и инфраструктуру Сайта; эти сервисы обрабатывают данные по собственным правилам:',
-          [
-            'Telegram — мессенджер для переписки;',
-            'почтовый сервис, через который вы отправляете письмо;',
-            'GitHub (GitHub, Inc., США) — хостинг Сайта;',
-            ...(site.metrika ? ['ООО «Яндекс» — сервис Яндекс Метрика.'] : [])
-          ],
-          'При оплате услуг сведения о расчёте передаются в ФНС России через приложение «Мой налог» в объёме, установленном законодательством.'
+          '4.1. Я не продаю и не передаю ваши данные третьим лицам, кроме случаев, прямо предусмотренных законодательством РФ.',
+          `4.2. Сайт размещён на GitHub Pages, а переписка идёт через Telegram и почтовые сервисы — они обрабатывают данные по своим правилам.${site.metrika ? ' Для обезличенной статистики используется Яндекс Метрика.' : ''}`
         ] },
-        { h: '5. Хранение и защита', blocks: [
-          'Переписка, не завершившаяся договором, хранится не более 1 года с даты последнего сообщения. Данные, связанные с договором, хранятся в течение срока исковой давности после его исполнения (3 года) или дольше, если этого требует закон.',
-          'Оператор принимает правовые, организационные и технические меры для защиты данных от неправомерного доступа, изменения, распространения и уничтожения.'
+        { h: '5. Защита данных', blocks: [
+          '5.1. Я принимаю технические и организационные меры, чтобы защитить данные от несанкционированного доступа, изменения, раскрытия и уничтожения.',
+          '5.2. Данные хранятся до достижения целей обработки или до отзыва вашего согласия.'
         ] },
-        { h: '6. Ваши права', blocks: [
-          [
-            'получить сведения об обработке ваших данных;',
-            'потребовать уточнения, блокирования или уничтожения данных, если они неполные, устаревшие или обрабатываются незаконно;',
-            'отозвать согласие на обработку;',
-            'обжаловать действия Оператора в Роскомнадзоре или в суде.'
-          ],
-          `Запросы направляйте на ${site.email}. Оператор отвечает в течение 10 рабочих дней.`
-        ] },
-        { h: '7. Заключительные положения', blocks: [
-          'Оператор вправе изменять Политику. Новая редакция действует с момента публикации на этой странице.'
+        { h: '6. Ваши права и заключительные положения', blocks: [
+          `6.1. В любой момент вы можете отозвать согласие на обработку или попросить удалить данные — напишите на ${site.email}.`,
+          '6.2. Политика может обновляться. Актуальная версия всегда на этой странице.'
         ] }
       ]
     },
@@ -67,52 +53,38 @@ export const legal = {
       updated: updated.en,
       sections: [
         { h: '1. General provisions', blocks: [
-          `This Policy describes how personal data of visitors to ${site.url} (the “Site”) and of people requesting services is processed, in accordance with Russian Federal Law No. 152-FZ “On Personal Data” of 27.07.2006.`,
-          `The data controller is ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email} (the “Controller”).`,
-          'By using the Site or contacting the Controller you confirm that you have read this Policy.'
+          `1.1. This Policy explains how I process and protect the personal data of visitors to ${site.url} and of people who contact me about services.`,
+          `1.2. The data controller is ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email}.`,
+          '1.3. Data is used for communication, consultations, and discussing and delivering projects.',
+          '1.4. By writing to me via Telegram or e-mail, you agree to this Policy. If you do not agree, please do not share your data and stop using the site.'
         ] },
-        { h: '2. Data we process', blocks: [
-          'The Site has no forms, requires no registration and uses no tracking cookies. We process:',
+        { h: '2. Data I collect', blocks: [
+          '2.1. Only what is needed for communication and running the site:',
           [
-            'data you provide yourself when writing via Telegram or e-mail: your name or nickname, contact details, a description of your task and anything else you choose to share;',
-            'technical request data (IP address, browser type, time of access) logged by the hosting provider GitHub Pages; the Controller has no access to these logs;',
-            'your chosen color theme, stored only in your browser (localStorage) and never sent to the Controller.',
-            ...(site.metrika ? ['anonymized visit data collected by Yandex Metrica using cookies: IP address, device and browser details, pages viewed.'] : [])
+            'contact details you provide when reaching out: name, e-mail, messenger accounts;',
+            'technical data: IP address, browser and device details logged by the GitHub Pages hosting in its server logs;',
+            ...(site.metrika ? ['anonymized behavior data: cookies, clicks, scrolling, time on page — via Yandex Metrica.'] : [])
           ]
         ] },
-        { h: '3. Purposes and legal grounds', blocks: [
+        { h: '3. Why I process data', blocks: [
+          '3.1. Data is used only for:',
           [
-            'replying to your request, discussing and estimating the task — based on your consent given by sending a message;',
-            'concluding and performing a service agreement and issuing a receipt via the “My Tax” app — based on an agreement to which you are a party;',
-            ...(site.metrika ? ['analyzing traffic and improving the Site — based on your consent.'] : [])
+            'communicating with you: discussing the project, preparing a proposal and agreeing on terms;',
+            ...(site.metrika ? ['traffic analytics to improve the site’s interface and speed.'] : [])
           ],
-          'The Controller makes no decisions producing legal effects for you based solely on automated processing.'
+          '3.2. Processing complies with Russian Federal Law No. 152-FZ “On Personal Data”.'
         ] },
         { h: '4. Sharing with third parties', blocks: [
-          'The Controller does not sell or share your data with third parties, except where required by law. Data passes through the services you choose for communication and the Site’s infrastructure; these services process data under their own policies:',
-          [
-            'Telegram — messaging;',
-            'the e-mail provider you use to send a message;',
-            'GitHub (GitHub, Inc., USA) — Site hosting;',
-            ...(site.metrika ? ['Yandex LLC — Yandex Metrica.'] : [])
-          ],
-          'When you pay for services, payment details are reported to the Russian Federal Tax Service via the “My Tax” app to the extent required by law.'
+          '4.1. I do not sell or share your data with third parties, except where directly required by Russian law.',
+          `4.2. The site is hosted on GitHub Pages, and correspondence goes through Telegram and e-mail providers, which process data under their own policies.${site.metrika ? ' Yandex Metrica is used for anonymized statistics.' : ''}`
         ] },
-        { h: '5. Retention and security', blocks: [
-          'Correspondence that does not lead to an agreement is kept for no longer than 1 year after the last message. Data related to an agreement is kept for the limitation period after its performance (3 years) or longer if required by law.',
-          'The Controller takes legal, organizational and technical measures to protect data against unauthorized access, alteration, disclosure and destruction.'
+        { h: '5. Data protection', blocks: [
+          '5.1. I take technical and organizational measures to protect data against unauthorized access, alteration, disclosure and destruction.',
+          '5.2. Data is kept until the processing purposes are achieved or until you withdraw consent.'
         ] },
-        { h: '6. Your rights', blocks: [
-          [
-            'obtain information about the processing of your data;',
-            'request correction, blocking or deletion of data that is incomplete, outdated or unlawfully processed;',
-            'withdraw your consent;',
-            'lodge a complaint with Roskomnadzor or a court.'
-          ],
-          `Send requests to ${site.email}. The Controller replies within 10 business days.`
-        ] },
-        { h: '7. Final provisions', blocks: [
-          'The Controller may amend this Policy. The new version takes effect when published on this page.'
+        { h: '6. Your rights and final provisions', blocks: [
+          `6.1. You may withdraw your consent or request deletion of your data at any time by writing to ${site.email}.`,
+          '6.2. This Policy may be updated. The current version is always available on this page.'
         ] }
       ]
     }
