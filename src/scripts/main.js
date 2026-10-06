@@ -63,33 +63,66 @@
     }).observe(ticker);
   }
 
-  // Свечение курсора только для мыши: на тач-экранах курсора нет, а при reduced motion эффект отвлекает.
+  // След за курсором только для мыши: на тач-экранах курсора нет, а при reduced motion эффект отвлекает.
   if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var glow = document.createElement('div');
-    var light = document.createElement('div');
-    glow.className = 'cursor-glow';
-    light.className = 'cursor-light';
-    document.body.append(light, glow);
+    var canvas = document.createElement('canvas');
+    canvas.className = 'cursor-trail';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.append(canvas);
+    var ctx = canvas.getContext('2d');
 
-    var x = 0, y = 0, gx = 0, gy = 0, lx = 0, ly = 0, frame = 0;
-    var move = function () {
-      // Ореол догоняет курсор медленнее ядра — получается короткий тусклый шлейф.
-      gx += (x - gx) * 0.35; gy += (y - gy) * 0.35;
-      lx += (x - lx) * 0.12; ly += (y - ly) * 0.12;
-      glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px)';
-      light.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
-      // Цикл останавливается, когда ореол догнал курсор, чтобы не крутить кадры впустую.
-      frame = Math.abs(x - lx) + Math.abs(y - ly) > 0.5 ? requestAnimationFrame(move) : 0;
+    var resize = function () {
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    addEventListener('resize', resize);
+    resize();
+
+    var pointer = { x: 0, y: 0 };
+    var trail = [];
+    var hue = 0;
+    var frame = 0;
+
+    var draw = function () {
+      var head = trail[0];
+      // Голова проходит 60% пути до курсора за кадр, остальные точки сдвигаются по цепочке — получается короткий хвост.
+      trail.pop();
+      trail.unshift({ x: head.x + (pointer.x - head.x) * 0.6, y: head.y + (pointer.y - head.y) * 0.6 });
+
+      hue = (hue + 2) % 360;
+      // Приглушённая радуга: насыщенность и светлота подобраны под тему, чтобы след не спорил с палитрой.
+      var color = root.dataset.theme === 'light' ? 'hsl(' + hue + ',60%,52%)' : 'hsl(' + hue + ',70%,68%)';
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      ctx.beginPath();
+      ctx.lineCap = ctx.lineJoin = 'round';
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      ctx.moveTo(trail[0].x, trail[0].y);
+      for (var i = 1; i < trail.length - 1; i++) {
+        ctx.quadraticCurveTo(trail[i].x, trail[i].y, (trail[i].x + trail[i + 1].x) / 2, (trail[i].y + trail[i + 1].y) / 2);
+      }
+      ctx.stroke();
+
+      var tail = trail[trail.length - 1];
+      // Хвост догнал курсор — кадр очищен до точки, цикл останавливается до следующего движения.
+      if (Math.abs(pointer.x - tail.x) + Math.abs(pointer.y - tail.y) < 0.5) {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        frame = 0;
+      } else {
+        frame = requestAnimationFrame(draw);
+      }
     };
 
     document.addEventListener('pointermove', function (e) {
       if (e.pointerType !== 'mouse') return;
-      if (!root.classList.contains('cursor-on')) { gx = lx = e.clientX; gy = ly = e.clientY; }
-      x = e.clientX; y = e.clientY;
-      root.classList.add('cursor-on');
-      if (!frame) frame = requestAnimationFrame(move);
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      if (!trail.length) for (var i = 0; i < 6; i++) trail.push({ x: pointer.x, y: pointer.y });
+      if (!frame) frame = requestAnimationFrame(draw);
     }, { passive: true });
-    document.documentElement.addEventListener('mouseleave', function () { root.classList.remove('cursor-on'); });
   }
 
   /*

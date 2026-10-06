@@ -22,7 +22,6 @@
   --hard: #c2d48c;
   --tg: #7fb3d9;
   --grid-line: rgba(232,230,224,.05);
-  --glow-core: rgba(194,212,140,.28); --glow-soft: rgba(194,212,140,.07); --glow-blend: screen;
 
   --btn-acc-border: var(--acc);
   --chip-active-border: var(--acc);
@@ -53,7 +52,6 @@
   --hard: #1f2022;
   --tg: #2f7fb6;
   --grid-line: rgba(31,32,34,.06);
-  --glow-core: rgba(120,145,60,.22); --glow-soft: rgba(120,145,60,.07); --glow-blend: multiply;
 
   --btn-acc-border: var(--fg);
   --chip-active-border: var(--fg);
