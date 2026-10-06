@@ -3,6 +3,7 @@ import { site } from './content.mjs';
 const { name, inn } = site.legal;
 const updated = { ru: 'Редакция от 6 октября 2026 г.', en: 'Last updated: October 6, 2026' };
 const base = new URL(site.url).pathname;
+const tg = `<a href="https://t.me/${site.telegram}">@${site.telegram}</a>`;
 const privacyLink = { ru: `<a href="${base}privacy/">Политикой в отношении обработки персональных данных</a>`, en: `<a href="${base}en/privacy/">Privacy Policy</a>` };
 
 // Блок раздела: строка — абзац, массив строк — маркированный список.
@@ -14,13 +15,13 @@ export const legal = {
       sections: [
         { h: '1. Общие положения', blocks: [
           `1.1. Политика определяет, как я обрабатываю и защищаю персональные данные посетителей сайта ${site.url} и людей, которые обращаются ко мне за услугами. Она разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и опубликована во исполнение ч. 2 ст. 18.1 этого закона.`,
-          `1.2. Оператор персональных данных — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, e-mail: ${site.email}.`,
-          '1.3. Политика применяется ко всем персональным данным, которые я получаю через сайт и в переписке об оказании услуг.'
+          `1.2. Оператор персональных данных — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, Telegram: ${tg}.`,
+          '1.3. Сайт не собирает персональные данные: на нём нет форм и регистрации. Общение по услугам ведётся только в Telegram, и Политика применяется к данным, которые я получаю в этой переписке.'
         ] },
         { h: '2. Какие данные я обрабатываю', blocks: [
           '2.1. Только то, что нужно для общения и оказания услуг:',
           [
-            'контактные данные, которые вы сами сообщаете при обращении: имя, e-mail, аккаунты в мессенджерах, а также сведения о задаче;',
+            'данные, которые вы сами сообщаете в переписке в Telegram: имя, username и сведения о задаче;',
             'реквизиты, необходимые для заключения договора и формирования чека: для организаций и индивидуальных предпринимателей — наименование и ИНН;',
             ...(site.metrika ? ['обезличенные данные о посещении сайта: cookies, IP-адрес, сведения о браузере и устройстве, клики, прокрутка, время на странице — через сервис Яндекс Метрика.'] : [])
           ],
@@ -37,12 +38,12 @@ export const legal = {
           '3.2. С данными совершаются сбор, запись, систематизация, накопление, хранение, уточнение, извлечение, использование, удаление и уничтожение — с использованием средств автоматизации и без них. Решения, порождающие для вас юридические последствия, на основании исключительно автоматизированной обработки не принимаются.'
         ] },
         { h: '4. Хранение и передача данных', blocks: [
-          '4.1. Запись, систематизация, накопление, хранение, уточнение и извлечение персональных данных граждан Российской Федерации осуществляются с использованием баз данных, находящихся на территории Российской Федерации (ч. 5 ст. 18 152-ФЗ).',
+          '4.1. Я не переношу данные из переписки в другие базы данных. Если для работы данные нужно записать, запись, систематизация, накопление, хранение, уточнение и извлечение персональных данных граждан Российской Федерации осуществляются с использованием баз данных, находящихся на территории Российской Федерации (ч. 5 ст. 18 152-ФЗ).',
           '4.2. Я не продаю и не передаю ваши данные третьим лицам, кроме случаев, предусмотренных законом. При оплате услуг сведения о расчёте передаются в ФНС России через приложение «Мой налог».',
-          `4.3. Сайт размещён на хостинге GitHub Pages (GitHub, Inc., США). Хостинг-провайдер фиксирует технические данные запросов (IP-адрес, сведения о браузере) в журналах своих серверов по собственным правилам; я эти данные не получаю и не обрабатываю.${site.metrika ? ' Данные Яндекс Метрики обрабатывает ООО «Яндекс».' : ''}`
+          `4.3. Переписка хранится в Telegram, который обрабатывает данные по своим правилам. Сайт размещён на хостинге GitHub Pages (GitHub, Inc., США). Хостинг-провайдер фиксирует технические данные запросов (IP-адрес, сведения о браузере) в журналах своих серверов по собственным правилам; я эти данные не получаю и не обрабатываю.${site.metrika ? ' Данные Яндекс Метрики обрабатывает ООО «Яндекс».' : ''}`
         ] },
         { h: '5. Сроки обработки и защита', blocks: [
-          '5.1. Данные обрабатываются не дольше, чем этого требуют цели обработки. Если договор не заключён, данные уничтожаются в течение 30 дней после завершения переговоров. Данные по договору хранятся в течение срока, согласованного в договоре, или срока, установленного законом. При отзыве согласия обработка, основанная на нём, прекращается, а данные уничтожаются в течение 30 дней (ч. 4, 5 ст. 21 152-ФЗ).',
+          '5.1. Данные обрабатываются только на время обсуждения и выполнения работы и уничтожаются, включая переписку, в течение 30 дней после завершения работы, а если договор не заключён — после завершения переговоров. Сведения о расчётах хранятся в приложении «Мой налог» в соответствии с налоговым законодательством. При отзыве согласия обработка, основанная на нём, прекращается, а данные уничтожаются в течение 30 дней (ч. 4, 5 ст. 21 152-ФЗ).',
           '5.2. Я принимаю правовые, организационные и технические меры для защиты данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, предоставления и распространения (ст. 18.1, 19 152-ФЗ).'
         ] },
         { h: '6. Ваши права и заключительные положения', blocks: [
@@ -53,7 +54,7 @@ export const legal = {
             'отозвать согласие на обработку, если обработка основана на согласии;',
             'обжаловать мои действия в Роскомнадзоре или в суде (ст. 17 152-ФЗ).'
           ],
-          `6.2. Запросы направляйте на ${site.email}. Я отвечаю в течение 10 рабочих дней с даты получения запроса; срок может быть продлён не более чем на 5 рабочих дней с направлением вам мотивированного уведомления (ст. 20 152-ФЗ).`,
+          `6.2. Запросы направляйте в Telegram ${tg}. Я отвечаю в течение 10 рабочих дней с даты получения запроса; срок может быть продлён не более чем на 5 рабочих дней с направлением вам мотивированного уведомления (ст. 20 152-ФЗ).`,
           '6.3. Политика может обновляться. Актуальная редакция всегда опубликована на этой странице, дата редакции указана в начале документа.'
         ] }
       ]
@@ -64,13 +65,13 @@ export const legal = {
       sections: [
         { h: '1. General provisions', blocks: [
           `1.1. This Policy sets out how I process and protect the personal data of visitors to ${site.url} and of people who contact me about services. It is drawn up under Russian Federal Law No. 152-FZ “On Personal Data” of 27.07.2006 and published as required by Article 18.1(2) of that law.`,
-          `1.2. The data controller is ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email}.`,
-          '1.3. This Policy applies to all personal data I receive through the site and in correspondence about services.'
+          `1.2. The data controller is ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, Telegram: ${tg}.`,
+          '1.3. The site does not collect personal data: it has no forms or registration. Communication about services takes place only in Telegram, and this Policy applies to the data I receive in that correspondence.'
         ] },
         { h: '2. Data I process', blocks: [
           '2.1. Only what is needed for communication and providing services:',
           [
-            'contact details you provide when reaching out: name, e-mail, messenger accounts, and information about your task;',
+            'data you share yourself in Telegram correspondence: name, username and information about your task;',
             'details needed to conclude an agreement and issue a receipt: for companies and sole proprietors — name and Taxpayer ID;',
             ...(site.metrika ? ['anonymized visit data: cookies, IP address, browser and device details, clicks, scrolling, time on page — via Yandex Metrica.'] : [])
           ],
@@ -87,12 +88,12 @@ export const legal = {
           '3.2. Data is collected, recorded, organized, accumulated, stored, updated, retrieved, used, deleted and destroyed, with and without automation. No decisions producing legal effects for you are made based solely on automated processing.'
         ] },
         { h: '4. Storage and sharing', blocks: [
-          '4.1. Personal data of Russian citizens is recorded, organized, accumulated, stored, updated and retrieved using databases located in the Russian Federation (Article 18(5) of 152-FZ).',
+          '4.1. I do not transfer data from the correspondence to other databases. If data has to be recorded for the work, personal data of Russian citizens is recorded, organized, accumulated, stored, updated and retrieved using databases located in the Russian Federation (Article 18(5) of 152-FZ).',
           '4.2. I do not sell or share your data with third parties, except where required by law. When you pay for services, payment details are reported to the Russian Federal Tax Service via the “My Tax” app.',
-          `4.3. The site is hosted on GitHub Pages (GitHub, Inc., USA). The hosting provider logs technical request data (IP address, browser details) on its servers under its own policies; I do not receive or process this data.${site.metrika ? ' Yandex Metrica data is processed by Yandex LLC.' : ''}`
+          `4.3. The correspondence is stored in Telegram, which processes data under its own policies. The site is hosted on GitHub Pages (GitHub, Inc., USA). The hosting provider logs technical request data (IP address, browser details) on its servers under its own policies; I do not receive or process this data.${site.metrika ? ' Yandex Metrica data is processed by Yandex LLC.' : ''}`
         ] },
         { h: '5. Retention and security', blocks: [
-          '5.1. Data is processed no longer than the purposes require. If no agreement is concluded, data is destroyed within 30 days after negotiations end. Data related to an agreement is kept for the period set in the agreement or required by law. If you withdraw consent, processing based on it stops and the data is destroyed within 30 days (Article 21(4), (5) of 152-FZ).',
+          '5.1. Data is processed only while the task is discussed and performed and is destroyed, including the correspondence, within 30 days after the work is completed, or after negotiations end if no agreement is concluded. Payment records are kept in the “My Tax” app as required by tax law. If you withdraw consent, processing based on it stops and the data is destroyed within 30 days (Article 21(4), (5) of 152-FZ).',
           '5.2. I take legal, organizational and technical measures to protect data against unlawful or accidental access, destruction, alteration, blocking, copying, disclosure and distribution (Articles 18.1 and 19 of 152-FZ).'
         ] },
         { h: '6. Your rights and final provisions', blocks: [
@@ -103,7 +104,7 @@ export const legal = {
             'withdraw consent where processing is based on consent;',
             'appeal my actions to Roskomnadzor or a court (Article 17 of 152-FZ).'
           ],
-          `6.2. Send requests to ${site.email}. I reply within 10 business days of receipt; this may be extended by no more than 5 business days with a reasoned notice to you (Article 20 of 152-FZ).`,
+          `6.2. Send requests via Telegram ${tg}. I reply within 10 business days of receipt; this may be extended by no more than 5 business days with a reasoned notice to you (Article 20 of 152-FZ).`,
           '6.3. This Policy may be updated. The current version is always published on this page, with its date shown at the top.'
         ] }
       ]
@@ -116,9 +117,9 @@ export const legal = {
       updated: updated.ru,
       sections: [
         { h: '1. Общие положения и предмет', blocks: [
-          `1.1. Оферта — предложение ${name}, плательщика налога на профессиональный доход (самозанятого), ИНН ${inn}, e-mail: ${site.email} (далее — Исполнитель), заключить договор возмездного оказания услуг (гл. 39 ГК РФ) на изложенных ниже условиях с любым, кто отзовётся (п. 2 ст. 437 ГК РФ).`,
+          `1.1. Оферта — предложение ${name}, плательщика налога на профессиональный доход (самозанятого), ИНН ${inn}, Telegram: ${tg} (далее — Исполнитель), заключить договор возмездного оказания услуг (гл. 39 ГК РФ) на изложенных ниже условиях с любым, кто отзовётся (п. 2 ст. 437 ГК РФ).`,
           '1.2. Исполнитель оказывает услуги по разработке программного обеспечения: сайтов, Telegram-ботов, мобильных приложений, браузерных расширений и автоматизаций.',
-          '1.3. Состав работ, результат, срок и стоимость по каждому заказу определяются в Заказе — техническом задании или брифе, согласованном сторонами в переписке (e-mail, Telegram). Заказ является неотъемлемой частью договора. Существенные изменения требований также согласуются в переписке.',
+          '1.3. Состав работ, результат, срок и стоимость по каждому заказу определяются в Заказе — техническом задании или брифе, согласованном сторонами в переписке в Telegram. Заказ является неотъемлемой частью договора. Существенные изменения требований также согласуются в переписке.',
           '1.4. Цены на сайте носят справочный характер. Стоимость конкретной работы фиксируется в Заказе.'
         ] },
         { h: '2. Акцепт и заключение договора', blocks: [
@@ -132,7 +133,7 @@ export const legal = {
         ] },
         { h: '4. Сроки и коммуникация', blocks: [
           '4.1. Сроки выполнения указываются в Заказе и соразмерно продлеваются, если Заказчик задерживает материалы, доступы или обратную связь.',
-          '4.2. Рабочее общение ведётся в согласованных каналах (e-mail, Telegram) в рабочие дни.',
+          '4.2. Рабочее общение ведётся в Telegram в рабочие дни.',
           '4.3. Исполнитель вправе использовать при разработке инструменты искусственного интеллекта и отвечает за результат.'
         ] },
         { h: '5. Правки, сдача и приёмка', blocks: [
@@ -156,7 +157,7 @@ export const legal = {
           '8.2. Исполнитель вправе отказаться от договора лишь при условии полного возмещения Заказчику убытков (п. 2 ст. 782 ГК РФ).'
         ] },
         { h: '9. Персональные данные и конфиденциальность', blocks: [
-          `9.1. Персональные данные Заказчика обрабатываются в соответствии с ${privacyLink.ru}. Стороны согласились, что данные, связанные с договором, хранятся в течение 3 лет после его исполнения для защиты прав сторон (ст. 196 ГК РФ), после чего уничтожаются.`,
+          `9.1. Персональные данные Заказчика обрабатываются в соответствии с ${privacyLink.ru}. Данные, включая переписку, уничтожаются в течение 30 дней после завершения работы.`,
           '9.2. Стороны не раскрывают третьим лицам непубличную информацию, полученную друг от друга при исполнении договора.'
         ] },
         { h: '10. Заключительные положения', blocks: [
@@ -171,9 +172,9 @@ export const legal = {
       updated: updated.en,
       sections: [
         { h: '1. General provisions and scope', blocks: [
-          `1.1. These Terms are a public offer (Article 437(2) of the Civil Code of the Russian Federation) by ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email} (the “Service Provider”), to conclude a paid services agreement (Chapter 39 of the Civil Code) on the terms below with anyone who accepts it.`,
+          `1.1. These Terms are a public offer (Article 437(2) of the Civil Code of the Russian Federation) by ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, Telegram: ${tg} (the “Service Provider”), to conclude a paid services agreement (Chapter 39 of the Civil Code) on the terms below with anyone who accepts it.`,
           '1.2. The Service Provider develops software: websites, Telegram bots, mobile apps, browser extensions and automations.',
-          '1.3. The scope, deliverables, timeline and price of each job are set out in an Order — a specification or brief agreed by the parties in correspondence (e-mail, Telegram). The Order forms an integral part of the agreement. Significant changes in requirements are also agreed in correspondence.',
+          '1.3. The scope, deliverables, timeline and price of each job are set out in an Order — a specification or brief agreed by the parties in Telegram correspondence. The Order forms an integral part of the agreement. Significant changes in requirements are also agreed in correspondence.',
           '1.4. Prices on the website are for reference only. The price of each job is fixed in the Order.'
         ] },
         { h: '2. Acceptance and conclusion', blocks: [
@@ -187,7 +188,7 @@ export const legal = {
         ] },
         { h: '4. Timeline and communication', blocks: [
           '4.1. Deadlines are set in the Order and are extended accordingly if the Client delays materials, access or feedback.',
-          '4.2. Work communication takes place in the agreed channels (e-mail, Telegram) on business days.',
+          '4.2. Work communication takes place in Telegram on business days.',
           '4.3. The Service Provider may use artificial intelligence tools and remains responsible for the result.'
         ] },
         { h: '5. Revisions, delivery and acceptance', blocks: [
@@ -211,7 +212,7 @@ export const legal = {
           '8.2. The Service Provider may terminate the agreement only upon full compensation of the Client’s losses (Article 782(2) of the Civil Code).'
         ] },
         { h: '9. Personal data and confidentiality', blocks: [
-          `9.1. The Client’s personal data is processed in accordance with the ${privacyLink.en}. The parties agree that data related to the agreement is kept for 3 years after its performance to protect the parties’ rights (Article 196 of the Civil Code) and then destroyed.`,
+          `9.1. The Client’s personal data is processed in accordance with the ${privacyLink.en}. Data, including the correspondence, is destroyed within 30 days after the work is completed.`,
           '9.2. The parties do not disclose to third parties non-public information received from each other in performing the agreement.'
         ] },
         { h: '10. Final provisions', blocks: [
