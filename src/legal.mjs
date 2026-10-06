@@ -13,38 +13,48 @@ export const legal = {
       updated: updated.ru,
       sections: [
         { h: '1. Общие положения', blocks: [
-          `1.1. Политика описывает, как я обрабатываю и защищаю персональные данные посетителей сайта ${site.url} и людей, которые обращаются ко мне за услугами.`,
+          `1.1. Политика определяет, как я обрабатываю и защищаю персональные данные посетителей сайта ${site.url} и людей, которые обращаются ко мне за услугами. Она разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и опубликована во исполнение ч. 2 ст. 18.1 этого закона.`,
           `1.2. Оператор персональных данных — ${name}, плательщик налога на профессиональный доход (самозанятый), ИНН ${inn}, e-mail: ${site.email}.`,
-          '1.3. Данные нужны для обратной связи, консультаций, обсуждения и выполнения проектов.',
-          '1.4. Когда вы пишете мне в Telegram или на e-mail, вы соглашаетесь с этой Политикой. Если вы с ней не согласны, не передавайте мне свои данные и прекратите пользоваться сайтом.'
+          '1.3. Политика применяется ко всем персональным данным, которые я получаю через сайт и в переписке об оказании услуг.'
         ] },
-        { h: '2. Какие данные я собираю', blocks: [
-          '2.1. Только то, что нужно для общения и работы сайта:',
+        { h: '2. Какие данные я обрабатываю', blocks: [
+          '2.1. Только то, что нужно для общения и оказания услуг:',
           [
-            'контактные данные, которые вы сами указали при обращении: имя, e-mail, аккаунты в мессенджерах;',
-            'технические данные: IP-адрес, сведения о браузере и устройстве, которые хостинг GitHub Pages фиксирует в журналах сервера;',
-            ...(site.metrika ? ['обезличенные данные о поведении на сайте: cookies, клики, прокрутка, время на странице — через Яндекс Метрику.'] : [])
-          ]
-        ] },
-        { h: '3. Зачем я обрабатываю данные', blocks: [
-          '3.1. Данные используются только для:',
-          [
-            'связи с вами: обсуждения проекта, подготовки предложения и договорённостей;',
-            ...(site.metrika ? ['анализа посещаемости, чтобы улучшать интерфейс и скорость сайта.'] : [])
+            'контактные данные, которые вы сами сообщаете при обращении: имя, e-mail, аккаунты в мессенджерах, а также сведения о задаче;',
+            'реквизиты, необходимые для заключения договора и формирования чека: для организаций и индивидуальных предпринимателей — наименование и ИНН;',
+            ...(site.metrika ? ['обезличенные данные о посещении сайта: cookies, IP-адрес, сведения о браузере и устройстве, клики, прокрутка, время на странице — через сервис Яндекс Метрика.'] : [])
           ],
-          '3.2. Обработка ведётся в соответствии с Федеральным законом № 152-ФЗ «О персональных данных».'
+          '2.2. Я не обрабатываю специальные категории персональных данных (ст. 10 152-ФЗ) и биометрические персональные данные (ст. 11 152-ФЗ).'
         ] },
-        { h: '4. Передача третьим лицам', blocks: [
-          '4.1. Я не продаю и не передаю ваши данные третьим лицам, кроме случаев, прямо предусмотренных законодательством РФ.',
-          `4.2. Сайт размещён на GitHub Pages, а переписка идёт через Telegram и почтовые сервисы — они обрабатывают данные по своим правилам.${site.metrika ? ' Для обезличенной статистики используется Яндекс Метрика.' : ''}`
+        { h: '3. Цели и правовые основания', blocks: [
+          '3.1. Данные обрабатываются для следующих целей и на следующих основаниях:',
+          [
+            'ответ на обращение, обсуждение задачи, подготовка предложения и заключение договора по вашей инициативе — п. 5 ч. 1 ст. 6 152-ФЗ, согласие для этого не требуется;',
+            'исполнение заключённого договора — п. 5 ч. 1 ст. 6 152-ФЗ;',
+            'исполнение обязанностей самозанятого, в том числе формирование чеков по Федеральному закону от 27.11.2018 № 422-ФЗ, — п. 2 ч. 1 ст. 6 152-ФЗ;',
+            ...(site.metrika ? ['анализ посещаемости и улучшение сайта — на основании вашего согласия, которое запрашивается отдельно (п. 1 ч. 1 ст. 6, ч. 1 ст. 9 152-ФЗ).'] : [])
+          ],
+          '3.2. С данными совершаются сбор, запись, систематизация, накопление, хранение, уточнение, извлечение, использование, удаление и уничтожение — с использованием средств автоматизации и без них. Решения, порождающие для вас юридические последствия, на основании исключительно автоматизированной обработки не принимаются.'
         ] },
-        { h: '5. Защита данных', blocks: [
-          '5.1. Я принимаю технические и организационные меры, чтобы защитить данные от несанкционированного доступа, изменения, раскрытия и уничтожения.',
-          '5.2. Данные хранятся до достижения целей обработки или до отзыва вашего согласия.'
+        { h: '4. Хранение и передача данных', blocks: [
+          '4.1. Запись, систематизация, накопление, хранение, уточнение и извлечение персональных данных граждан Российской Федерации осуществляются с использованием баз данных, находящихся на территории Российской Федерации (ч. 5 ст. 18 152-ФЗ).',
+          '4.2. Я не продаю и не передаю ваши данные третьим лицам, кроме случаев, предусмотренных законом. При оплате услуг сведения о расчёте передаются в ФНС России через приложение «Мой налог».',
+          `4.3. Сайт размещён на хостинге GitHub Pages (GitHub, Inc., США). Хостинг-провайдер фиксирует технические данные запросов (IP-адрес, сведения о браузере) в журналах своих серверов по собственным правилам; я эти данные не получаю и не обрабатываю.${site.metrika ? ' Данные Яндекс Метрики обрабатывает ООО «Яндекс».' : ''}`
+        ] },
+        { h: '5. Сроки обработки и защита', blocks: [
+          '5.1. Данные обрабатываются не дольше, чем этого требуют цели обработки. Если договор не заключён, данные уничтожаются в течение 30 дней после завершения переговоров. Данные по договору хранятся в течение срока, согласованного в договоре, или срока, установленного законом. При отзыве согласия обработка, основанная на нём, прекращается, а данные уничтожаются в течение 30 дней (ч. 4, 5 ст. 21 152-ФЗ).',
+          '5.2. Я принимаю правовые, организационные и технические меры для защиты данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, предоставления и распространения (ст. 18.1, 19 152-ФЗ).'
         ] },
         { h: '6. Ваши права и заключительные положения', blocks: [
-          `6.1. В любой момент вы можете отозвать согласие на обработку или попросить удалить данные — напишите на ${site.email}.`,
-          '6.2. Политика может обновляться. Актуальная версия всегда на этой странице.'
+          '6.1. Вы вправе:',
+          [
+            'получить сведения об обработке ваших персональных данных (ст. 14 152-ФЗ);',
+            'потребовать уточнения, блокирования или уничтожения данных, если они неполные, устаревшие, неточные, незаконно получены или не нужны для заявленной цели;',
+            'отозвать согласие на обработку, если обработка основана на согласии;',
+            'обжаловать мои действия в Роскомнадзоре или в суде (ст. 17 152-ФЗ).'
+          ],
+          `6.2. Запросы направляйте на ${site.email}. Я отвечаю в течение 10 рабочих дней с даты получения запроса; срок может быть продлён не более чем на 5 рабочих дней с направлением вам мотивированного уведомления (ст. 20 152-ФЗ).`,
+          '6.3. Политика может обновляться. Актуальная редакция всегда опубликована на этой странице, дата редакции указана в начале документа.'
         ] }
       ]
     },
@@ -53,38 +63,48 @@ export const legal = {
       updated: updated.en,
       sections: [
         { h: '1. General provisions', blocks: [
-          `1.1. This Policy explains how I process and protect the personal data of visitors to ${site.url} and of people who contact me about services.`,
+          `1.1. This Policy sets out how I process and protect the personal data of visitors to ${site.url} and of people who contact me about services. It is drawn up under Russian Federal Law No. 152-FZ “On Personal Data” of 27.07.2006 and published as required by Article 18.1(2) of that law.`,
           `1.2. The data controller is ${name}, a self-employed professional income tax payer, Taxpayer ID (INN) ${inn}, e-mail: ${site.email}.`,
-          '1.3. Data is used for communication, consultations, and discussing and delivering projects.',
-          '1.4. By writing to me via Telegram or e-mail, you agree to this Policy. If you do not agree, please do not share your data and stop using the site.'
+          '1.3. This Policy applies to all personal data I receive through the site and in correspondence about services.'
         ] },
-        { h: '2. Data I collect', blocks: [
-          '2.1. Only what is needed for communication and running the site:',
+        { h: '2. Data I process', blocks: [
+          '2.1. Only what is needed for communication and providing services:',
           [
-            'contact details you provide when reaching out: name, e-mail, messenger accounts;',
-            'technical data: IP address, browser and device details logged by the GitHub Pages hosting in its server logs;',
-            ...(site.metrika ? ['anonymized behavior data: cookies, clicks, scrolling, time on page — via Yandex Metrica.'] : [])
-          ]
-        ] },
-        { h: '3. Why I process data', blocks: [
-          '3.1. Data is used only for:',
-          [
-            'communicating with you: discussing the project, preparing a proposal and agreeing on terms;',
-            ...(site.metrika ? ['traffic analytics to improve the site’s interface and speed.'] : [])
+            'contact details you provide when reaching out: name, e-mail, messenger accounts, and information about your task;',
+            'details needed to conclude an agreement and issue a receipt: for companies and sole proprietors — name and Taxpayer ID;',
+            ...(site.metrika ? ['anonymized visit data: cookies, IP address, browser and device details, clicks, scrolling, time on page — via Yandex Metrica.'] : [])
           ],
-          '3.2. Processing complies with Russian Federal Law No. 152-FZ “On Personal Data”.'
+          '2.2. I do not process special categories of personal data (Article 10 of 152-FZ) or biometric personal data (Article 11 of 152-FZ).'
         ] },
-        { h: '4. Sharing with third parties', blocks: [
-          '4.1. I do not sell or share your data with third parties, except where directly required by Russian law.',
-          `4.2. The site is hosted on GitHub Pages, and correspondence goes through Telegram and e-mail providers, which process data under their own policies.${site.metrika ? ' Yandex Metrica is used for anonymized statistics.' : ''}`
+        { h: '3. Purposes and legal grounds', blocks: [
+          '3.1. Data is processed for the following purposes and on the following grounds:',
+          [
+            'replying to your request, discussing the task, preparing a proposal and concluding an agreement at your initiative — Article 6(1)(5) of 152-FZ; no consent is required for this;',
+            'performing the agreement — Article 6(1)(5) of 152-FZ;',
+            'meeting the obligations of a self-employed person, including issuing receipts under Federal Law No. 422-FZ of 27.11.2018 — Article 6(1)(2) of 152-FZ;',
+            ...(site.metrika ? ['traffic analysis and site improvement — based on your consent, requested separately (Article 6(1)(1) and Article 9(1) of 152-FZ).'] : [])
+          ],
+          '3.2. Data is collected, recorded, organized, accumulated, stored, updated, retrieved, used, deleted and destroyed, with and without automation. No decisions producing legal effects for you are made based solely on automated processing.'
         ] },
-        { h: '5. Data protection', blocks: [
-          '5.1. I take technical and organizational measures to protect data against unauthorized access, alteration, disclosure and destruction.',
-          '5.2. Data is kept until the processing purposes are achieved or until you withdraw consent.'
+        { h: '4. Storage and sharing', blocks: [
+          '4.1. Personal data of Russian citizens is recorded, organized, accumulated, stored, updated and retrieved using databases located in the Russian Federation (Article 18(5) of 152-FZ).',
+          '4.2. I do not sell or share your data with third parties, except where required by law. When you pay for services, payment details are reported to the Russian Federal Tax Service via the “My Tax” app.',
+          `4.3. The site is hosted on GitHub Pages (GitHub, Inc., USA). The hosting provider logs technical request data (IP address, browser details) on its servers under its own policies; I do not receive or process this data.${site.metrika ? ' Yandex Metrica data is processed by Yandex LLC.' : ''}`
+        ] },
+        { h: '5. Retention and security', blocks: [
+          '5.1. Data is processed no longer than the purposes require. If no agreement is concluded, data is destroyed within 30 days after negotiations end. Data related to an agreement is kept for the period set in the agreement or required by law. If you withdraw consent, processing based on it stops and the data is destroyed within 30 days (Article 21(4), (5) of 152-FZ).',
+          '5.2. I take legal, organizational and technical measures to protect data against unlawful or accidental access, destruction, alteration, blocking, copying, disclosure and distribution (Articles 18.1 and 19 of 152-FZ).'
         ] },
         { h: '6. Your rights and final provisions', blocks: [
-          `6.1. You may withdraw your consent or request deletion of your data at any time by writing to ${site.email}.`,
-          '6.2. This Policy may be updated. The current version is always available on this page.'
+          '6.1. You have the right to:',
+          [
+            'obtain information about the processing of your personal data (Article 14 of 152-FZ);',
+            'request correction, blocking or destruction of data that is incomplete, outdated, inaccurate, unlawfully obtained or not needed for the stated purpose;',
+            'withdraw consent where processing is based on consent;',
+            'appeal my actions to Roskomnadzor or a court (Article 17 of 152-FZ).'
+          ],
+          `6.2. Send requests to ${site.email}. I reply within 10 business days of receipt; this may be extended by no more than 5 business days with a reasoned notice to you (Article 20 of 152-FZ).`,
+          '6.3. This Policy may be updated. The current version is always published on this page, with its date shown at the top.'
         ] }
       ]
     }
