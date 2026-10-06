@@ -128,9 +128,9 @@ export const content = {
       title: 'Услуги и цены',
       note: '* Цены ориентировочные. Точную стоимость назову после короткого созвона или переписки — бесплатно.',
       items: [
-        { name: 'Прототип', price: 'от 15 000 ₽', min: 15000, currency: 'RUB', term: 'от 3 дней', desc: 'Быстро проверить идею на рабочей версии.', features: ['Сайт, бот или веб-приложение', 'Рабочий функционал, а не макет', 'Деплой и ссылка, которой можно делиться', 'Исходный код остаётся у вас', '2 недели правок'], cta: 'Обсудить' },
-        { name: 'Продукт', price: 'от 40 000 ₽', min: 40000, currency: 'RUB', term: 'от 2 недель', desc: 'Полноценное решение под ваш процесс.', features: ['Сайт, бот, Android-приложение или расширение', 'Оплата, админка, база данных', 'Интеграции с API и AI', 'Тесты и автодеплой', 'Поддержка после запуска'], cta: 'Обсудить', hot: 'популярно' },
-        { name: 'Доработка', price: 'индивидуально', term: 'по задаче', desc: 'Проект уже есть — доведу до ума.', features: ['Новые функции', 'Рефакторинг и оптимизация', 'Docker, сервер, CI/CD', 'Исправление багов', 'Консультация по стеку'], cta: 'Рассказать о проекте' }
+        { name: 'Прототип', price: 'от 7 000 ₽', min: 7000, currency: 'RUB', term: 'от 3 дней', desc: 'Быстро проверить идею на рабочей версии.', features: ['Сайт, бот или веб-приложение', 'Рабочий функционал, а не макет', 'Деплой и ссылка, которой можно делиться', 'Исходный код остаётся у вас', '2 недели правок'], cta: 'Обсудить' },
+        { name: 'Продукт', price: 'от 25 000 ₽', min: 25000, currency: 'RUB', term: 'от 2 недель', desc: 'Полноценное решение под ваш процесс.', features: ['Сайт, бот, Android-приложение или расширение', 'Оплата, админка, база данных', 'Интеграции с API и AI', 'Тесты и автодеплой', 'Поддержка после запуска'], cta: 'Обсудить', hot: 'популярно' },
+        { name: 'Доработка', price: 'от 2 000 ₽', min: 2000, currency: 'RUB', term: 'за задачу', desc: 'Проект уже есть — доведу до ума.', features: ['Новые функции', 'Рефакторинг и оптимизация', 'Docker, сервер, CI/CD', 'Исправление багов', 'Консультация по стеку'], cta: 'Рассказать о проекте' }
       ]
     },
     benefits: {
@@ -272,9 +272,9 @@ export const content = {
       title: 'Services & pricing',
       note: '* Prices are approximate. I’ll give an exact quote after a short call or chat — free of charge.',
       items: [
-        { name: 'Prototype', price: 'from $200', min: 200, currency: 'USD', term: '3+ days', desc: 'Test your idea with a working version.', features: ['Website, bot or web app', 'Real functionality, not a mockup', 'Deployed, with a shareable link', 'You own the source code', '2 weeks of tweaks'], cta: 'Discuss' },
-        { name: 'Product', price: 'from $500', min: 500, currency: 'USD', term: '2+ weeks', desc: 'A complete solution for your workflow.', features: ['Website, bot, Android app or extension', 'Payments, admin panel, database', 'API and AI integrations', 'Tests and auto-deploy', 'Support after launch'], cta: 'Discuss', hot: 'popular' },
-        { name: 'Upgrade', price: 'custom', term: 'per task', desc: 'Already have a project? I’ll polish it.', features: ['New features', 'Refactoring and optimization', 'Docker, server, CI/CD', 'Bug fixes', 'Stack consulting'], cta: 'Tell me about it' }
+        { name: 'Prototype', price: 'from $100', min: 100, currency: 'USD', term: '3+ days', desc: 'Test your idea with a working version.', features: ['Website, bot or web app', 'Real functionality, not a mockup', 'Deployed, with a shareable link', 'You own the source code', '2 weeks of tweaks'], cta: 'Discuss' },
+        { name: 'Product', price: 'from $350', min: 350, currency: 'USD', term: '2+ weeks', desc: 'A complete solution for your workflow.', features: ['Website, bot, Android app or extension', 'Payments, admin panel, database', 'API and AI integrations', 'Tests and auto-deploy', 'Support after launch'], cta: 'Discuss', hot: 'popular' },
+        { name: 'Upgrade', price: 'from $30', min: 30, currency: 'USD', term: 'per task', desc: 'Already have a project? I’ll polish it.', features: ['New features', 'Refactoring and optimization', 'Docker, server, CI/CD', 'Bug fixes', 'Stack consulting'], cta: 'Tell me about it' }
       ]
     },
 
