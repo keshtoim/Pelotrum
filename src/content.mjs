@@ -39,7 +39,7 @@ export const content = {
   ru: {
     locale: 'ru_RU',
     meta: {
-      title: 'pelotrum — vibecode: сайты, боты и приложения под вашу идею',
+      title: 'pelotrum',
       description: 'Вайбкодинг под ключ: быстро собираю сайты, Telegram-ботов, Android-приложения, браузерные расширения и автоматизации — от идеи до рабочего продукта.'
     },
     a11y: {
@@ -182,7 +182,7 @@ export const content = {
   en: {
     locale: 'en_US',
     meta: {
-      title: 'pelotrum — vibecode: websites, bots and apps built around your idea',
+      title: 'pelotrum',
       description: 'Turnkey vibecoding: websites, Telegram bots, Android apps, browser extensions and automations, built fast — from idea to a working product.'
     },
     a11y: {
