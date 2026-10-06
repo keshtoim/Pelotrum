@@ -415,6 +415,7 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 .legal h2 { font-family: var(--f-display); font-weight: 700; font-size: 20px; letter-spacing: -.01em; margin-bottom: 14px; }
 .legal p, .legal li { color: var(--mut); font-size: 16px; }
 .legal p + p, .legal p + ul, .legal ul + p { margin-top: 12px; }
+.legal a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--acc-text); }
 .legal ul { display: flex; flex-direction: column; gap: 8px; }
 .legal li { position: relative; padding-left: 22px; }
 .legal li::before { content: '–'; position: absolute; left: 0; color: var(--acc-text); font-family: var(--f-mono); }

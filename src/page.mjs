@@ -97,7 +97,7 @@ function footer(lang, t) {
   <div class="container footer__inner">
     <a href="${BASE + LANGS[lang]}" class="logo logo--sm"><span class="logo__mark" aria-hidden="true">p</span><span class="logo__word">${site.name}</span></a>
     <span class="footer__copy">© ${new Date().getFullYear()} ${site.name} · ${t.footer.made}</span>
-    <nav class="footer__legal"><a href="${BASE + LANGS[lang]}privacy/">${t.footer.privacy}</a></nav>
+    <nav class="footer__legal">${['privacy', 'terms'].map((k) => `<a href="${BASE + LANGS[lang]}${k}/">${t.footer[k]}</a>`).join('')}</nav>
     <a href="#top" class="link-arrow">${t.footer.top}</a>
   </div>
 </footer>`;

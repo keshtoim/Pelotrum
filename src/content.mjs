@@ -171,7 +171,7 @@ export const content = {
       sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.'
     },
 
-    footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности' },
+    footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности', terms: 'Условия оказания услуг' },
     notFound: {
       title: 'Страница не найдена — pelotrum',
       code: 'command not found',
@@ -318,7 +318,7 @@ export const content = {
       sub: 'Tell me what you want to build or automate — I’ll suggest a solution, timeline and price.'
     },
 
-    footer: { made: 'vibecode', top: 'Back to top', privacy: 'Privacy Policy' },
+    footer: { made: 'vibecode', top: 'Back to top', privacy: 'Privacy Policy', terms: 'Terms of Service' },
 
     notFound: {
       title: 'Page not found — pelotrum',
