@@ -82,7 +82,7 @@ function header(lang, t, path = '') {
       <span class="logo__word">${site.name}</span>
     </a>
     <nav class="nav" id="nav" aria-label="${esc(t.a11y.menu)}">
-      ${['work', 'services', 'benefits', 'blog', 'about', 'contact'].map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
+      ${['work', 'services', 'benefits', site.showBlog && 'blog', 'about', 'contact'].filter(Boolean).map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
     </nav>
     <div class="header__tools">
       <a class="tool lang-toggle" href="${BASE + LANGS[other] + path}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
@@ -221,9 +221,103 @@ const postCard = (t) => (p, i) => {
         </${tag}>`;
 };
 
+const sectionClass = (alt) => `section${alt ? ' section--alt' : ''}`;
+
+// Секции главной по порядку. Номер в подписи («// 01 / …») и чередование фона считаются по видимым секциям,
+// поэтому скрытие блога или новая секция не ломают нумерацию.
+function homeSections(t) {
+  const telegram = `https://t.me/${site.telegram}`;
+  const sections = [
+    (n, alt) => `<section class="${sectionClass(alt)}" id="work" aria-labelledby="work-title">
+    <div class="container">
+      <div class="section__head">
+        ${kicker(n, t.nav.work)}
+        <h2 class="section__title" id="work-title">${t.work.title}</h2>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="${esc(t.a11y.filters)}">
+        ${Object.entries(t.work.filters).map(([k, v], i) => `<button class="chip${i ? '' : ' is-active'}" type="button" data-filter="${k}" aria-pressed="${!i}">${v}</button>`).join('\n        ')}
+      </div>
+      <div class="grid grid--work" id="workGrid">
+        ${t.work.items.map(workCard(t)).join('\n        ')}
+      </div>
+    </div>
+  </section>`,
+
+    (n, alt) => `<section class="${sectionClass(alt)}" id="services" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section__head">
+        ${kicker(n, t.nav.services)}
+        <h2 class="section__title" id="services-title">${t.services.title}</h2>
+      </div>
+      <div class="grid grid--price">
+        ${t.services.items.map(priceCard).join('\n        ')}
+      </div>
+      <p class="note">${t.services.note}</p>
+    </div>
+  </section>`,
+
+    (n, alt) => `<section class="${sectionClass(alt)}" id="benefits" aria-labelledby="benefits-title">
+    <div class="container">
+      <div class="section__head">
+        ${kicker(n, t.nav.benefits)}
+        <h2 class="section__title" id="benefits-title">${t.benefits.title}</h2>
+      </div>
+      <div class="grid grid--benefits">
+        ${t.benefits.items.map(benefitCard).join('\n        ')}
+      </div>
+    </div>
+  </section>`,
+
+    site.showBlog && ((n, alt) => `<section class="${sectionClass(alt)}" id="blog" aria-labelledby="blog-title">
+    <div class="container">
+      <div class="section__head section__head--row">
+        <div>
+          ${kicker(n, t.nav.blog)}
+          <h2 class="section__title" id="blog-title">${t.blog.title}</h2>
+        </div>
+        <a href="#" class="link-arrow">${t.blog.all}</a>
+      </div>
+      <div class="grid grid--blog">
+        ${t.blog.items.map(postCard(t)).join('\n        ')}
+      </div>
+    </div>
+  </section>`),
+
+    (n, alt) => `<section class="${sectionClass(alt)}" id="about" aria-labelledby="about-title">
+    <div class="container about">
+      <div class="about__photo">
+        <div class="photo-ph" aria-hidden="true"><span>p</span></div>
+        <span class="hand hand--photo" aria-hidden="true">${t.about.photo}</span>
+      </div>
+      <div class="about__text">
+        ${kicker(n, t.nav.about)}
+        <h2 class="section__title" id="about-title">${t.about.title}</h2>
+        ${t.about.p.map((p) => `<p>${p}</p>`).join('\n        ')}
+        <ul class="stack">${t.about.stack.map((s) => `<li>${s}</li>`).join('')}</ul>
+      </div>
+    </div>
+  </section>`,
+
+    // Контакты — тёмный блок на обычном фоне, без чередования.
+    (n) => `<section class="section" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="cta-box">
+        <span class="sticker sticker--cta">${t.contact.sticker}</span>
+        ${kicker(n, t.nav.contact)}
+        <h2 class="cta-box__title" id="contact-title">${t.contact.title}</h2>
+        <p class="cta-box__sub">${t.contact.sub}</p>
+        <div class="cta-box__links">
+          <a href="${telegram}" class="btn btn--acc btn--lg" target="_blank" rel="noopener">${icons.tg} Telegram · @${site.telegram}</a>
+        </div>
+      </div>
+    </div>
+  </section>`
+  ];
+  return sections.filter(Boolean);
+}
+
 export function renderHome(lang, assets) {
   const t = assets.content[lang];
-  const telegram = `https://t.me/${site.telegram}`;
   // Лента дублируется: анимация сдвигает её ровно на половину, и шов цикла не виден.
   const ticker = t.ticker.map((x) => `<span>${x}</span><i>✦</i>`).join('');
 
@@ -255,89 +349,7 @@ ${header(lang, t)}
 
   <div class="ticker" aria-hidden="true"><div class="ticker__track">${ticker}${ticker}</div></div>
 
-  <section class="section" id="work" aria-labelledby="work-title">
-    <div class="container">
-      <div class="section__head">
-        ${kicker('01', t.nav.work)}
-        <h2 class="section__title" id="work-title">${t.work.title}</h2>
-      </div>
-      <div class="filters" id="filters" role="group" aria-label="${esc(t.a11y.filters)}">
-        ${Object.entries(t.work.filters).map(([k, v], i) => `<button class="chip${i ? '' : ' is-active'}" type="button" data-filter="${k}" aria-pressed="${!i}">${v}</button>`).join('\n        ')}
-      </div>
-      <div class="grid grid--work" id="workGrid">
-        ${t.work.items.map(workCard(t)).join('\n        ')}
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--alt" id="services" aria-labelledby="services-title">
-    <div class="container">
-      <div class="section__head">
-        ${kicker('02', t.nav.services)}
-        <h2 class="section__title" id="services-title">${t.services.title}</h2>
-      </div>
-      <div class="grid grid--price">
-        ${t.services.items.map(priceCard).join('\n        ')}
-      </div>
-      <p class="note">${t.services.note}</p>
-    </div>
-  </section>
-
-  <section class="section" id="benefits" aria-labelledby="benefits-title">
-    <div class="container">
-      <div class="section__head">
-        ${kicker('03', t.nav.benefits)}
-        <h2 class="section__title" id="benefits-title">${t.benefits.title}</h2>
-      </div>
-      <div class="grid grid--benefits">
-        ${t.benefits.items.map(benefitCard).join('\n        ')}
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--alt" id="blog" aria-labelledby="blog-title">
-    <div class="container">
-      <div class="section__head section__head--row">
-        <div>
-          ${kicker('04', t.nav.blog)}
-          <h2 class="section__title" id="blog-title">${t.blog.title}</h2>
-        </div>
-        <a href="#" class="link-arrow">${t.blog.all}</a>
-      </div>
-      <div class="grid grid--blog">
-        ${t.blog.items.map(postCard(t)).join('\n        ')}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="about" aria-labelledby="about-title">
-    <div class="container about">
-      <div class="about__photo">
-        <div class="photo-ph" aria-hidden="true"><span>p</span></div>
-        <span class="hand hand--photo" aria-hidden="true">${t.about.photo}</span>
-      </div>
-      <div class="about__text">
-        ${kicker('05', t.nav.about)}
-        <h2 class="section__title" id="about-title">${t.about.title}</h2>
-        ${t.about.p.map((p) => `<p>${p}</p>`).join('\n        ')}
-        <ul class="stack">${t.about.stack.map((s) => `<li>${s}</li>`).join('')}</ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="contact" aria-labelledby="contact-title">
-    <div class="container">
-      <div class="cta-box">
-        <span class="sticker sticker--cta">${t.contact.sticker}</span>
-        ${kicker('06', t.nav.contact)}
-        <h2 class="cta-box__title" id="contact-title">${t.contact.title}</h2>
-        <p class="cta-box__sub">${t.contact.sub}</p>
-        <div class="cta-box__links">
-          <a href="${telegram}" class="btn btn--acc btn--lg" target="_blank" rel="noopener">${icons.tg} Telegram · @${site.telegram}</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  ${homeSections(t).map((render, i) => render(String(i + 1).padStart(2, '0'), i % 2 === 1)).join('\n\n  ')}
 </main>
 
 ${footer(lang, t)}
