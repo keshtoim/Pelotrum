@@ -82,7 +82,7 @@ function header(lang, t, path = '') {
       <span class="logo__word">${site.name}</span>
     </a>
     <nav class="nav" id="nav" aria-label="${esc(t.a11y.menu)}">
-      ${['work', 'services', 'process', site.showBlog && 'blog', 'about', 'contact'].filter(Boolean).map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
+      ${['work', 'services', 'process', site.showBlog && 'blog', 'about', 'faq', 'contact'].filter(Boolean).map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
     </nav>
     <div class="header__tools">
       <a class="tool lang-toggle" href="${BASE + LANGS[other] + path}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
@@ -175,6 +175,13 @@ function jsonLd(lang, t) {
             ...(s.min && { priceSpecification: { '@type': 'PriceSpecification', minPrice: s.min, priceCurrency: s.currency } })
           }))
         }
+      },
+      {
+        '@type': 'FAQPage', '@id': url + '#faq',
+        mainEntity: t.faq.items.map((f) => ({
+          '@type': 'Question', name: strip(f.q),
+          acceptedAnswer: { '@type': 'Answer', text: strip(f.a) }
+        }))
       }
     ]
   };
@@ -311,6 +318,21 @@ function homeSections(t) {
         <h2 class="section__title" id="about-title">${t.about.title}</h2>
         ${t.about.p.map((p) => `<p>${p}</p>`).join('\n        ')}
         <ul class="stack">${t.about.stack.map((s) => `<li>${s}</li>`).join('')}</ul>
+      </div>
+    </div>
+  </section>`,
+
+    (n, alt) => `<section class="${sectionClass(alt)}" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section__head">
+        ${kicker(n, t.nav.faq)}
+        <h2 class="section__title" id="faq-title">${t.faq.title}</h2>
+      </div>
+      <div class="faq">
+        ${t.faq.items.map((f) => `<details class="faq__item">
+          <summary class="faq__q">${f.q}</summary>
+          <p class="faq__a">${f.a}</p>
+        </details>`).join('\n        ')}
       </div>
     </div>
   </section>`,

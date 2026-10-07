@@ -54,7 +54,7 @@ export const content = {
       filters: 'Фильтр работ',
       repo: 'Исходный код на GitHub'
     },
-    nav: { work: 'Портфолио', services: 'Услуги', process: 'Как работаем', benefits: 'Преимущества', blog: 'Блог', about: 'Обо мне', contact: 'Контакты', cta: 'Написать' },
+    nav: { work: 'Портфолио', services: 'Услуги', process: 'Как работаем', benefits: 'Преимущества', blog: 'Блог', about: 'Обо мне', faq: 'Вопросы', contact: 'Контакты', cta: 'Написать' },
     hero: {
       kicker: 'vibecode · от идеи до рабочего продукта',
       title: 'Превращаю идею в&nbsp;<span class="mark">рабочий</span> продукт',
@@ -177,6 +177,19 @@ export const content = {
       stack: ['Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Node.js', 'SQLite', 'Docker', 'Claude API'],
       photo: 'тут будет фото'
     },
+    faq: {
+      title: 'Частые вопросы',
+      items: [
+        { q: 'Сколько стоит проект?', a: 'Цены на сайте — минимальные. Точную стоимость называю после брифа: она зависит от объёма, интеграций и сроков. Оценка бесплатная.' },
+        { q: 'Как быстро будет результат?', a: 'Прототип — от 3 дней, полноценный продукт — от 2 недель. Срок фиксируется в техническом задании до старта работ.' },
+        { q: 'Как проходит оплата?', a: 'Предоплата 50% или 100% для небольших задач, остаток — после приёмки. На каждую оплату формирую чек в «Мой налог».' },
+        { q: 'Кому принадлежит код?', a: 'Вам: исключительные права на результат переходят после полной оплаты. Передаю исходный код и доступы.' },
+        { q: 'Что если результат не устроит?', a: 'В стоимость входят до двух итераций правок в рамках задания, несоответствия заданию исправляю бесплатно. От договора можно отказаться, оплатив фактически понесённые расходы.' },
+        { q: 'Вайбкодинг — это надёжно?', a: 'AI ускоряет разработку, но код я проверяю, тестирую и отвечаю за результат сам.' },
+        { q: 'Поддерживаете проект после запуска?', a: 'Да, по отдельной договорённости: правки, новые функции, сервер и обновления.' }
+      ]
+    },
+
     contact: {
       sticker: 'ответ в течение дня',
       title: 'Есть идея? Напишите.',
@@ -207,7 +220,7 @@ export const content = {
       filters: 'Filter work',
       repo: 'Source code on GitHub'
     },
-    nav: { work: 'Work', services: 'Services', process: 'How it works', benefits: 'Benefits', blog: 'Blog', about: 'About', contact: 'Contact', cta: 'Get in touch' },
+    nav: { work: 'Work', services: 'Services', process: 'How it works', benefits: 'Benefits', blog: 'Blog', about: 'About', faq: 'FAQ', contact: 'Contact', cta: 'Get in touch' },
 
     hero: {
       kicker: 'vibecode · from idea to working product',
@@ -332,6 +345,19 @@ export const content = {
       ],
       stack: ['Python', 'aiogram', 'Kotlin', 'Jetpack Compose', 'JavaScript', 'Node.js', 'SQLite', 'Docker', 'Claude API'],
       photo: 'photo goes here'
+    },
+
+    faq: {
+      title: 'Frequently asked questions',
+      items: [
+        { q: 'How much does a project cost?', a: 'Prices on the site are starting prices. I give an exact quote after the brief: it depends on scope, integrations and timeline. The estimate is free.' },
+        { q: 'How fast will I get a result?', a: 'A prototype takes 3+ days, a full product 2+ weeks. The timeline is fixed in the specification before work starts.' },
+        { q: 'How does payment work?', a: '50% upfront, or 100% for small tasks, and the rest after acceptance. I issue a receipt via the “My Tax” app for every payment.' },
+        { q: 'Who owns the code?', a: 'You do: exclusive rights pass to you after full payment. I hand over the source code and access.' },
+        { q: 'What if I’m not happy with the result?', a: 'Up to two rounds of revisions within the specification are included, and deviations from it are fixed free of charge. You can terminate the agreement by paying for actually incurred expenses.' },
+        { q: 'Is vibecoding reliable?', a: 'AI speeds up development, but I review and test the code and take responsibility for the result myself.' },
+        { q: 'Do you support the project after launch?', a: 'Yes, under a separate agreement: tweaks, new features, server and updates.' }
+      ]
     },
 
     contact: {
