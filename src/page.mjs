@@ -82,7 +82,7 @@ function header(lang, t, path = '') {
       <span class="logo__word">${site.name}</span>
     </a>
     <nav class="nav" id="nav" aria-label="${esc(t.a11y.menu)}">
-      ${['work', 'services', 'benefits', site.showBlog && 'blog', 'about', 'contact'].filter(Boolean).map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
+      ${['work', 'services', 'process', site.showBlog && 'blog', 'about', 'contact'].filter(Boolean).map((k) => `<a href="${home}#${k}">${t.nav[k]}</a>`).join('\n      ')}
     </nav>
     <div class="header__tools">
       <a class="tool lang-toggle" href="${BASE + LANGS[other] + path}" hreflang="${other}" lang="${other}" aria-label="${esc(t.a11y.lang)}">
@@ -253,6 +253,23 @@ function homeSections(t) {
         ${t.services.items.map(priceCard).join('\n        ')}
       </div>
       <p class="note">${t.services.note}</p>
+    </div>
+  </section>`,
+
+    (n, alt) => `<section class="${sectionClass(alt)}" id="process" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section__head">
+        ${kicker(n, t.nav.process)}
+        <h2 class="section__title" id="process-title">${t.process.title}</h2>
+      </div>
+      <ol class="steps">
+        ${t.process.steps.map((s, i) => `<li class="step">
+          <span class="step__num" aria-hidden="true">${i + 1}</span>
+          <h3 class="step__title">${s.t}</h3>
+          <p class="step__desc">${s.d}</p>
+          <span class="step__time">${s.time}</span>
+        </li>`).join('\n        ')}
+      </ol>
     </div>
   </section>`,
 

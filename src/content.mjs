@@ -54,7 +54,7 @@ export const content = {
       filters: 'Фильтр работ',
       repo: 'Исходный код на GitHub'
     },
-    nav: { work: 'Портфолио', services: 'Услуги', benefits: 'Преимущества', blog: 'Блог', about: 'Обо мне', contact: 'Контакты', cta: 'Написать' },
+    nav: { work: 'Портфолио', services: 'Услуги', process: 'Как работаем', benefits: 'Преимущества', blog: 'Блог', about: 'Обо мне', contact: 'Контакты', cta: 'Написать' },
     hero: {
       kicker: 'vibecode · от идеи до рабочего продукта',
       title: 'Превращаю идею в&nbsp;<span class="mark">рабочий</span> продукт',
@@ -138,6 +138,16 @@ export const content = {
         { name: 'Доработка', price: 'от 2 000 ₽', min: 2000, currency: 'RUB', term: 'за задачу', desc: 'Проект уже есть — доведу до ума.', features: ['Новые функции', 'Рефакторинг и оптимизация', 'Docker, сервер, CI/CD', 'Исправление багов', 'Консультация по стеку'], cta: 'Рассказать о проекте' }
       ]
     },
+    process: {
+      title: 'Как работаем',
+      steps: [
+        { t: 'Бриф', d: 'Пишете в Telegram: идея, задача, желаемые сроки. Задаю уточняющие вопросы.', time: 'день 0' },
+        { t: 'Оценка', d: 'Присылаю техническое задание, этапы, срок и цену. Вносите предоплату — стартуем.', time: '1–2 дня' },
+        { t: 'Прототип', d: 'Первая рабочая версия за дни. Показываю прогресс по ходу, а не в конце.', time: 'от 3 дней' },
+        { t: 'Запуск', d: 'До двух итераций правок, деплой и передача кода. Поддержка — по договорённости.', time: 'после приёмки' }
+      ]
+    },
+
     benefits: {
       title: 'Почему со мной удобно',
       items: [
@@ -197,7 +207,7 @@ export const content = {
       filters: 'Filter work',
       repo: 'Source code on GitHub'
     },
-    nav: { work: 'Work', services: 'Services', benefits: 'Benefits', blog: 'Blog', about: 'About', contact: 'Contact', cta: 'Get in touch' },
+    nav: { work: 'Work', services: 'Services', process: 'How it works', benefits: 'Benefits', blog: 'Blog', about: 'About', contact: 'Contact', cta: 'Get in touch' },
 
     hero: {
       kicker: 'vibecode · from idea to working product',
@@ -280,6 +290,16 @@ export const content = {
         { name: 'Prototype', price: 'from $100', min: 100, currency: 'USD', term: '3+ days', desc: 'Test your idea with a working version.', features: ['Website, bot or web app', 'Real functionality, not a mockup', 'Deployed, with a shareable link', 'You own the source code', '2 weeks of tweaks'], cta: 'Discuss' },
         { name: 'Product', price: 'from $350', min: 350, currency: 'USD', term: '2+ weeks', desc: 'A complete solution for your workflow.', features: ['Website, bot, Android app or extension', 'Payments, admin panel, database', 'API and AI integrations', 'Tests and auto-deploy', 'Support after launch'], cta: 'Discuss', hot: 'popular' },
         { name: 'Upgrade', price: 'from $30', min: 30, currency: 'USD', term: 'per task', desc: 'Already have a project? I’ll polish it.', features: ['New features', 'Refactoring and optimization', 'Docker, server, CI/CD', 'Bug fixes', 'Stack consulting'], cta: 'Tell me about it' }
+      ]
+    },
+
+    process: {
+      title: 'How it works',
+      steps: [
+        { t: 'Brief', d: 'Message me on Telegram: your idea, the task, the timeline you have in mind. I’ll ask follow-up questions.', time: 'day 0' },
+        { t: 'Estimate', d: 'I send a specification, milestones, timeline and price. You make the advance payment and we start.', time: '1–2 days' },
+        { t: 'Prototype', d: 'A working first version in days. You see progress along the way, not just at the end.', time: '3+ days' },
+        { t: 'Launch', d: 'Up to two rounds of revisions, deployment and code handover. Support as agreed.', time: 'after acceptance' }
       ]
     },
 

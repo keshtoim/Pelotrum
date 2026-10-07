@@ -282,8 +282,8 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 .ticker.is-paused .ticker__track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
-.section { padding: clamp(72px, 10vw, 130px) 0; }
-.section--alt { background: var(--bg-alt); }
+.section { padding: clamp(72px, 10vw, 130px) 0; --section-bg: var(--bg); }
+.section--alt { background: var(--bg-alt); --section-bg: var(--bg-alt); }
 .section__head { margin-bottom: clamp(32px, 5vw, 56px); }
 .section__head--row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
 
@@ -294,6 +294,22 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 .grid--blog { grid-template-columns: repeat(3, 1fr); }
 
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin: 0; padding: 0; list-style: none; }
+.step { position: relative; display: flex; flex-direction: column; gap: 10px; padding-top: 60px; }
+/* Пунктир от номера к следующему шагу; фон кружка — цвет секции, чтобы линия под ним не просвечивала. */
+.step::before { content: ''; position: absolute; top: 21px; left: 44px; right: -28px; border-top: 2px dashed var(--line-2); }
+.step:last-child::before { display: none; }
+.step__num {
+  position: absolute; top: 0; left: 0; z-index: 1;
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 2px solid var(--acc-text); background: var(--section-bg); color: var(--acc-text);
+  font-family: var(--f-mono); font-weight: 600; font-size: 15px;
+}
+.step__title { font-family: var(--f-display); font-weight: 700; font-size: 20px; }
+.step__desc { color: var(--mut); font-size: 15px; flex: 1; }
+.step__time { font-family: var(--f-mono); font-size: 12px; color: var(--acc-text); }
 
 .work { overflow: hidden; display: flex; flex-direction: column; }
 
@@ -442,6 +458,8 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
   .hero__mark { width: 180px; }
   .chat { margin: 0 auto; }
   .grid--work, .grid--blog { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+  .step:nth-child(2n)::before { display: none; }
   .grid--price { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
   .about { grid-template-columns: 1fr; }
   .about__photo { max-width: 340px; }
@@ -450,6 +468,9 @@ html[lang="ru"] .lang-toggle [data-lang="ru"], html[lang="en"] .lang-toggle [dat
 @media (max-width: 600px) {
   .header__cta { display: none; }
   .grid--work, .grid--blog, .grid--benefits { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; row-gap: 28px; }
+  .step { padding: 0 0 0 64px; min-height: 44px; }
+  .step:not(:last-child)::before { display: block; top: 50px; bottom: -22px; left: 21px; right: auto; border-top: 0; border-left: 2px dashed var(--line-2); }
   .work__cover { aspect-ratio: 16 / 7; }
   .post__cover { aspect-ratio: 16 / 6; }
   .about__photo { max-width: 200px; }
