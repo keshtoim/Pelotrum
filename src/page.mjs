@@ -115,8 +115,20 @@ const jsonScript = (type, id, data) => `<script type="${type}"${id ? ` id="${id}
 const msgHtml = (m) => `<div class="msg msg--${m.from}"><div class="msg__bubble">${m.text}</div>${
   m.buttons ? `<div class="msg__kb">${m.buttons.map((b) => `<span>${b}</span>`).join('')}</div>` : ''}</div>`;
 
+// Живой знак в правой колонке hero: в покое это логотип, main.js запускает мяч по орбите вокруг медиатора.
+// Орбита — эллипс с центром (32,32) и полуосями 29×24, проходящий через точку покоя мяча (48,12).
+const heroMark = () => `<div class="hero__art" aria-hidden="true">
+        <svg class="hero__mark" id="heroMark" viewBox="-6 -6 76 76">
+          <mask id="heroMask" maskUnits="userSpaceOnUse" x="-6" y="-6" width="76" height="76"><rect x="-6" y="-6" width="76" height="76" fill="#fff"/><circle id="heroGap" cx="48" cy="12" r="8.5" fill="#000"/></mask>
+          <path id="heroTrail" class="hero__trail" d=""/>
+          <path d="M14 17C14 12 19 10 32 10C45 10 50 12 50 17C50 30 41 45 35 51C33.5 52.5 30.5 52.5 29 51C23 45 14 30 14 17Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" mask="url(#heroMask)"/>
+          <circle cx="32" cy="23" r="4" fill="currentColor"/>
+          <circle id="heroBall" cx="48" cy="12" r="6.5" fill="currentColor"/>
+        </svg>
+      </div>`;
+
 // Демо-чат с ботом отключён, пока акцент сайта на вайбкодинге. Чтобы вернуть, вызвать chatDemo(t)
-// в hero, убрать класс hero__inner--solo и раскомментировать блок чата в src/scripts/main.js.
+// в hero вместо heroMark() и раскомментировать блок чата в src/scripts/main.js.
 function chatDemo(t) {
   return `<div class="hero__demo">
         <span class="hand hand--demo" aria-hidden="true">${t.hero.note}</span>
@@ -224,7 +236,7 @@ ${header(lang, t)}
 
 <main id="main">
   <section class="hero">
-    <div class="container hero__inner hero__inner--solo">
+    <div class="container hero__inner">
       <div class="hero__text">
         <p class="kicker">${t.hero.kicker}</p>
         <h1 class="hero__title">${t.hero.title}</h1>
@@ -237,6 +249,7 @@ ${header(lang, t)}
           ${t.hero.facts.map(([v, l]) => `<li><b>${v}</b><span>${l}</span></li>`).join('\n          ')}
         </ul>
       </div>
+      ${heroMark()}
     </div>
   </section>
 

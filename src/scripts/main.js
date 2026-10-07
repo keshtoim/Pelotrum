@@ -124,6 +124,57 @@
     }, { passive: true });
   }
 
+  // Живой знак в hero: мяч срывается с угла медиатора, облетает его по эллипсу со следом и возвращается в логотип.
+  var heroMark = $('#heroMark');
+  if (heroMark && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var heroBall = $('#heroBall');
+    var heroGap = $('#heroGap');
+    var heroTrail = $('#heroTrail');
+    // Эллипс орбиты совпадает с разметкой heroMark() в src/page.mjs и проходит через точку покоя мяча (48,12).
+    var CX = 32, CY = 32, RX = 29, RY = 24;
+    var REST = Math.atan2((12 - CY) / RY, (48 - CX) / RX);
+    var HOLD = 2400, FLY = 2600;
+    var easeInOut = function (u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; };
+
+    var points = [];
+    var elapsed = 0, last = 0, raf = 0;
+
+    var tick = function (now) {
+      // Время копится только пока знак виден, поэтому после паузы цикл продолжается с того же места.
+      if (last) elapsed += Math.min(now - last, 50);
+      last = now;
+      var phase = elapsed % (HOLD + FLY);
+      var x = 48, y = 12;
+      if (phase >= HOLD) {
+        var angle = REST + easeInOut((phase - HOLD) / FLY) * Math.PI * 2;
+        x = CX + RX * Math.cos(angle);
+        y = CY + RY * Math.sin(angle);
+        points.push(x.toFixed(2) + ' ' + y.toFixed(2));
+        if (points.length > 14) points.shift();
+      } else if (points.length) {
+        points.shift();
+      }
+      heroBall.setAttribute('cx', x);
+      heroBall.setAttribute('cy', y);
+      heroGap.setAttribute('cx', x);
+      heroGap.setAttribute('cy', y);
+      heroTrail.setAttribute('d', points.length > 1 ? 'M' + points.join('L') : '');
+      raf = requestAnimationFrame(tick);
+    };
+
+    var onScreen = false;
+    var setRunning = function () {
+      var run = onScreen && !document.hidden;
+      if (run && !raf) raf = requestAnimationFrame(tick);
+      if (!run && raf) { cancelAnimationFrame(raf); raf = 0; last = 0; }
+    };
+    new IntersectionObserver(function (entries) {
+      onScreen = entries[0].isIntersecting;
+      setRunning();
+    }).observe(heroMark);
+    document.addEventListener('visibilitychange', setRunning);
+  }
+
   /*
   Демо-чат отключён вместе с разметкой (chatDemo в src/page.mjs).
   Диалог уже отрисован в HTML; скрипт проигрывает сценарий из #chatData по кругу,
