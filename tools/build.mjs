@@ -119,8 +119,7 @@ ${ru.services.items.map((s) => `- ${s.name} — ${plain(s.price)}, ${s.term}: ${
 
 ## Контакты
 
-- Telegram: https://t.me/${site.telegram}
-- GitHub: ${site.github}
+${site.acceptingClients ? `- Telegram: https://t.me/${site.telegram}\n` : ''}- GitHub: ${site.github}
 `);
 
 // Без .nojekyll GitHub Pages прогоняет сайт через Jekyll, а тот пропускает файлы с «_» в начале.

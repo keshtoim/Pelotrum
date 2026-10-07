@@ -9,6 +9,10 @@ export const site = {
   // Блог скрыт, пока нет статей: секция и пункт меню вернутся при true.
   showBlog: false,
 
+  // Режим витрины: пока false, на сайте нет Telegram-контакта, а оферта и политика не публикуются.
+  // Включать после реквизитов в legal, настоящего telegram и уведомления Роскомнадзора.
+  acceptingClients: false,
+
   // Оператор персональных данных и исполнитель услуг (самозанятый) — выводится в Политике и Условиях.
   legal: { name: '[ФИО]', inn: '[ИНН]' },
 
@@ -193,7 +197,13 @@ export const content = {
     contact: {
       sticker: 'ответ в течение дня',
       title: 'Есть идея? Напишите.',
-      sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.'
+      sub: 'Расскажите, что хотите сделать или автоматизировать — предложу решение, срок и цену.',
+      soon: {
+        sticker: 'скоро',
+        title: 'Приём заказов скоро откроется',
+        sub: 'А пока можно посмотреть исходный код проектов на GitHub.',
+        link: 'Проекты на GitHub'
+      }
     },
 
     footer: { made: 'vibecode', top: 'Наверх', privacy: 'Политика конфиденциальности', terms: 'Публичная оферта' },
@@ -363,7 +373,13 @@ export const content = {
     contact: {
       sticker: 'reply within a day',
       title: 'Got an idea? Drop me a line.',
-      sub: 'Tell me what you want to build or automate — I’ll suggest a solution, timeline and price.'
+      sub: 'Tell me what you want to build or automate — I’ll suggest a solution, timeline and price.',
+      soon: {
+        sticker: 'soon',
+        title: 'Taking orders soon',
+        sub: 'Meanwhile, you can browse the source code of my projects on GitHub.',
+        link: 'Projects on GitHub'
+      }
     },
 
     footer: { made: 'vibecode', top: 'Back to top', privacy: 'Privacy Policy', terms: 'Terms of Service' },
