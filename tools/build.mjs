@@ -64,7 +64,9 @@ const tidy = (html) => html.replace(/\n\s*\n/g, '\n').replace(/\n\s+/g, '\n');
 
 write('index.html', tidy(renderHome('ru', assets)));
 write('en/index.html', tidy(renderHome('en', assets)));
-for (const slug of Object.keys(legal)) {
+// Оферта и политика с незаполненными реквизитами не публикуются, пока заказы не принимаются.
+const legalSlugs = site.acceptingClients ? Object.keys(legal) : [];
+for (const slug of legalSlugs) {
   write(`${slug}/index.html`, tidy(renderLegal('ru', slug, assets)));
   write(`en/${slug}/index.html`, tidy(renderLegal('en', slug, assets)));
 }
@@ -73,7 +75,7 @@ write('404.html', tidy(render404(assets)));
 for (const f of readdirSync(src('static'))) copyFileSync(src('static', f), join(OUT, f));
 
 const langs = [['ru', ''], ['en', 'en/']];
-const pages = ['', ...Object.keys(legal).map((slug) => slug + '/')];
+const pages = ['', ...legalSlugs.map((slug) => slug + '/')];
 const today = new Date().toISOString().slice(0, 10);
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
